@@ -41,6 +41,15 @@
   2. Docker Compose と Spring Boot 直起動の手順をまとめた
   3. 必要な環境変数と運用メモを追記した
 
+#### D-L17 — H2 前提の起動手順と設定ファイルの役割を README に明記
+- **変更ファイル:**
+  - `README.md`
+  - `CHANGELOG.md`
+- **変更内容:**
+  1. `application.properties` で H2 の in-memory DB を既定にしていることを明記した
+  2. `schema.sql` と `data.sql` が起動時に自動適用されることを追記した
+  3. H2 Console の有効化方法と接続先上書き用の環境変数を README にまとめた
+
 ## [2026-06-17]
 
 ### ドキュメント更新（Low — テスト結果サマリーを workbook 集計に同期）

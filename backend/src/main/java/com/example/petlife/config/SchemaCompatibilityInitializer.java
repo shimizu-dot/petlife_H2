@@ -48,19 +48,19 @@ public class SchemaCompatibilityInitializer implements CommandLineRunner {
 
         // Subscription is owner-based: keep only one ACTIVE row per user (latest id).
         jdbcTemplate.execute("""
-            WITH ranked AS (
-                SELECT id,
-                       ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn
-                FROM subscriptions
-                WHERE deleted_at IS NULL AND status = 'ACTIVE'
-            )
-            UPDATE subscriptions s
+            UPDATE subscriptions
             SET status = 'CANCELED',
-                end_date = COALESCE(s.end_date, CURRENT_DATE),
+                end_date = COALESCE(end_date, CURRENT_DATE),
                 updated_at = CURRENT_TIMESTAMP
-            FROM ranked r
-            WHERE s.id = r.id
-              AND r.rn > 1
+            WHERE id IN (
+                SELECT id FROM (
+                    SELECT id,
+                           ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn
+                    FROM subscriptions
+                    WHERE deleted_at IS NULL AND status = 'ACTIVE'
+                ) ranked
+                WHERE ranked.rn > 1
+            )
             """);
 
         jdbcTemplate.execute("""

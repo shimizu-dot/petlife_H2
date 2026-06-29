@@ -45,6 +45,8 @@ docker compose down -v
 
 ## Spring Boot を直接起動する場合
 
+`backend/src/main/resources/application.properties` では、デフォルトのデータソースを H2 の in-memory DB にしています。`schema.sql` と `data.sql` は起動時に自動適用されるため、PostgreSQL を別途起動する必要はありません。
+
 `backend` ディレクトリで Maven Wrapper を使って起動します。
 
 ```bash
@@ -59,7 +61,15 @@ cd backend
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"
 ```
 
-H2 を使うため、別途データベースを起動する必要はありません。
+H2 Console を使う場合は、`H2_CONSOLE_ENABLED=true` を付けて起動すると `/h2-console` を開けます。
+
+起動時に使う主な設定ファイルは次の通りです。
+
+- `application.properties`: H2 の接続先、SQL 初期化、H2 Console の有無を定義
+- `schema.sql`: テーブル定義
+- `data.sql`: 初期データ投入
+
+必要なら `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` / `DB_DRIVER_CLASS_NAME` で接続先を上書きできます。
 
 ## 必要な環境変数
 
