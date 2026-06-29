@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クラス構成図 - プロジェクトアーカイブ</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .flow-image-wrap {
+      margin-top: 10px;
+      border: 1px solid #dbeafe;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .flow-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .repo-method-table th,
+    .repo-method-table td {
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .repo-method-table td:first-child {
+      font-size: 11px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="design"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DESIGN DOCUMENT</div>
+        <h1 class="doc-title">クラス構成図</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日：2026-05-25</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者：Hiromi SHIMIZU</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 2.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">パッケージ構成</a></li>
+            <li><a href="#sec2">Entity（エンティティ）</a></li>
+            <li><a href="#sec3">Repository（リポジトリ）</a></li>
+            <li><a href="#sec4">Service（サービス）</a></li>
+            <li><a href="#sec5">Controller（コントローラー）</a></li>
+            <li><a href="#sec6">クラス間の依存関係</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> パッケージ構成</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">ディレクトリ構造 <span class="required">必須</span></div>
+            <div class="fill-hint">src/main/java以下のパッケージ構造</div>
+            <div class="fill-content">
+              <div class="ascii-diagram">
+                <pre>
+src/main/java/
+└── com.example.petlife/                         # アプリ本体パッケージ
+    ├── PetlifeApplication.java                  # Spring Boot エントリポイント
+    ├── config/                                  # 認証・Web・初期化などの設定
+    │   ├── SecurityConfig.java                  # 認証・認可ルール
+    │   ├── UserDetailsServiceImpl.java          # 認証時ユーザー読み込み
+    │   ├── LoginUser.java                       # 認証済みユーザー情報
+    │   ├── DataInitializer.java                 # 初期ユーザー投入
+    │   ├── SchemaCompatibilityInitializer.java  # 旧DB互換マイグレーション
+    │   ├── MyBatisConfig.java                   # MyBatis 設定
+    │   ├── WebMvcConfig.java                    # uploads 静的配信
+    │   ├── WebResourceConfig.java               # 静的リソース設定
+    │   └── logging/                             # リクエストログ設定
+    │       └── RequestLoggingFilter.java        # HTTP リクエストログ
+    ├── controller/                              # 画面・APIエンドポイント
+    │   ├── AuthController.java                  # ログイン画面
+    │   ├── DashboardController.java             # ダッシュボード
+    │   ├── PetController.java                   # ペット管理
+    │   ├── HealthRecordController.java          # 健康記録管理
+    │   ├── AppointmentPageController.java       # 予約画面
+    │   ├── AppointmentSlotController.java       # 予約枠管理
+    │   ├── CalendarController.java              # カレンダー
+    │   ├── ConsultationController.java          # 診療記録
+    │   ├── ConsultChatController.java           # 相談チャット
+    │   ├── ClinicGuideController.java           # 病院案内
+    │   ├── NotificationController.java          # 通知
+    │   ├── SubscriptionController.java          # サブスク
+    │   ├── PremiumSupportController.java        # オンライン診療
+    │   ├── ReportController.java                # レポート
+    │   ├── UserController.java                  # ユーザー管理
+    │   ├── AnnouncementController.java          # お知らせ管理
+    │   ├── DatabaseBackupController.java        # DB バックアップ
+    │   ├── GlobalControllerAdvice.java          # 共通モデル付与
+    │   ├── line/LineEventController.java        # LINE Webhook
+    │   └── slack/SlackEventController.java      # Slack Webhook
+    ├── service/                                 # ビジネスロジック
+    │   ├── PetService.java                      # ペット業務
+    │   ├── HealthRecordService.java             # 健康記録業務
+    │   ├── AppointmentService.java              # 予約業務
+    │   ├── CalendarService.java                 # カレンダー業務
+    │   ├── PetCareRecordService.java            # ケア記録業務
+    │   ├── PlanAccessService.java               # プラン機能制御
+    │   ├── SymptomCheckService.java             # AI症状チェック
+    │   ├── ZoomLinkService.java                 # Zoom連携
+    │   ├── line/LineBotService.java             # LINE連携
+    │   └── slack/SlackBotService.java           # Slack連携
+    ├── mapper/                                  # MyBatis マッパー（SQL）
+    │   ├── AuthMapper.java                      # 認証用SQL
+    │   ├── UserMapper.java                      # ユーザーSQL
+    │   ├── PetMapper.java                       # ペットSQL
+    │   ├── HealthRecordMapper.java              # 健康記録SQL
+    │   ├── AppointmentMapper.java               # 予約SQL
+    │   ├── SubscriptionMapper.java              # サブスクSQL
+    │   ├── NotificationMapper.java              # 通知SQL
+    │   └── ...(23 Mappers)                      # 他業務マッパー
+    ├── entity/                                  # DB行マッピング
+    │   ├── UserEntity.java                      # users
+    │   ├── PetEntity.java                       # pets
+    │   ├── HealthRecordEntity.java              # health_records
+    │   ├── AppointmentEntity.java               # appointments
+    │   ├── NotificationEntity.java              # notifications
+    │   └── ...(Other Entities)                  # 他エンティティ
+    ├── dto/                                     # 入出力DTO
+    │   ├── appointment/                         # 予約DTO
+    │   ├── pet/                                 # ペットDTO
+    │   ├── health/                              # 健康DTO
+    │   ├── consultation/                        # 診療DTO
+    │   ├── notification/                        # 通知DTO
+    │   ├── subscription/                        # サブスクDTO
+    │   ├── premium/                             # プレミアムDTO
+    │   ├── symptom/                             # 症状チェックDTO
+    │   └── common/                              # 共通DTO
+    └── exception/                               # 例外定義
+        ├── BadRequestException.java             # 400系例外
+        ├── NotFoundException.java               # 404系例外
+        └── GlobalExceptionHandler.java          # API例外ハンドリング
+（出典: FOLDER_STRUCTURE.md / backend/src/main/java/com/example/petlife）
+                </pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">パッケージの役割 <span class="required">必須</span></div>
+            <div class="fill-hint">各パッケージの責務を説明</div>
+            <div class="fill-content">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>パッケージ</th>
+                    <th>役割</th>
+                    <th>使用するアノテーション</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>config</td>
+                    <td>認証・認可、MyBatis、Webリソース、初期化などの設定</td>
+                    <td>@Configuration, @EnableWebSecurity, @Bean, @Component</td>
+                  </tr>
+                  <tr>
+                    <td>controller</td>
+                    <td>画面遷移（Thymeleaf）と操作受付（/app/**, 一部 /api/**）</td>
+                    <td>@Controller, @RequestMapping, @GetMapping, @PostMapping, @PatchMapping, @DeleteMapping</td>
+                  </tr>
+                  <tr>
+                    <td>controller.line / controller.slack</td>
+                    <td>外部Webhook受信エンドポイント</td>
+                    <td>@Controller, @RequestMapping, @PostMapping</td>
+                  </tr>
+                  <tr>
+                    <td>service</td>
+                    <td>業務ロジック実装（権限判定、プラン制御、外部API連携を含む）</td>
+                    <td>@Service, @Value</td>
+                  </tr>
+                  <tr>
+                    <td>service.line / service.slack</td>
+                    <td>LINE/Slack送受信・署名検証などの連携処理</td>
+                    <td>@Service</td>
+                  </tr>
+                  <tr>
+                    <td>mapper</td>
+                    <td>データベースアクセス</td>
+                    <td>@Mapper</td>
+                  </tr>
+                  <tr>
+                    <td>entity</td>
+                    <td>DB行マッピング用のドメインデータ定義（record中心）</td>
+                    <td>Java record（アノテーション最小）</td>
+                  </tr>
+                  <tr>
+                    <td>dto</td>
+                    <td>画面/API入出力データの受け渡し</td>
+                    <td>@Data, @NotNull, @NotBlank, @Size, @Pattern, @DateTimeFormat</td>
+                  </tr>
+                  <tr>
+                    <td>exception</td>
+                    <td>業務例外・エラーハンドリング</td>
+                    <td>@RestControllerAdvice, @ExceptionHandler</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> Entity（エンティティ）</h2>          <div class="fill-block">
+            <div class="fill-label">PetEntity.java <span class="required">必須</span></div>
+            <div class="fill-hint">ペットエンティティのクラス図（実装準拠）</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 720" role="img" aria-labelledby="t d">
+  <title id="t">PetEntity クラス図</title>
+  <desc id="d">petlife プロジェクトの PetEntity（Java record）の構造図</desc>
+  <defs>
+    <style>
+      .h { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .sub { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+      .txt { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .note { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect width="980" height="720" fill="#f8fafc"/>
+
+  <rect x="40" y="32" width="900" height="656" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe" stroke="none"/>
+  <text x="490" y="66" text-anchor="middle" class="h">《Entity》 PetEntity</text>
+  <text x="490" y="88" text-anchor="middle" class="sub">Java record</text>
+
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="566" x2="940" y2="566" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="606" x2="940" y2="606" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="632" x2="940" y2="632" stroke="#b6c2cf" stroke-width="2"/>
+
+  <text x="70" y="150" class="txt">id: Long</text>
+  <text x="70" y="182" class="txt">ownerUserId: Long</text>
+  <text x="70" y="214" class="txt">name: String</text>
+  <text x="70" y="246" class="txt">species: String</text>
+  <text x="70" y="278" class="txt">breed: String</text>
+  <text x="70" y="310" class="txt">sex: String</text>
+  <text x="70" y="342" class="txt">birthDate: LocalDate</text>
+  <text x="70" y="374" class="txt">weightBaselineKg: BigDecimal</text>
+  <text x="70" y="406" class="txt">imagePath: String</text>
+  <text x="70" y="438" class="txt">deceasedAt: LocalDateTime</text>
+  <text x="70" y="470" class="txt">deletedAt: LocalDateTime</text>
+  <text x="70" y="502" class="txt">createdAt: LocalDateTime</text>
+  <text x="70" y="534" class="txt">updatedAt: LocalDateTime</text>
+
+  <text x="70" y="592" class="note">アクセサは record により自動生成（id(), ownerUserId(), ...）</text>
+
+  <text x="70" y="630" class="note">注釈</text>
+  <text x="70" y="650" class="note">タイトル: Task.java → PetEntity.java</text>
+  <text x="70" y="666" class="note">説明: タスクエンティティ → ペットエンティティ（実装準拠）</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>PetEntity は Lombok クラスではなく Java record で定義され、フィールドは record コンポーネントとして宣言される。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">User.java <span class="required">必須</span></div>
+            <div class="fill-hint">ユーザーエンティティのクラス図</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 630" role="img" aria-labelledby="u-title u-desc">
+  <title id="u-title">UserEntity クラス図</title>
+  <desc id="u-desc">petlife プロジェクトの UserEntity（Java record）の構造図</desc>
+  <defs>
+    <style>
+      .uh { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .usub { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+      .utxt { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .unote { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect width="980" height="630" fill="#f8fafc"/>
+  <rect x="40" y="32" width="900" height="584" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe" stroke="none"/>
+  <text x="490" y="66" text-anchor="middle" class="uh">《Entity》 UserEntity</text>
+  <text x="490" y="88" text-anchor="middle" class="usub">Java record</text>
+
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="566" x2="940" y2="566" stroke="#b6c2cf" stroke-width="2"/>
+
+  <text x="70" y="150" class="utxt">id: Long</text>
+  <text x="70" y="182" class="utxt">roleId: Long</text>
+  <text x="70" y="214" class="utxt">name: String</text>
+  <text x="70" y="246" class="utxt">email: String</text>
+  <text x="70" y="278" class="utxt">passwordHash: String</text>
+  <text x="70" y="310" class="utxt">phone: String</text>
+  <text x="70" y="342" class="utxt">slackUserId: String</text>
+  <text x="70" y="374" class="utxt">lineUserId: String</text>
+  <text x="70" y="406" class="utxt">status: String</text>
+  <text x="70" y="438" class="utxt">lastLoginAt: LocalDateTime</text>
+  <text x="70" y="470" class="utxt">deletedAt: LocalDateTime</text>
+  <text x="70" y="502" class="utxt">createdAt: LocalDateTime</text>
+  <text x="70" y="534" class="utxt">updatedAt: LocalDateTime</text>
+
+  <text x="70" y="594" class="unote">アクセサは record により自動生成（id(), roleId(), ...）</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>UserEntity は Lombok クラスではなく Java record で定義され、認証・連携項目（slackUserId/lineUserId）を含む。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">RoleEntity.java <span class="optional">任意</span></div>
+            <div class="fill-hint">ロールエンティティのクラス図（実装準拠）</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 614" role="img" aria-labelledby="p-title p-desc">
+  <title id="p-title">RoleEntity クラス図</title>
+  <desc id="p-desc">petlife プロジェクトの RoleEntity（Java record）の構造図</desc>
+  <defs>
+    <style>
+      .ph { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .psub { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+      .ptxt { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .pnote { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect width="980" height="614" fill="#f8fafc"/>
+  <rect x="40" y="32" width="900" height="558" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe" stroke="none"/>
+  <text x="490" y="66" text-anchor="middle" class="ph">《Entity》 RoleEntity</text>
+  <text x="490" y="88" text-anchor="middle" class="psub">Java record</text>
+
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="448" x2="940" y2="448" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="488" x2="940" y2="488" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="568" x2="940" y2="568" stroke="#b6c2cf" stroke-width="2"/>
+
+  <text x="70" y="150" class="ptxt">id: Long</text>
+  <text x="70" y="182" class="ptxt">name: String</text>
+  <text x="70" y="214" class="ptxt">code: String</text>
+  <text x="70" y="246" class="ptxt">canManageUsers: boolean</text>
+  <text x="70" y="278" class="ptxt">canManagePets: boolean</text>
+  <text x="70" y="310" class="ptxt">canWriteMedicalRecords: boolean</text>
+  <text x="70" y="342" class="ptxt">canUseAiSymptom: boolean</text>
+  <text x="70" y="374" class="ptxt">createdAt: LocalDateTime</text>
+  <text x="70" y="406" class="ptxt">updatedAt: LocalDateTime</text>
+
+  <text x="70" y="476" class="pnote">アクセサは record により自動生成（id(), name(), ...）</text>
+  <text x="70" y="512" class="pnote">注釈</text>
+  <text x="70" y="538" class="pnote">タイトル: PaymentEntity.java → RoleEntity.java</text>
+  <text x="70" y="560" class="pnote">説明: 決済エンティティ → ロールエンティティ（実装準拠）</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>RoleEntity は Java record として定義し、ロール識別子と権限フラグ群を保持する。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> Repository（リポジトリ）</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">PetMapper.java <span class="required">必須</span></div>
+            <div class="fill-hint">ペットリポジトリ（MyBatis Mapper）のインターフェース定義</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" role="img" aria-labelledby="m-title m-desc">
+  <title id="m-title">PetMapper クラス図</title>
+  <desc id="m-desc">petlife プロジェクトの PetMapper（@Mapper interface）の構造図</desc>
+  <defs>
+    <style>
+      .mh { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .mt { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .mn { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+  <rect width="980" height="620" fill="#f8fafc"/>
+  <rect x="40" y="32" width="900" height="556" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe"/>
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="532" x2="940" y2="532" stroke="#b6c2cf" stroke-width="2"/>
+  <text x="490" y="66" text-anchor="middle" class="mh">《Interface》 PetMapper</text>
+  <text x="490" y="90" text-anchor="middle" class="mn">@Mapper</text>
+  <text x="70" y="150" class="mt">+ findAll(limit:int, offset:int): List&lt;PetEntity&gt;</text>
+  <text x="70" y="180" class="mt">+ countAll(): long</text>
+  <text x="70" y="210" class="mt">+ findByOwnerUserId(ownerUserId, limit, offset): List&lt;PetEntity&gt;</text>
+  <text x="70" y="240" class="mt">+ findActiveByOwnerUserId(ownerUserId): List&lt;PetEntity&gt;</text>
+  <text x="70" y="270" class="mt">+ countByOwnerUserId(ownerUserId): long</text>
+  <text x="70" y="300" class="mt">+ findById(id): PetEntity</text>
+  <text x="70" y="330" class="mt">+ findByIdAndOwnerUserId(id, ownerUserId): PetEntity</text>
+  <text x="70" y="360" class="mt">+ insertReturningId(pet): Long</text>
+  <text x="70" y="390" class="mt">+ update(pet): int</text>
+  <text x="70" y="420" class="mt">+ softDelete(id, deletedAt): int</text>
+  <text x="70" y="450" class="mt">+ countLinkedDataFlags(petId): int</text>
+  <text x="70" y="480" class="mt">+ markDeceased(id, deceasedAt): int</text>
+  <text x="70" y="560" class="mn">注釈: 物理削除は行わず、deleted_at/deceased_at を更新する設計</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>`insertReturningId` で採番IDを返却し、更新系は `int` で更新件数を返す。</p>
+            </div>
+            <div class="fill-content" style="margin-top: 16px;">
+              <table class="doc-table repo-method-table">
+                <thead>
+                  <tr>
+                    <th>メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値</th>
+                    <th>SQL種別</th>
+                    <th>説明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="template-row">
+                    <td>findAll</td>
+                    <td>limit: int, offset: int</td>
+                    <td>List&lt;PetEntity&gt;</td>
+                    <td>SELECT</td>
+                    <td>全件取得（管理者）</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>countAll</td>
+                    <td>なし</td>
+                    <td>long</td>
+                    <td>SELECT</td>
+                    <td>全件数取得（deleted_at IS NULL）</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>findByOwnerUserId</td>
+                    <td>ownerUserId: Long, limit: int, offset: int</td>
+                    <td>List&lt;PetEntity&gt;</td>
+                    <td>SELECT</td>
+                    <td>オーナー別一覧取得</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>findActiveByOwnerUserId</td>
+                    <td>ownerUserId: Long</td>
+                    <td>List&lt;PetEntity&gt;</td>
+                    <td>SELECT</td>
+                    <td>オーナー別の有効ペット取得</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>countByOwnerUserId</td>
+                    <td>ownerUserId: Long</td>
+                    <td>long</td>
+                    <td>SELECT</td>
+                    <td>オーナー別件数取得</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>findById</td>
+                    <td>id: Long</td>
+                    <td>PetEntity</td>
+                    <td>SELECT</td>
+                    <td>ID指定の単件取得</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>findByIdAndOwnerUserId</td>
+                    <td>id: Long, ownerUserId: Long</td>
+                    <td>PetEntity</td>
+                    <td>SELECT</td>
+                    <td>所有者条件つき単件取得</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>insertReturningId</td>
+                    <td>pet: PetEntity</td>
+                    <td>Long</td>
+                    <td>INSERT</td>
+                    <td>新規登録して採番ID返却</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>update</td>
+                    <td>pet: PetEntity</td>
+                    <td>int</td>
+                    <td>UPDATE</td>
+                    <td>更新（件数返却）</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>softDelete</td>
+                    <td>id: Long, deletedAt: LocalDateTime</td>
+                    <td>int</td>
+                    <td>UPDATE</td>
+                    <td>論理削除（deleted_at）</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>countLinkedDataFlags</td>
+                    <td>petId: Long</td>
+                    <td>int</td>
+                    <td>SELECT</td>
+                    <td>関連データ存在フラグ件数</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>markDeceased</td>
+                    <td>id: Long, deceasedAt: LocalDateTime</td>
+                    <td>int</td>
+                    <td>UPDATE</td>
+                    <td>永眠日時を設定（未設定時のみ）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> Service（サービス）</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">PetService.java <span class="required">必須</span></div>
+            <div class="fill-hint">ペットサービスのクラス定義（実装準拠）</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 700" role="img" aria-labelledby="s-title s-desc">
+  <title id="s-title">PetService クラス図</title>
+  <desc id="s-desc">petlife プロジェクトの PetService（@Service）の構造図</desc>
+  <defs>
+    <style>
+      .sh { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .sm { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .sn { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+  <rect width="980" height="700" fill="#f8fafc"/>
+  <rect x="40" y="32" width="900" height="636" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe"/>
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="202" x2="940" y2="202" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="612" x2="940" y2="612" stroke="#b6c2cf" stroke-width="2"/>
+  <text x="490" y="66" text-anchor="middle" class="sh">《Service》 PetService</text>
+  <text x="490" y="90" text-anchor="middle" class="sn">@Service</text>
+  <text x="70" y="148" class="sm">- petMapper: PetMapper</text>
+  <text x="70" y="178" class="sm">- petImageStorageService: PetImageStorageService</text>
+  <text x="70" y="236" class="sm">+ list(page, size, currentUser): PageResponse&lt;PetResponse&gt;</text>
+  <text x="70" y="264" class="sm">+ get(id, currentUser): PetResponse</text>
+  <text x="70" y="292" class="sm">+ getEntity(id, currentUser): PetEntity</text>
+  <text x="70" y="320" class="sm">+ listOwnedEntities(currentUser): List&lt;PetEntity&gt;</text>
+  <text x="70" y="348" class="sm">+ listByOwnerUserIdForAdmin(ownerUserId): List&lt;PetResponse&gt;</text>
+  <text x="70" y="376" class="sm">+ canDeletePet(petId, currentUser): boolean</text>
+  <text x="70" y="404" class="sm">+ create(req, imageFile, currentUser): PetResponse</text>
+  <text x="70" y="432" class="sm">+ update(id, req, imageFile, currentUser): PetResponse</text>
+  <text x="70" y="460" class="sm">+ delete(id, currentUser): void</text>
+  <text x="70" y="488" class="sm">+ markDeceased(id, currentUser): void</text>
+  <text x="70" y="516" class="sm">+ toResponse(row): PetResponse</text>
+  <text x="70" y="544" class="sm">+ ensurePetUsable(pet): void</text>
+  <text x="70" y="572" class="sm">- resolvePet(id, currentUser): PetEntity</text>
+  <text x="70" y="596" class="sm">- validateDogOnly(species): void</text>
+  <text x="70" y="640" class="sn">依存: PetService ─▶ PetMapper / PetImageStorageService（コンストラクタ注入）</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>スタッフ権限分岐、永眠ペット操作制御、犬種限定バリデーションを Service 層で実施する。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> Controller（コントローラー）</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">PetController.java <span class="required">必須</span></div>
+            <div class="fill-hint">ペットコントローラーのクラス定義（実装準拠）</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 680" role="img" aria-labelledby="c-title c-desc">
+  <title id="c-title">PetController クラス図</title>
+  <desc id="c-desc">petlife プロジェクトの PetController（@Controller）の構造図</desc>
+  <defs>
+    <style>
+      .ch { font: 700 20px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .ct { font: 600 18px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .cn { font: 500 18px 'Segoe UI', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+  <rect width="980" height="680" fill="#f8fafc"/>
+  <rect x="40" y="32" width="900" height="616" rx="12" ry="12" fill="#ffffff" stroke="#b6c2cf" stroke-width="2"/>
+  <rect x="40" y="32" width="900" height="74" rx="12" ry="12" fill="#dbeafe"/>
+  <line x1="40" y1="116" x2="940" y2="116" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="252" x2="940" y2="252" stroke="#b6c2cf" stroke-width="2"/>
+  <line x1="40" y1="606" x2="940" y2="606" stroke="#b6c2cf" stroke-width="2"/>
+  <text x="490" y="66" text-anchor="middle" class="ch">《Controller》 PetController</text>
+  <text x="490" y="90" text-anchor="middle" class="cn">@RequestMapping("/app/pets")</text>
+  <text x="70" y="148" class="ct">- petService: PetService</text>
+  <text x="70" y="176" class="ct">- petCareRecordService: PetCareRecordService</text>
+  <text x="70" y="204" class="ct">- symptomCheckService: SymptomCheckService</text>
+  <text x="70" y="228" class="ct">- planAccessService: PlanAccessService, userService: UserService</text>
+  <text x="70" y="286" class="ct">+ list(page, size, model, currentUser): String</text>
+  <text x="70" y="314" class="ct">+ newForm(model): String</text>
+  <text x="70" y="342" class="ct">+ create(form, result, imageFile, model, currentUser, ra): String</text>
+  <text x="70" y="370" class="ct">+ detail(id, model, currentUser): String</text>
+  <text x="70" y="398" class="ct">+ symptomCheck(id, form, result, model, currentUser, ra): String</text>
+  <text x="70" y="426" class="ct">+ addCareRecord(id, form, currentUser, ra): String</text>
+  <text x="70" y="454" class="ct">+ editForm(id, model, currentUser): String</text>
+  <text x="70" y="482" class="ct">+ update(id, form, result, imageFile, model, currentUser, ra): String</text>
+  <text x="70" y="510" class="ct">+ delete(id, currentUser, ra): String</text>
+  <text x="70" y="538" class="ct">+ markDeceased(id, currentUser, ra): String</text>
+  <text x="70" y="566" class="ct">- validateBirthDate(form, result): void</text>
+  <text x="70" y="634" class="cn">注釈: 画面返却は Thymeleaf（pets/list, pets/form, pets/detail）</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.6; margin-top:8px; margin-bottom:0;">実装準拠ポイント:<br>入力検証エラー時は同画面を返却し、正常時は `/app/pets` 配下へリダイレクトする。</p>
+            </div>
+            <div class="fill-content" style="margin-top: 16px;">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>メソッド</th>
+                    <th>HTTP</th>
+                    <th>URL</th>
+                    <th>説明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="template-row">
+                    <td>list</td>
+                    <td>GET</td>
+                    <td>/app/pets</td>
+                    <td>一覧表示</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>detail</td>
+                    <td>GET</td>
+                    <td>/app/pets/{id}</td>
+                    <td>詳細表示</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>createForm</td>
+                    <td>GET</td>
+                    <td>/app/pets/new</td>
+                    <td>新規作成フォーム</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>create</td>
+                    <td>POST</td>
+                    <td>/app/pets</td>
+                    <td>新規作成処理</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>editForm</td>
+                    <td>GET</td>
+                    <td>/app/pets/{id}/edit</td>
+                    <td>編集フォーム</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>update</td>
+                    <td>PATCH</td>
+                    <td>/app/pets/{id}</td>
+                    <td>更新処理</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>delete</td>
+                    <td>DELETE</td>
+                    <td>/app/pets/{id}</td>
+                    <td>削除処理</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>symptomCheck</td>
+                    <td>POST</td>
+                    <td>/app/pets/{id}/symptom-check</td>
+                    <td>AI症状チェック実行</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>addCareRecord</td>
+                    <td>POST</td>
+                    <td>/app/pets/{id}/care-records</td>
+                    <td>ケア記録追加</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>markDeceased</td>
+                    <td>POST</td>
+                    <td>/app/pets/{id}/decease</td>
+                    <td>永眠登録</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec6">
+          <h2 class="section-title"><span class="section-icon">6</span> クラス間の依存関係</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">依存関係図 <span class="required">必須</span></div>
+            <div class="fill-hint">Controller → Service → Repository → Entity の依存関係</div>
+            <div class="fill-content">
+              <div class="flow-image-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 970" role="img" aria-labelledby="dep6-title dep6-desc">
+  <title id="dep6-title">クラス間の依存関係図</title>
+  <desc id="dep6-desc">petlife プロジェクト全 Controller → Service → Mapper → Entity / DB テーブルの依存関係</desc>
+  <defs>
+    <marker id="dep6-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="1360" height="970" fill="#f8fafc"/>
+  <text x="680" y="26" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#0f172a">Controller → Service → Mapper (MyBatis) → Entity (DB) 依存関係図</text>
+
+  <!-- ===== CONTROLLER LAYER ===== -->
+  <rect x="10" y="40" width="1340" height="150" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.5"/>
+  <rect x="10" y="40" width="1340" height="26" rx="8" fill="#1E40AF"/>
+  <rect x="10" y="54" width="1340" height="12" fill="#1E40AF"/>
+  <text x="680" y="58" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">Controller（24 クラス）</text>
+  <!-- row 1 y=72 -->
+  <rect x="16" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="122" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">PetController</text>
+  <rect x="239" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="345" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">HealthRecordController</text>
+  <rect x="462" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="568" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">AppointmentController</text>
+  <rect x="685" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="791" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">AppointmentPageController</text>
+  <rect x="908" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1014" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">AppointmentSlotController</text>
+  <rect x="1131" y="72" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1237" y="87" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">CalendarController</text>
+  <!-- row 2 y=100 -->
+  <rect x="16" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="122" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">DashboardController</text>
+  <rect x="239" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="345" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">NotificationController</text>
+  <rect x="462" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="568" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">SubscriptionController</text>
+  <rect x="685" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="791" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">ConsultationController</text>
+  <rect x="908" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1014" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">ConsultChatController</text>
+  <rect x="1131" y="100" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1237" y="115" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">ClinicGuideController</text>
+  <!-- row 3 y=128 -->
+  <rect x="16" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="122" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">UserController</text>
+  <rect x="239" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="345" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">PremiumSupportController</text>
+  <rect x="462" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="568" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">AnnouncementController</text>
+  <rect x="685" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="791" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">ReportController</text>
+  <rect x="908" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1014" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">PasswordResetController</text>
+  <rect x="1131" y="128" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1237" y="143" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">ForgotPasswordController</text>
+  <!-- row 4 y=156 -->
+  <rect x="16" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="122" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">SlackEventController</text>
+  <rect x="239" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="345" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">LineEventController</text>
+  <rect x="462" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="568" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">DatabaseBackupController</text>
+  <rect x="685" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="791" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">AuthController</text>
+  <rect x="908" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1014" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">RootController</text>
+  <rect x="1131" y="156" width="213" height="22" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="1237" y="171" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#1E3A8A">GlobalControllerAdvice</text>
+
+  <!-- Arrow 1 -->
+  <line x1="680" y1="194" x2="680" y2="214" stroke="#475569" stroke-width="2" marker-end="url(#dep6-arr)"/>
+  <text x="694" y="207" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#475569">コンストラクタ DI（@Autowired）</text>
+
+  <!-- ===== SERVICE LAYER ===== -->
+  <rect x="10" y="218" width="1340" height="150" rx="8" fill="#F0FDFA" stroke="#5EEAD4" stroke-width="1.5"/>
+  <rect x="10" y="218" width="1340" height="26" rx="8" fill="#0F766E"/>
+  <rect x="10" y="232" width="1340" height="12" fill="#0F766E"/>
+  <text x="680" y="236" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">Service（21 クラス）</text>
+  <!-- row 1 y=250 -->
+  <rect x="16" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="122" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">PetService</text>
+  <rect x="239" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="345" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">HealthRecordService</text>
+  <rect x="462" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="568" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">AppointmentService</text>
+  <rect x="685" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="791" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">CalendarService</text>
+  <rect x="908" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1014" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">PetCareRecordService</text>
+  <rect x="1131" y="250" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1237" y="265" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">UserService</text>
+  <!-- row 2 y=278 -->
+  <rect x="16" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="122" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">ConsultChatService</text>
+  <rect x="239" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="345" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">AnnouncementService</text>
+  <rect x="462" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="568" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">PasswordResetService</text>
+  <rect x="685" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="791" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">AuthService</text>
+  <rect x="908" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1014" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">SymptomCheckService</text>
+  <rect x="1131" y="278" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1237" y="293" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">PlanAccessService</text>
+  <!-- row 3 y=306 -->
+  <rect x="16" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="122" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">ZoomLinkService</text>
+  <rect x="239" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="345" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">DatabaseBackupService</text>
+  <rect x="462" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="568" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">SlackBotService</text>
+  <rect x="685" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="791" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">LineBotService</text>
+  <rect x="908" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1014" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">SlackRequestVerifier</text>
+  <rect x="1131" y="306" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="1237" y="321" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">LineRequestVerifier</text>
+  <!-- row 4 y=334 (3 items) -->
+  <rect x="16" y="334" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="122" y="349" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">PetImageStorageService</text>
+  <rect x="239" y="334" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="345" y="349" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">HealthRecordImageStorageService</text>
+  <rect x="462" y="334" width="213" height="22" rx="4" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="568" y="349" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#134E4A">ImageOrientationUtil</text>
+
+  <!-- Arrow 2 -->
+  <line x1="680" y1="372" x2="680" y2="390" stroke="#475569" stroke-width="2" marker-end="url(#dep6-arr)"/>
+  <text x="694" y="384" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#475569">DB アクセス（Mapper 呼び出し）</text>
+
+  <!-- ===== MAPPER LAYER ===== -->
+  <rect x="10" y="394" width="1340" height="150" rx="8" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1.5"/>
+  <rect x="10" y="394" width="1340" height="26" rx="8" fill="#6D28D9"/>
+  <rect x="10" y="408" width="1340" height="12" fill="#6D28D9"/>
+  <text x="680" y="412" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">Mapper — MyBatis @Mapper interface（23 インターフェース）</text>
+  <!-- row 1 y=426 -->
+  <rect x="16" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="122" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">PetMapper</text>
+  <rect x="239" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="345" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">HealthRecordMapper</text>
+  <rect x="462" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="568" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">AppointmentMapper</text>
+  <rect x="685" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="791" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">AppointmentSlotMapper</text>
+  <rect x="908" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1014" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">CalendarMarkMapper</text>
+  <rect x="1131" y="426" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1237" y="441" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">PetCareRecordMapper</text>
+  <!-- row 2 y=454 -->
+  <rect x="16" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="122" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">UserMapper</text>
+  <rect x="239" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="345" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">RoleMapper</text>
+  <rect x="462" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="568" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">AuthMapper</text>
+  <rect x="685" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="791" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">SubscriptionMapper</text>
+  <rect x="908" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1014" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">NotificationMapper</text>
+  <rect x="1131" y="454" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1237" y="469" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">DismissedReminderMapper</text>
+  <!-- row 3 y=482 -->
+  <rect x="16" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="122" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">MedicalHistoryMapper</text>
+  <rect x="239" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="345" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">ConsultChatMapper</text>
+  <rect x="462" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="568" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">AnnouncementMapper</text>
+  <rect x="685" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="791" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">SymptomCheckMapper</text>
+  <rect x="908" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1014" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">PlanFeatureMapper</text>
+  <rect x="1131" y="482" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="1237" y="497" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#4C1D95">PasswordResetTokenMapper</text>
+  <!-- row 4 y=510 (5 items — schema-only) -->
+  <rect x="16" y="510" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="122" y="525" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#6D28D9">InvoiceMapper *</text>
+  <rect x="239" y="510" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="345" y="525" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#6D28D9">PaymentMapper *</text>
+  <rect x="462" y="510" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="568" y="525" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#6D28D9">EmailMessageMapper *</text>
+  <rect x="685" y="510" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="791" y="525" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#6D28D9">EmailTemplateMapper *</text>
+  <rect x="908" y="510" width="213" height="22" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="1014" y="525" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#6D28D9">MedicalAttachmentMapper *</text>
+
+  <!-- Arrow 3 -->
+  <line x1="680" y1="548" x2="680" y2="566" stroke="#475569" stroke-width="2" marker-end="url(#dep6-arr)"/>
+  <text x="694" y="561" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#475569">行マッピング（MyBatis → Entity record）</text>
+
+  <!-- ===== ENTITY / DB LAYER ===== -->
+  <rect x="10" y="570" width="1340" height="150" rx="8" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.5"/>
+  <rect x="10" y="570" width="1340" height="26" rx="8" fill="#065F46"/>
+  <rect x="10" y="584" width="1340" height="12" fill="#065F46"/>
+  <text x="680" y="588" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">Entity / DB Table — PostgreSQL（23 テーブル）</text>
+  <!-- row 1 y=602 -->
+  <rect x="16" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="122" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">users</text>
+  <rect x="239" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="345" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">roles</text>
+  <rect x="462" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="568" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">pets</text>
+  <rect x="685" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="791" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">health_records</text>
+  <rect x="908" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1014" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">appointments</text>
+  <rect x="1131" y="602" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1237" y="617" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">appointment_slots</text>
+  <!-- row 2 y=630 -->
+  <rect x="16" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="122" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">pet_care_records</text>
+  <rect x="239" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="345" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">pet_calendar_marks</text>
+  <rect x="462" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="568" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">subscriptions</text>
+  <rect x="685" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="791" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">plans / plan_features</text>
+  <rect x="908" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1014" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">notifications</text>
+  <rect x="1131" y="630" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1237" y="645" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">notification_recipients</text>
+  <!-- row 3 y=658 -->
+  <rect x="16" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="122" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">dismissed_reminders</text>
+  <rect x="239" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="345" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">medical_histories</text>
+  <rect x="462" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="568" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">medical_attachments</text>
+  <rect x="685" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="791" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">consult_chat_messages</text>
+  <rect x="908" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1014" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">symptom_checks</text>
+  <rect x="1131" y="658" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="1237" y="673" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#064E3B">announcements</text>
+  <!-- row 4 y=686 (5 items — schema-only) -->
+  <rect x="16" y="686" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="4 2"/><text x="122" y="701" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#065F46">invoices *</text>
+  <rect x="239" y="686" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="4 2"/><text x="345" y="701" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#065F46">payments *</text>
+  <rect x="462" y="686" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="4 2"/><text x="568" y="701" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#065F46">email_templates *</text>
+  <rect x="685" y="686" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="4 2"/><text x="791" y="701" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#065F46">email_messages *</text>
+  <rect x="908" y="686" width="213" height="22" rx="4" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="4 2"/><text x="1014" y="701" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#065F46">password_reset_tokens *</text>
+
+  <!-- ===== CROSS-CUTTING ===== -->
+  <rect x="10" y="736" width="1340" height="78" rx="8" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.5"/>
+  <rect x="10" y="736" width="1340" height="26" rx="8" fill="#B45309"/>
+  <rect x="10" y="750" width="1340" height="12" fill="#B45309"/>
+  <text x="680" y="754" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">横断的関心事（Cross-cutting Concerns）</text>
+  <rect x="16" y="768" width="213" height="22" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="122" y="783" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#78350F">SecurityConfig</text>
+  <rect x="239" y="768" width="213" height="22" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="345" y="783" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#78350F">UserDetailsServiceImpl</text>
+  <rect x="462" y="768" width="213" height="22" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="568" y="783" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#78350F">LoginUser（Principal）</text>
+  <rect x="685" y="768" width="213" height="22" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="791" y="783" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#78350F">BCryptPasswordEncoder</text>
+  <rect x="908" y="768" width="213" height="22" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="1014" y="783" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#78350F">PlanAccessService（認可ゲート）</text>
+
+  <!-- ===== EXTERNAL APIs ===== -->
+  <rect x="10" y="824" width="1340" height="78" rx="8" fill="#FFF1F2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <rect x="10" y="824" width="1340" height="26" rx="8" fill="#B91C1C"/>
+  <rect x="10" y="838" width="1340" height="12" fill="#B91C1C"/>
+  <text x="680" y="842" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">外部 API 連携（External Integrations）</text>
+  <rect x="16" y="856" width="213" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="122" y="871" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#7F1D1D">OpenAI API（症状チェック）</text>
+  <rect x="239" y="856" width="213" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="345" y="871" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#7F1D1D">Slack API（Bot / Events）</text>
+  <rect x="462" y="856" width="213" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="568" y="871" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#7F1D1D">LINE Messaging API</text>
+  <rect x="685" y="856" width="213" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="791" y="871" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#7F1D1D">Zoom API（OAuth + Meeting）</text>
+  <rect x="908" y="856" width="213" height="22" rx="4" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="1014" y="871" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#7F1D1D">pg_dump / psql（DB Backup）</text>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="10" y="912" width="1340" height="48" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="24" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" font-weight="700" fill="#334155">凡例:</text>
+  <rect x="62" y="920" width="12" height="12" rx="2" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/><text x="80" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">Controller</text>
+  <rect x="160" y="920" width="12" height="12" rx="2" fill="#CCFBF1" stroke="#5EEAD4" stroke-width="1"/><text x="178" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">Service</text>
+  <rect x="240" y="920" width="12" height="12" rx="2" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/><text x="258" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">Mapper（MyBatis）</text>
+  <rect x="390" y="920" width="12" height="12" rx="2" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/><text x="408" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">Entity / DB Table</text>
+  <rect x="530" y="920" width="12" height="12" rx="2" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/><text x="548" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">横断的関心事</text>
+  <rect x="640" y="920" width="12" height="12" rx="2" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/><text x="658" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">外部 API</text>
+  <rect x="740" y="920" width="22" height="12" rx="2" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="4 2"/><text x="768" y="930" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">* schema 定義済 / controller 未接続</text>
+  <line x1="62" y1="948" x2="92" y2="948" stroke="#475569" stroke-width="2" marker-end="url(#dep6-arr)"/>
+  <text x="98" y="952" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#334155">依存 / 呼び出し方向</text>
+</svg>
+              </div>
+              <p class="table-note" style="font-size:12px; line-height:1.8; margin-top:8px; margin-bottom:0;">
+                実装準拠ポイント：<br>
+                ① Controller は Spring DI（コンストラクタインジェクション）で Service を注入。<br>
+                ② Service は MyBatis @Mapper を通じて PostgreSQL にアクセス（XML なし、@Select/@Insert/@Update/@Delete アノテーション）。<br>
+                ③ 全テーブルは soft-delete（<code>deleted_at IS NULL</code> フィルタ）を適用。<br>
+                ④ 認可制御は Service 層の <code>hasStaffAccess()</code> / <code>PlanAccessService</code> で実施（plan_features テーブル参照）。<br>
+                ⑤ 破線枠（*）は schema 定義済み・Mapper 実装済みだが Controller/Service 未接続（schema-only 状態）。
+              </p>
+            </div>
+          </div>
+
+
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

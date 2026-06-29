@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サイトマップ - プロジェクトアーカイブ</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .main-content {
+      background:
+        radial-gradient(circle at 2% 0%, rgba(59, 130, 246, 0.08), transparent 25%),
+        radial-gradient(circle at 100% 10%, rgba(20, 184, 166, 0.08), transparent 22%);
+    }
+
+    .doc-header {
+      background: linear-gradient(120deg, #0f172a 0%, #1d4ed8 58%, #0ea5a4 100%);
+      color: #f8fafc;
+      border-radius: 16px;
+      padding: 20px 22px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+      margin-bottom: 18px;
+    }
+
+    .doc-header .doc-category,
+    .doc-header .doc-title,
+    .doc-header .doc-meta,
+    .doc-header .doc-meta .material-symbols-outlined {
+      color: #dbeafe;
+    }
+
+    .doc-header .doc-title {
+      color: #f8fafc;
+    }
+
+    .external-link-box {
+      border: 1px solid #cfe3ff;
+      background: linear-gradient(180deg, #f8fbff 0%, #f2fcfb 100%);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+    }
+
+    .external-link-box-title {
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    .external-link-input input {
+      border: 1px solid #b7cff7;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .section {
+      border: 1px solid #d7e5f6;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      border-left: 6px solid #14b8a6;
+      padding-left: 10px;
+      color: #0f172a;
+    }
+
+    .fill-block {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fcfdff;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .fill-label {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .fill-hint {
+      color: #64748b;
+    }
+
+    .fill-content pre {
+      background: #f8fafc;
+      border: 1px solid #dbe3ef;
+      border-radius: 10px;
+      padding: 10px;
+      overflow: auto;
+    }
+
+    .doc-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #d9e4f5;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.07);
+    }
+
+    .doc-table thead th {
+      background: linear-gradient(135deg, #eaf2ff 0%, #e8faf6 100%);
+      color: #0f172a;
+      font-weight: 700;
+      border-bottom: 1px solid #d6e2f3;
+    }
+
+    .doc-table tbody tr:nth-child(even) td {
+      background: #f8fbff;
+    }
+
+    .doc-table tbody tr:hover td {
+      background: #eef6ff;
+    }
+
+    .toc {
+      border: 1px solid #d7e5f6;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .toc-title {
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 04</div>
+        <h1 class="doc-title">サイトマップ</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日：2026-05-13　／　更新日：2026-06-01</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者：Hiromi SHIMIZU</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 2.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            詳細ドキュメント（Google スプレッドシート）
+          </div>
+          <div class="external-link-box-desc">
+            このページは概要のみを記載しています。詳細なサイトマップは以下のリンクからご確認ください。
+          </div>
+          <div class="external-link-input">
+            <input type="text" value="sitemap_document.xlsx" id="external-link-04" style="color:#0f172a; opacity:1;">
+            <a href="#" class="link-btn"
+              onclick="window.open(document.getElementById('external-link-04').value || 'sitemap_document.xlsx', '_blank'); return false;">
+              <span class="material-symbols-outlined">open_in_new</span>
+              開く
+            </a>
+          </div>
+          <div class="external-link-input" style="margin-top:8px;">
+            <input type="text" value="sitemap-to-url-design.html" id="external-link-04-html" readonly
+              style="color:#0f172a; opacity:1;">
+            <a href="./sitemap-to-url-design.html" class="link-btn" target="_blank" rel="noopener">
+              <span class="material-symbols-outlined">open_in_new</span>
+              HTML版を開く
+            </a>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">サイト構造図</a></li>
+            <li><a href="#sec2">ページ一覧</a></li>
+            <li><a href="#sec3">ユーザーフロー</a></li>
+            <li><a href="#sec4">URL設計</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> サイト構造図</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">Webサイト構造図 <span class="required">必須</span></div>
+            <div class="fill-hint">トップページから下層ページまでの階層構造をツリー形式で記載</div>
+            <div class="fill-content">
+              <pre>トップページ
+├── サービス紹介（f_service）
+│   ├── 健康管理機能
+│   ├── AI症状チェック
+│   └── オンライン診療・訪問ケア
+├── ご利用の流れ（f_flow）
+│   ├── 登録手順
+│   ├── 初期設定
+│   └── 利用開始フロー
+├── 運営情報（f_info）
+│   ├── コンセプト
+│   ├── ミッション
+│   └── 利用規約・プライバシー
+├── お問い合わせ（f_contact）
+│   ├── 問い合わせフォーム
+│   └── 返信目安
+└── Webアプリ紹介（webapp）
+    ├── 機能概要
+    └── 主要画面導線</pre>
+            </div>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">Webアプリケーション構造図 <span class="required">必須</span></div>
+            <div class="fill-hint">Spring Bootアプリケーションの画面構造をツリー形式で記載</div>
+            <div class="fill-content">
+              <pre>ログイン前（公開）
+├── ログイン（/app/login）
+│   ├── メールアドレス/パスワード入力
+│   └── ログイン処理（POST /app/login → Spring Security）
+├── パスワード再設定
+│   ├── メール送信（/app/forgot-password）
+│   ├── 送信完了（/app/forgot-password/sent）
+│   └── 新パスワード設定（/app/reset-password?token=...）
+└── ログアウト（POST /app/logout）
+
+全ユーザー（ログイン後・全ロール共通）
+├── ダッシュボード（/app/dashboard）
+├── 通知（/app/notifications）
+│   └── リマインダー非表示（POST /app/notifications/reminders/dismiss）
+├── パスワード変更（/app/password-resets）  ※現パスワード必須
+└── アクセス拒否ページ（/app/access-denied）
+
+一般ユーザー（USERロール）
+├── ペット管理（/app/pets）
+│   ├── ペット詳細（/app/pets/{id}）
+│   ├── 健康記録（/app/pets/{id}/health-records）
+│   │   └── 診療情報印刷（/app/pets/{id}/health-records/print）
+│   ├── AI症状チェック（POST /app/pets/{id}/symptom-check）
+│   │   ※Standard以上：OpenAI API / Light：キーワードフォールバック（アクセス制限なし）
+│   └── ケア記録登録（POST /app/pets/{id}/care-records）
+├── カレンダー（/app/calendar）
+├── 診療予約（/app/appointments）          ※USERはStandard以上
+├── チャットボット相談（/app/consult/chatbot）  ※全プラン利用可
+├── 診療案内（/app/clinic-guide）
+├── サブスクリプション（/app/subscriptions）
+│   └── 更新申請（POST /app/subscriptions/{id}/renew-request）
+├── 請求書・領収書（/app/invoices/{id}）
+└── Zoom診療（/app/premium/online-care）   ※Premiumのみ
+
+獣医師・スタッフ（SUPER/VET/STAFFロール）
+├── カレンダー（/app/calendar）
+├── 診療記録（/app/consultations）         ※ADMIN はアクセス不可
+└── 診療予約管理（/app/appointments）
+    ├── 承認（POST /app/appointments/{id}/approve）
+    └── 却下（POST /app/appointments/{id}/reject）
+
+全スタッフ系（VET/STAFF/ADMIN/SUPERロール）
+└── ユーザー管理（/app/admin/users）
+    ├── 閲覧のみ（VET）
+    ├── USER のみ登録・編集（STAFF）
+    └── 全操作可（ADMIN/SUPER）
+
+ADMIN・スタッフ（ADMIN/STAFF/SUPERロール）
+├── お知らせ管理（/app/admin/announcements）
+└── 予約枠管理（/app/admin/appointment-slots）
+
+ADMIN・SUPER 専用
+├── 請求・決済管理（/app/admin/billing）
+│   └── 請求書・領収書ビュー（/app/invoices/{id}）
+├── LINE一斉配信（/app/admin/line/push）
+└── サービス統計（/app/reports）
+
+ADMIN/SUPER 共通（/app/admin/** ルール適用）
+└── DBバックアップ管理（/app/admin/database）  ※Controller 内追加制限なし → ADMIN も可
+
+外部 API（認証不要）
+├── Slack Webhook（POST /api/slack/events）
+└── LINE Webhook（POST /api/line/events）</pre>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> ページ一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">Webサイト ページ一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>ページ名</th>
+                  <th>ページの目的</th>
+                  <th>主要コンテンツ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>トップページ</td>
+                  <td>サービス全体の価値を短時間で伝え、主要導線へ誘導する</td>
+                  <td>キャッチコピー、課題提起、特徴、CTA（無料相談/申込み）、運営者情報（About）</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>サービス紹介（f_service）</td>
+                  <td>提供機能と利用メリットを具体的に説明する</td>
+                  <td>健康管理機能、AI症状チェック、オンライン診療、訪問ケアの説明</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>ご利用の流れ（f_flow）</td>
+                  <td>利用開始までの手順を可視化する</td>
+                  <td>登録手順、初期設定、利用開始フロー、サポート案内</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>運営情報（f_info）</td>
+                  <td>運営体制と方針を明示し、安心感を与える</td>
+                  <td>運営情報、コンセプト、ミッション、利用規約・プライバシー案内</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>お問い合わせ（f_contact）</td>
+                  <td>導入相談・機能質問を受け付ける</td>
+                  <td>問い合わせフォーム、連絡先、返信目安</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Webアプリ紹介（webapp）</td>
+                  <td>Webアプリの機能と主要画面を案内する</td>
+                  <td>機能概要、主要画面導線、ログイン導線</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>LINE友だち追加（line-qr）</td>
+                  <td>LINE Bot への友だち追加QRコードを提供する</td>
+                  <td>LINEチャンネルQRコード表示、友だち追加ボタン</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">Webアプリ 画面一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>画面名</th>
+                  <th>画面の目的</th>
+                  <th>主要機能</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>ログイン画面</td>
+                  <td>利用者認証を行い安全にシステムへアクセスさせる</td>
+                  <td>メール/パスワード入力、ログイン処理（全ユーザー）</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>パスワード再設定画面</td>
+                  <td>メールトークン経由でパスワードを再設定する</td>
+                  <td>メール入力→SendGrid送信→トークン検証→新PW設定（公開、ForgotPasswordController）</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>ダッシュボード画面</td>
+                  <td>全体状況をひと目で把握し次の操作へ誘導する</td>
+                  <td>KPI表示、予約予定、通知一覧、未対応タスク表示（全ユーザー）</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>通知画面</td>
+                  <td>システム通知とスケジュールリマインダーを確認する</td>
+                  <td>通知一覧、既読処理、ワクチン/予約/更新リマインダー表示・非表示（全ユーザー）</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>パスワード変更画面</td>
+                  <td>現在のパスワードを確認の上、新しいパスワードへ変更する</td>
+                  <td>現パスワード入力、新パスワード確認入力、BCrypt再ハッシュ保存（全ユーザー）</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>ペット管理画面</td>
+                  <td>ペット情報を一元管理する</td>
+                  <td>一覧表示、詳細表示、登録・編集・削除・永眠マーク、AI症状チェック、ケア記録（USER）</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>健康記録管理画面</td>
+                  <td>日々の健康データを管理・確認する</td>
+                  <td>体重/食事/運動記録の登録、履歴表示、編集・削除、印刷ビュー（USER）</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>カレンダー画面</td>
+                  <td>ペットの予定や出来事をカレンダー形式で管理する</td>
+                  <td>月別カレンダー表示、マーク登録・削除（USER/VET/STAFF/SUPER）</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>チャットボット相談画面</td>
+                  <td>AIチャットボットを通じてマルチターンで症状相談を行う</td>
+                  <td>メッセージ送受信、履歴表示、Groq AI/フォールバック（<strong>全プラン利用可</strong>）</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>診療案内画面</td>
+                  <td>提携クリニックの案内情報を表示する</td>
+                  <td>クリニック情報、アクセス・診療時間案内（全ユーザー）</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>診療予約画面</td>
+                  <td>診療・相談予約を管理する</td>
+                  <td>予約一覧、申請（USER・Standard以上）、承認・却下（VET/STAFF/SUPER）、キャンセル（オーナーのみ）</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td>サブスクリプション管理画面</td>
+                  <td>契約中のプラン情報を確認する</td>
+                  <td>現在のプラン表示、契約期間・状態確認、更新申請（USER）、ADMIN は全ユーザー分表示</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td>請求書・領収書ビュー</td>
+                  <td>請求書・領収書をブラウザで表示・印刷する</td>
+                  <td>請求金額・支払状況表示、ブラウザ印刷（UserInvoiceController）</td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td>Zoom診療画面</td>
+                  <td>Zoomによるオンライン診療リンクを取得する</td>
+                  <td>Zoomリンク生成・表示（USER・Premiumプランのみ）</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td>診療記録管理画面</td>
+                  <td>診療/相談内容を記録し継続対応に活用する</td>
+                  <td>記録一覧、詳細表示、新規記録・編集・削除（SUPER/VET/STAFF のみ。ADMIN はアクセス不可）</td>
+                </tr>
+                <tr>
+                  <td>16</td>
+                  <td>ユーザー管理画面</td>
+                  <td>利用者アカウントを管理する</td>
+                  <td>一覧・詳細閲覧（VET）、登録・編集（STAFF は USER のみ）、削除（ADMIN/SUPER、紐づくデータがない場合のみ）</td>
+                </tr>
+                <tr>
+                  <td>17</td>
+                  <td>お知らせ管理画面</td>
+                  <td>全ユーザー向けお知らせを作成・管理する</td>
+                  <td>一覧表示、新規作成、公開切替、削除（ADMIN/STAFF/SUPER）</td>
+                </tr>
+                <tr>
+                  <td>18</td>
+                  <td>予約枠管理画面</td>
+                  <td>診療予約受付用の枠を設定・管理する</td>
+                  <td>予約枠一覧、枠の追加（追加枠）・削除（ブロック枠）（ADMIN/STAFF/SUPER）</td>
+                </tr>
+                <tr>
+                  <td>19</td>
+                  <td>請求・決済管理画面</td>
+                  <td>請求書の発行・入金管理・通知再送を行う</td>
+                  <td>請求一覧、詳細、入金登録（PARTIAL/PAID）、通知再送（ADMIN/SUPER のみ、BillingController）</td>
+                </tr>
+                <tr>
+                  <td>20</td>
+                  <td>LINE一斉配信画面</td>
+                  <td>LINE Bot フォロワー全員にメッセージを一斉配信する</td>
+                  <td>メッセージ入力、Broadcast送信（ADMIN/SUPER のみ、LinePushController）</td>
+                </tr>
+                <tr>
+                  <td>21</td>
+                  <td>サービス統計画面</td>
+                  <td>サービス全体のKPIを集計・表示する</td>
+                  <td>ユーザー数・ペット数・予約数・サブスク数の集計表示（ADMIN/SUPER のみ）</td>
+                </tr>
+                <tr>
+                  <td>22</td>
+                  <td>DBバックアップ管理画面</td>
+                  <td>DBのバックアップ・リストアを管理する</td>
+                  <td>バックアップ実行、リストア（SUPER のみ、DatabaseBackupController）</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> ユーザーフロー</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">メインシナリオ <span class="required">必須</span></div>
+            <div class="fill-hint">ペルソナがサイトに訪問してから目的を達成するまでの動線（メインの行動パターン）</div>
+            <div class="fill-content">
+              <p>ペルソナ：佐藤 美咲、32歳、ITベンチャー企業のマーケティング担当</p>
+              <p>目的：忙しい日常でも、愛犬の健康状態を一元管理し、必要時にオンライン相談・診療までスムーズに利用する</p>
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>ステップ</th>
+                    <th>行動</th>
+                    <th>表示ページ</th>
+                    <th>次のアクション</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>SNS/検索で「ペット 健康管理 アプリ」を調べる</td>
+                    <td>記事LP・検索結果</td>
+                    <td>公式サイトを開く</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>サービス概要と特徴を確認する</td>
+                    <td>トップページ</td>
+                    <td>サービス詳細へ進む</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>機能（健康記録・AI症状チェック・オンライン診療）を確認する</td>
+                    <td>サービス紹介ページ</td>
+                    <td>利用の流れを確認する</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>登録〜利用開始までの手順を確認する</td>
+                    <td>ご利用の流れページ</td>
+                    <td>運営情報を確認する</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>運営体制・利用方針を確認する</td>
+                    <td>運営情報ページ</td>
+                    <td>問い合わせ/相談へ進む</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>不明点を問い合わせる</td>
+                    <td>お問い合わせページ</td>
+                    <td>Webアプリ詳細を確認する</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>新規登録を行う（アカウント作成）</td>
+                    <td>申込み・登録ページ</td>
+                    <td>初期設定を開始する</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>ペット情報を登録し、体重/食事/運動の記録を開始する</td>
+                    <td>初期設定・ペット情報登録ページ</td>
+                    <td>日常利用を継続する</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>体調が気になる日にAI症状チェックを実施する</td>
+                    <td>症状チェックページ</td>
+                    <td>必要ならオンライン相談を予約する</td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>オンライン相談/診療を受け、履歴を確認する</td>
+                    <td>予約ページ・診療履歴ページ</td>
+                    <td>継続利用へ移行する</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">サブシナリオ <span class="optional">任意</span></div>
+            <div class="fill-hint">その他の行動パターン（1〜2パターン）</div>
+            <div class="fill-content">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>ステップ</th>
+                    <th>行動</th>
+                    <th>表示ページ</th>
+                    <th>次のアクション</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>夜間に愛犬の軽い不調（食欲低下）に気づく</td>
+                    <td>-</td>
+                    <td>すぐに公式サイトへアクセス</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>緊急時対応の可否を確認する</td>
+                    <td>トップページ</td>
+                    <td>医療サポート詳細へ進む</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>AI症状チェックとオンライン相談の流れを確認する</td>
+                    <td>サービス紹介ページ（医療サポート）</td>
+                    <td>利用の流れを確認する</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>利用開始手順と必要情報を確認する</td>
+                    <td>ご利用の流れページ</td>
+                    <td>不安点を問い合わせる</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>夜間相談可否や受診目安を問い合わせる</td>
+                    <td>お問い合わせページ</td>
+                    <td>相談申込みへ進む</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>最短でアカウント登録しペット情報を入力する</td>
+                    <td>申込み・登録ページ</td>
+                    <td>症状チェックを開始する</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>症状を入力して受診推奨度を確認する</td>
+                    <td>AI症状チェックページ</td>
+                    <td>オンライン相談予約へ進む</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>直近枠でオンライン相談を予約する</td>
+                    <td>予約ページ</td>
+                    <td>問診情報を事前送信する</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>オンライン相談で対応方針（自宅経過観察/受診）を確認する</td>
+                    <td>オンライン相談画面</td>
+                    <td>必要時は訪問ケア/病院受診を手配する</td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>相談内容と今後のケアを履歴で確認し、通知設定を有効化する</td>
+                    <td>診療履歴ページ・通知設定ページ</td>
+                    <td>継続的な健康記録運用へ移行する</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> URL設計</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">Webアプリ URL一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>HTTPメソッド</th>
+                  <th>画面/機能</th>
+                  <th>説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 公開（認証不要） -->
+                <tr><td>/app/login</td><td>GET</td><td>ログイン画面</td><td>ログインフォーム表示（公開）</td></tr>
+                <tr><td>/app/login</td><td>POST</td><td>ログイン処理</td><td>Spring Security が認証・セッション作成（公開）</td></tr>
+                <tr><td>/app/logout</td><td>POST</td><td>ログアウト</td><td>Spring Security がセッション破棄（全ユーザー）</td></tr>
+                <tr><td>/app/forgot-password</td><td>GET / POST</td><td>パスワード再設定メール送信</td><td>メールアドレス入力 → SendGrid でトークン付きメール送信（公開）</td></tr>
+                <tr><td>/app/forgot-password/sent</td><td>GET</td><td>送信完了案内</td><td>「メールを送信しました」確認ページ（公開）</td></tr>
+                <tr><td>/app/reset-password</td><td>GET / POST</td><td>新パスワード設定</td><td>トークン検証・新パスワード BCrypt 保存（公開）</td></tr>
+                <tr><td>/app/access-denied</td><td>GET</td><td>アクセス拒否ページ</td><td>権限不足時の 403 ページ（全ユーザー）</td></tr>
+                <!-- 全ユーザー共通 -->
+                <tr><td>/app/dashboard</td><td>GET</td><td>ダッシュボード</td><td>KPI・通知・予定表示（全ユーザー）</td></tr>
+                <tr><td>/app/notifications</td><td>GET</td><td>通知一覧</td><td>通知・リマインダー表示（全ユーザー）</td></tr>
+                <tr><td>/app/notifications/{id}/read</td><td>POST</td><td>通知既読処理</td><td>指定通知を既読にする（全ユーザー）</td></tr>
+                <tr><td>/app/notifications/read-all</td><td>POST</td><td>全既読処理</td><td>全通知を既読にする（全ユーザー）</td></tr>
+                <tr><td>/app/notifications/reminders/dismiss</td><td>POST</td><td>リマインダー非表示</td><td>スケジュールリマインダーを確認済みにする（全ユーザー）</td></tr>
+                <tr><td>/app/password-resets</td><td>GET / POST</td><td>パスワード変更</td><td>現パスワード確認付き変更フォーム・実行（全ユーザー）</td></tr>
+                <!-- ペット・健康記録（SecurityConfigに個別制限なし → 認証済み全ロールが到達可。PetServiceがロール別に返却範囲を切替） -->
+                <tr><td>/app/pets</td><td>GET / POST</td><td>ペット一覧 / 登録</td><td>ペット一覧表示・登録（USER：自ペットのみ / VET・STAFF・ADMIN・SUPER：全ペット）</td></tr>
+                <tr><td>/app/pets/{id}</td><td>GET</td><td>ペット詳細</td><td>ペット詳細・健康記録・症状チェック履歴表示（USER：自ペットのみ / スタッフ系：全ペット）</td></tr>
+                <tr><td>/app/pets/{id}</td><td>PATCH / DELETE</td><td>ペット更新 / 削除</td><td>ペット情報更新・論理削除（主にUSER。スタッフ系は別ルートで管理）</td></tr>
+                <tr><td>/app/pets/{id}/symptom-check</td><td>POST</td><td>AI症状チェック</td><td>症状入力 → AI/フォールバック判定・保存（Standard+：OpenAI / Light：keyword。全ロール到達可）</td></tr>
+                <tr><td>/app/pets/{id}/care-records</td><td>POST</td><td>ケア記録登録</td><td>ワクチン・フィラリア等ケア記録を登録（全ロール到達可）</td></tr>
+                <tr><td>/app/pets/{id}/decease</td><td>POST</td><td>永眠マーク</td><td>ペットの deceased_at を設定し以後の操作を制限（全ロール到達可）</td></tr>
+                <tr><td>/app/pets/{petId}/health-records</td><td>GET / POST</td><td>健康記録一覧 / 登録</td><td>体重/食事/運動記録の表示・登録（全ロール到達可。返却範囲はサービス層で制御）</td></tr>
+                <tr><td>/app/pets/{petId}/health-records/{id}</td><td>PATCH / DELETE</td><td>健康記録更新 / 削除</td><td>記録修正・削除（全ロール到達可）</td></tr>
+                <tr><td>/app/pets/{petId}/health-records/print</td><td>GET</td><td>診療情報印刷</td><td>ペット情報・ワクチン・診療履歴・症状チェック・健康記録をブラウザ印刷（全ロール到達可）</td></tr>
+                <!-- カレンダー -->
+                <tr><td>/app/calendar</td><td>GET</td><td>カレンダー</td><td>月別カレンダー・ペット予定表示（USER/VET/STAFF/SUPER）</td></tr>
+                <tr><td>/app/calendar/marks/add</td><td>POST</td><td>カレンダーマーク追加</td><td>カレンダーへのシール追加（USER/VET/STAFF/SUPER）</td></tr>
+                <tr><td>/app/calendar/marks/{id}/delete</td><td>POST</td><td>カレンダーマーク削除</td><td>シールの削除（USER/VET/STAFF/SUPER）</td></tr>
+                <!-- 診療予約 -->
+                <tr><td>/app/appointments</td><td>GET / POST</td><td>診療予約一覧 / 申請</td><td>予約一覧・申請（USER/VET/STAFF、USER は Standard 以上のみ申請可）</td></tr>
+                <tr><td>/app/appointments/{id}/approve</td><td>POST</td><td>予約承認</td><td>予約申請を承認する（VET/STAFF/SUPER のみ）</td></tr>
+                <tr><td>/app/appointments/{id}/reject</td><td>POST</td><td>予約却下</td><td>予約申請を却下する（VET/STAFF/SUPER のみ）</td></tr>
+                <tr><td>/app/appointments/{id}/cancel</td><td>POST</td><td>予約キャンセル</td><td>申請中予約をキャンセルする（<strong>オーナー本人のみ</strong>。スタッフ不可）</td></tr>
+                <tr><td>/app/appointments/delete-selected</td><td>POST</td><td>予約一括削除</td><td>選択した予約を一括削除（USER/VET/STAFF/SUPER）</td></tr>
+                <!-- チャット・診療案内 -->
+                <tr><td>/app/consult/chatbot</td><td>GET / POST</td><td>チャットボット相談</td><td>Groq AI / フォールバックによるマルチターン対話（<strong>全プラン利用可</strong>）</td></tr>
+                <tr><td>/app/clinic-guide</td><td>GET</td><td>診療案内</td><td>提携クリニック情報表示（全ユーザー）</td></tr>
+                <!-- サブスクリプション・請求書 -->
+                <tr><td>/app/subscriptions</td><td>GET</td><td>サブスクリプション確認</td><td>現在のプラン・契約情報表示（USER / ADMIN は全ユーザー分）</td></tr>
+                <tr><td>/app/subscriptions/{id}/renew-request</td><td>POST</td><td>更新申請</td><td>サブスクリプション更新を申請し請求書を作成する（USER）</td></tr>
+                <tr><td>/app/invoices/{id}</td><td>GET</td><td>請求書・領収書ビュー</td><td>請求書・領収書をブラウザで表示・印刷（UserInvoiceController）</td></tr>
+                <!-- Zoom -->
+                <tr><td>/app/premium/online-care</td><td>GET / POST</td><td>Zoom診療</td><td>Zoom Server-to-Server OAuth でミーティング作成・参加リンク取得（Premiumのみ）</td></tr>
+                <!-- 診療記録 -->
+                <tr><td>/app/consultations</td><td>GET</td><td>診療記録一覧</td><td>診療記録一覧表示（SUPER/VET/STAFF のみ。ADMIN はアクセス不可）</td></tr>
+                <tr><td>/app/consultations/new</td><td>GET</td><td>診療記録新規フォーム</td><td>診療記録登録フォーム表示（SUPER/VET/STAFF）</td></tr>
+                <tr><td>/app/consultations</td><td>POST</td><td>診療記録登録</td><td>診療記録を保存する（SUPER/VET/STAFF）</td></tr>
+                <tr><td>/app/consultations/{id}/edit</td><td>GET</td><td>診療記録編集フォーム</td><td>診療記録編集フォーム表示（SUPER/VET/STAFF）</td></tr>
+                <tr><td>/app/consultations/{id}</td><td>PATCH / DELETE</td><td>診療記録更新 / 削除</td><td>診療記録の修正・論理削除（SUPER/VET/STAFF）</td></tr>
+                <!-- ユーザー管理 -->
+                <tr><td>/app/admin/users</td><td>GET</td><td>ユーザー一覧</td><td>ユーザー一覧閲覧（VET/STAFF/ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/users/new</td><td>GET</td><td>ユーザー登録フォーム</td><td>ユーザー登録フォーム表示（STAFF/ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/users</td><td>POST</td><td>ユーザー登録</td><td>新規ユーザー登録（STAFF/ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/users/{id}/edit</td><td>GET</td><td>ユーザー編集フォーム</td><td>ユーザー編集フォーム表示（STAFF/ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/users/{id}</td><td>PATCH</td><td>ユーザー更新</td><td>ユーザー情報更新（STAFF/ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/users/{id}</td><td>DELETE</td><td>ユーザー削除</td><td>ユーザー論理削除（ADMIN/SUPER のみ）</td></tr>
+                <!-- お知らせ管理 -->
+                <tr><td>/app/admin/announcements</td><td>GET / POST</td><td>お知らせ一覧 / 作成</td><td>お知らせ管理（ADMIN/STAFF/SUPER）</td></tr>
+                <tr><td>/app/admin/announcements/{id}/toggle</td><td>POST</td><td>公開切替</td><td>お知らせの公開・非公開を切り替える（ADMIN/STAFF/SUPER）</td></tr>
+                <tr><td>/app/admin/announcements/{id}/delete</td><td>POST</td><td>お知らせ削除</td><td>お知らせを削除する（ADMIN/STAFF/SUPER）</td></tr>
+                <!-- 予約枠管理 -->
+                <tr><td>/app/admin/appointment-slots</td><td>GET / POST</td><td>予約枠一覧 / 追加</td><td>診療予約枠の管理（ADMIN/STAFF/SUPER）</td></tr>
+                <tr><td>/app/admin/appointment-slots/{id}/delete</td><td>POST</td><td>予約枠削除</td><td>未予約の予約枠を削除（ADMIN/STAFF/SUPER）</td></tr>
+                <!-- 請求・決済管理 -->
+                <tr><td>/app/admin/billing</td><td>GET</td><td>請求一覧</td><td>UNPAID/PARTIAL/PAID 各ステータスの請求一覧（ADMIN/SUPER のみ）</td></tr>
+                <tr><td>/app/admin/billing/{id}</td><td>GET</td><td>請求詳細</td><td>請求詳細・入金登録フォーム表示（ADMIN/SUPER のみ）</td></tr>
+                <tr><td>/app/admin/billing/{id}/payments</td><td>POST</td><td>入金登録</td><td>入金額を登録し PARTIAL/PAID ステータスに更新（ADMIN/SUPER のみ）</td></tr>
+                <tr><td>/app/admin/billing/{id}/resend-notification</td><td>POST</td><td>通知再送</td><td>お支払い案内をアプリ内通知＋メール＋LINE で再送（ADMIN/SUPER のみ）</td></tr>
+                <!-- LINE一斉配信 -->
+                <tr><td>/app/admin/line/push</td><td>GET / POST</td><td>LINE一斉配信</td><td>LINE Bot 全フォロワーへメッセージを Broadcast（ADMIN/SUPER のみ）</td></tr>
+                <!-- 統計・DB管理 -->
+                <tr><td>/app/reports</td><td>GET</td><td>サービス統計</td><td>ユーザー・ペット・予約・サブスク集計（ADMIN/SUPER のみ）</td></tr>
+                <tr><td>/app/admin/database</td><td>GET</td><td>DBバックアップ管理</td><td>バックアップ画面表示（ADMIN/SUPER。SecurityConfig の /app/admin/** ルールに従う。Controller内追加制限なし）</td></tr>
+                <tr><td>/app/admin/database/backup</td><td>POST</td><td>バックアップ実行</td><td>DB バックアップを実行・ダウンロード（ADMIN/SUPER）</td></tr>
+                <tr><td>/app/admin/database/restore</td><td>POST</td><td>リストア実行</td><td>アップロードした SQL で DB をリストア（ADMIN/SUPER）</td></tr>
+                <!-- 外部 API -->
+                <tr><td>/api/slack/events</td><td>POST</td><td>Slack Webhook受信</td><td>Slack Events API 受信・キーワード返答（署名検証あり・外部）</td></tr>
+                <tr><td>/api/line/events</td><td>POST</td><td>LINE Webhook受信</td><td>LINE Messaging API 受信・キーワード返答（署名検証あり・外部）</td></tr>
+                <tr><td>/api/appointments</td><td>GET / POST</td><td>予約 REST API 一覧 / 登録</td><td>予約データを JSON で取得・登録（<strong>認証不要</strong>：SecurityConfigに個別ルールなく anyRequest().permitAll() に落ちる）</td></tr>
+                <tr><td>/api/appointments/{id}</td><td>GET / PUT / DELETE</td><td>予約単件取得 / 更新 / 削除</td><td>予約を ID で取得・更新・削除（<strong>認証不要</strong>：同上）</td></tr>
+              </tbody>
+            </table>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

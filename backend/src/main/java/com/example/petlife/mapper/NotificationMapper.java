@@ -1,0 +1,211 @@
+package com.example.petlife.mapper;
+
+import com.example.petlife.dto.notification.NotificationRow;
+import com.example.petlife.dto.notification.NotificationManageRow;
+import com.example.petlife.dto.subscription.RenewalHistoryRow;
+import com.example.petlife.entity.NotificationEntity;
+import org.apache.ibatis.annotations.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Mapper
+public interface NotificationMapper {
+
+    @Select("""
+        SELECT n.id, n.notification_type AS "notificationType", n.title, n.body,
+               n.created_at AS "createdAt", nr.read_at AS "readAt"
+        FROM notifications n
+        JOIN notification_recipients nr ON nr.notification_id = n.id
+        WHERE nr.user_id = #{userId}
+          AND n.deleted_at IS NULL
+          AND n.delivery_status = 'SENT'
+        ORDER BY n.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+        """)
+    List<NotificationRow> findByUserId(@Param("userId") Long userId,
+                                       @Param("limit") int limit,
+                                       @Param("offset") int offset);
+
+    @Select("""
+        SELECT COUNT(*)
+        FROM notifications n
+        JOIN notification_recipients nr ON nr.notification_id = n.id
+        WHERE nr.user_id = #{userId}
+          AND n.deleted_at IS NULL
+          AND n.delivery_status = 'SENT'
+        """)
+    long countByUserId(@Param("userId") Long userId);
+
+    @Select("""
+        SELECT COUNT(*)
+        FROM notifications n
+        JOIN notification_recipients nr ON nr.notification_id = n.id
+        WHERE nr.user_id = #{userId}
+          AND n.deleted_at IS NULL
+          AND n.delivery_status = 'SENT'
+          AND nr.read_at IS NULL
+        """)
+    long countUnreadByUserId(@Param("userId") Long userId);
+
+    @Update("""
+        UPDATE notification_recipients
+        SET read_at = CURRENT_TIMESTAMP
+        WHERE notification_id = #{notificationId}
+          AND user_id = #{userId}
+          AND read_at IS NULL
+        """)
+    int markAsRead(@Param("notificationId") Long notificationId, @Param("userId") Long userId);
+
+    @Update("""
+        UPDATE notification_recipients
+        SET read_at = CURRENT_TIMESTAMP
+        WHERE user_id = #{userId}
+          AND read_at IS NULL
+        """)
+    int markAllAsRead(@Param("userId") Long userId);
+
+    // --- notifications テーブル操作 ---
+
+    @Select("""
+        SELECT id, notification_type, title, body, scheduled_at, sent_at,
+               delivery_status, created_by_user_id, deleted_at, created_at, updated_at
+        FROM notifications WHERE id = #{id} AND deleted_at IS NULL
+        """)
+    NotificationEntity findById(@Param("id") Long id);
+
+    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
+    @Select("""
+        INSERT INTO notifications(notification_type, title, body, scheduled_at,
+            delivery_status, created_by_user_id, created_at, updated_at)
+        VALUES(#{notificationType}, #{title}, #{body}, #{scheduledAt},
+            #{deliveryStatus}, #{createdByUserId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        RETURNING id
+        """)
+    Long insertReturningId(NotificationEntity notification);
+
+    @Update("""
+        UPDATE notifications
+        SET delivery_status = #{deliveryStatus}, sent_at = #{sentAt}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id} AND deleted_at IS NULL
+        """)
+    int updateStatus(@Param("id") Long id,
+                     @Param("deliveryStatus") String deliveryStatus,
+                     @Param("sentAt") LocalDateTime sentAt);
+
+    @Update("""
+        UPDATE notifications
+        SET deleted_at = #{deletedAt}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id} AND deleted_at IS NULL
+        """)
+    int softDelete(@Param("id") Long id, @Param("deletedAt") LocalDateTime deletedAt);
+
+    // --- notification_recipients テーブル操作 ---
+
+    @Insert("""
+        MERGE INTO notification_recipients(notification_id, user_id, read_at, delivery_status)
+        KEY (notification_id, user_id)
+        VALUES(#{notificationId}, #{userId}, NULL, 'PENDING')
+        """)
+    int insertRecipient(@Param("notificationId") Long notificationId, @Param("userId") Long userId);
+
+    @Select("""
+        SELECT user_id FROM notification_recipients
+        WHERE notification_id = #{notificationId}
+        """)
+    List<Long> findRecipientUserIds(@Param("notificationId") Long notificationId);
+
+    @Update("""
+        UPDATE notification_recipients
+        SET delivery_status = #{deliveryStatus}
+        WHERE notification_id = #{notificationId} AND user_id = #{userId}
+        """)
+    int updateRecipientStatus(@Param("notificationId") Long notificationId,
+                              @Param("userId") Long userId,
+                              @Param("deliveryStatus") String deliveryStatus);
+
+    @Select("""
+        SELECT n.id, n.notification_type AS "notificationType", n.title, n.body,
+               n.scheduled_at AS "scheduledAt", n.sent_at AS "sentAt",
+               n.delivery_status AS "deliveryStatus", n.created_at AS "createdAt"
+        FROM notifications n
+        WHERE n.deleted_at IS NULL
+          AND n.created_by_user_id = #{userId}
+        ORDER BY n.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+        """)
+    List<NotificationManageRow> findCreatedByUserId(@Param("userId") Long userId,
+                                                    @Param("limit") int limit,
+                                                    @Param("offset") int offset);
+
+    @Select("""
+        SELECT COUNT(*)
+        FROM notifications
+        WHERE deleted_at IS NULL
+          AND created_by_user_id = #{userId}
+        """)
+    long countCreatedByUserId(@Param("userId") Long userId);
+
+    @Select("""
+        SELECT id
+        FROM users
+        WHERE deleted_at IS NULL
+          AND status = 'ACTIVE'
+          AND (
+              #{scope} = 'ALL'
+              OR (#{scope} = 'USER'  AND role_id = 3)
+              OR (#{scope} = 'STAFF' AND role_id IN (1,2,4,5))
+              OR (#{scope} = 'VET'   AND role_id IN (2,4))
+              OR (#{scope} = 'ADMIN' AND role_id IN (1,2))
+          )
+        ORDER BY id
+        """)
+    List<Long> findActiveRecipientUserIdsByScope(@Param("scope") String scope);
+
+    // --- サブスクリプション更新申請 ---
+
+    @Select("""
+        SELECT CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
+        FROM notifications n
+        LEFT JOIN LATERAL (
+            SELECT i.payment_status
+            FROM invoices i
+            WHERE i.subscription_id = CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
+              AND i.deleted_at IS NULL
+              AND i.issued_at IS NOT NULL
+              AND i.issued_at >= n.created_at
+            ORDER BY i.issued_at ASC, i.id ASC
+            LIMIT 1
+        ) inv ON TRUE
+        WHERE n.created_by_user_id = #{userId}
+          AND n.title LIKE 'サブスクリプション更新申請 #%'
+          AND n.deleted_at IS NULL
+          AND COALESCE(inv.payment_status, 'UNPAID') <> 'PAID'
+        """)
+    List<Long> findRenewalRequestedSubscriptionIdsByUserId(@Param("userId") Long userId);
+
+    @Select("""
+        SELECT CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT) AS "subscriptionId",
+               UPPER(p.name) AS "planName",
+               n.created_at AS "requestedAt",
+               CASE WHEN inv.payment_status = 'PAID' THEN 'APPROVED' ELSE 'REQUESTED' END AS "status"
+        FROM notifications n
+        JOIN subscriptions s ON s.id = CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
+        JOIN plans p ON p.id = s.plan_id
+        LEFT JOIN LATERAL (
+            SELECT i.payment_status
+            FROM invoices i
+            WHERE i.subscription_id = s.id
+              AND i.deleted_at IS NULL
+              AND i.issued_at IS NOT NULL
+              AND i.issued_at >= n.created_at
+            ORDER BY i.issued_at ASC, i.id ASC
+            LIMIT 1
+        ) inv ON TRUE
+        WHERE n.created_by_user_id = #{userId}
+          AND n.title LIKE 'サブスクリプション更新申請 #%'
+          AND n.deleted_at IS NULL
+        ORDER BY n.created_at DESC
+        """)
+    List<RenewalHistoryRow> findRenewalHistoryByUserId(@Param("userId") Long userId);
+}

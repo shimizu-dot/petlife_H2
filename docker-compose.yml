@@ -1,0 +1,51 @@
+# PetLifePlus — ローカル開発用 Docker Compose
+# 使い方:
+#   初回 / 再構築: docker compose up --build
+#   通常起動:      docker compose up -d
+#   停止:          docker compose down
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: petlife_app
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      PORT: 8080
+      SQL_INIT_MODE: ${SQL_INIT_MODE:-always}
+
+      # External services (optional)
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      CHATBOT_API_KEY: ${CHATBOT_API_KEY:-}
+      CHATBOT_MODEL: ${CHATBOT_MODEL:-llama-3.1-8b-instant}
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_AUTH: ${SMTP_AUTH:-false}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
+      MAIL_FROM_EMAIL: ${MAIL_FROM_EMAIL:-noreply@petlife.local}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME:-ペットライフプラス}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL:-noreply@petlife.local}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
+      SLACK_SIGNING_SECRET: ${SLACK_SIGNING_SECRET:-}
+      ADMIN_SLACK_USER_IDS: ${ADMIN_SLACK_USER_IDS:-}
+      LINE_CHANNEL_TOKEN: ${LINE_CHANNEL_TOKEN:-}
+      LINE_CHANNEL_SECRET: ${LINE_CHANNEL_SECRET:-}
+      ADMIN_LINE_USER_IDS: ${ADMIN_LINE_USER_IDS:-}
+      ZOOM_ACCOUNT_ID: ${ZOOM_ACCOUNT_ID:-}
+      ZOOM_CLIENT_ID: ${ZOOM_CLIENT_ID:-}
+      ZOOM_CLIENT_SECRET: ${ZOOM_CLIENT_SECRET:-}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
+      UPLOAD_DIR: /app/uploads
+    entrypoint: ["java", "-jar", "/app/app.jar"]
+    volumes:
+      - uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads:

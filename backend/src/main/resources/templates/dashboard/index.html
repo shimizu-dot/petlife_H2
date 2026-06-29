@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ダッシュボード | Pet Life Plus</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body th:class="${bodyClass}">
+<div class="layout">
+  <div th:replace="~{fragments/nav :: sidebar}"></div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">ダッシュボード</span>
+      <span class="topbar-greeting"
+            th:text="${currentUser != null ? currentUser.displayName() + ' さん、こんにちは' : ''}"></span>
+    </div>
+    <div class="content">
+
+      <!-- 運営からのお知らせ -->
+      <div th:if="${!announcements.isEmpty()}" class="card" style="border-left:4px solid #F59E0B;padding:16px 20px;">
+        <div style="font-size:14px;font-weight:700;color:#92400E;margin-bottom:10px;">📢 運営からのお知らせ</div>
+        <div th:each="a : ${announcements}"
+             th:style="${!aStat.last} ? 'padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid #FDE68A;' : ''">
+          <div style="font-weight:600;color:#0F172A;margin-bottom:4px;" th:text="${a.title()}">タイトル</div>
+          <div style="font-size:14px;color:#475569;white-space:pre-wrap;" th:text="${a.body()}">本文</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:4px;"
+               th:text="${#temporals.format(a.createdAt(), 'yyyy/MM/dd')}"></div>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">登録ペット数</div>
+          <div class="kpi-value" th:text="${petCount}">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">健康記録件数</div>
+          <div class="kpi-value" th:text="${recordCount}">0</div>
+        </div>
+        <div class="kpi-card" th:if="${currentUser != null and currentUser.isAdmin()}">
+          <div class="kpi-label">ユーザー数</div>
+          <div class="kpi-value" th:text="${userCount}">0</div>
+        </div>
+      </div>
+
+      <div class="card" th:if="${currentUser != null and !currentUser.isAdmin()}">
+        <div class="card-title">ご利用プラン</div>
+        <div class="plan-summary">
+          <span class="badge badge-blue" th:text="${planLabel}">ライト</span>
+          <span style="color:#64748B;font-size:13px;">プランに応じて使える機能が変わります</span>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <div class="card-title">クイックアクセス</div>
+        <div class="quick-actions">
+          <a th:href="@{/app/pets}" class="btn btn-secondary">🐶 ペット一覧</a>
+          <a th:href="@{/app/pets/new}" class="btn btn-primary">＋ ペット登録</a>
+          <a th:href="@{/app/pets}" class="btn btn-secondary">📝 健康記録</a>
+          <a th:if="${canUseAiSymptom}" th:href="@{/app/pets}" class="btn btn-secondary">🤖 AI症状チェック（ペット詳細から）</a>
+          <a th:if="${canUseAiSymptom}" th:href="@{/app/consult/chatbot}" class="btn btn-secondary">💬 相談導線</a>
+          <span th:if="${!canUseAiSymptom and currentUser != null and !currentUser.isAdmin()}"
+                style="font-size:13px;color:#64748B;">AI症状チェック・相談導線はスタンダード以上で利用できます</span>
+          <span th:if="${!canUsePrioritySupport and currentUser != null and !currentUser.isAdmin()}"
+                style="font-size:13px;color:#64748B;">優先サポートはプレミアムで利用できます</span>
+          <a th:if="${currentUser != null and currentUser.isAdmin()}"
+             th:href="@{/app/admin/users}" class="btn btn-secondary">👥 ユーザ管理</a>
+        </div>
+      </div>
+
+      <!-- ADMIN: DBバックアップ -->
+      <div class="card" th:if="${currentUser != null and currentUser.isAdmin()}"
+           style="max-width:640px;border-left:4px solid #1D4ED8;">
+        <div class="card-title">🗄️ データベース管理</div>
+        <p style="font-size:14px;color:#475569;margin-bottom:12px;">
+          バックアップのダウンロードやリストアを行います。
+        </p>
+        <div class="admin-db-actions">
+          <form th:action="@{/app/admin/database/backup}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button type="submit" class="btn btn-primary">⬇ バックアップをダウンロード</button>
+          </form>
+          <a th:href="@{/app/admin/database}" class="btn btn-secondary">🗄️ リストア管理画面へ</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

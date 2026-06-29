@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>データベース設計書 - プロジェクトアーカイブ</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .main-content {
+      background:
+        radial-gradient(circle at 2% 0%, rgba(59, 130, 246, 0.08), transparent 25%),
+        radial-gradient(circle at 100% 10%, rgba(20, 184, 166, 0.08), transparent 22%);
+    }
+
+    .doc-header {
+      background: linear-gradient(120deg, #0f172a 0%, #1d4ed8 58%, #0ea5a4 100%);
+      color: #f8fafc;
+      border-radius: 16px;
+      padding: 20px 22px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+      margin-bottom: 18px;
+    }
+
+    .doc-header .doc-category,
+    .doc-header .doc-meta,
+    .doc-header .doc-meta .material-symbols-outlined {
+      color: #dbeafe;
+    }
+
+    .doc-header .doc-title {
+      color: #f8fafc;
+    }
+
+    .external-link-box {
+      border: 1px solid #cfe3ff;
+      background: linear-gradient(180deg, #f8fbff 0%, #f2fcfb 100%);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+    }
+
+    .external-link-box-title {
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    .external-link-input input {
+      border: 1px solid #b7cff7;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .section {
+      border: 1px solid #d7e5f6;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      border-left: 6px solid #14b8a6;
+      padding-left: 10px;
+      color: #0f172a;
+    }
+
+    .fill-block {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fcfdff;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .fill-label {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .fill-hint {
+      color: #64748b;
+    }
+
+    .doc-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #cfe0f7;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .doc-table thead th {
+      background: linear-gradient(120deg, #dbeafe 0%, #bfdbfe 45%, #93c5fd 100%);
+      color: #0b2545;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid #c5d7f1;
+      padding: 11px 12px;
+    }
+
+    .doc-table tbody td {
+      border-bottom: 1px solid #e7eef8;
+      padding: 10px 12px;
+    }
+
+    .doc-table tbody tr:nth-child(odd) td {
+      background: #ffffff;
+    }
+
+    .doc-table tbody tr:nth-child(even) td {
+      background: #f8fbff;
+    }
+
+    .doc-table tbody tr td:first-child {
+      background: linear-gradient(90deg, #f3f7ff 0%, #ffffff 85%);
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .doc-table tbody tr:hover td {
+      background: #ecfeff;
+      transition: background-color .18s ease;
+    }
+
+    .toc {
+      border: 1px solid #d7e5f6;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .toc-title {
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 10px 0 22px;
+      border: 1px solid #d7e5f6;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .db-table {
+      min-width: 980px;
+      margin: 0;
+    }
+
+    .db-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .db-table td,
+    .db-table th {
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .mini-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .mini-nav a {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 12px;
+      color: #1e3a8a;
+      background: #eff6ff;
+    }
+
+    .mini-nav a:hover {
+      background: #dbeafe;
+    }
+
+    .table-note {
+      font-size: 12px;
+      color: #64748b;
+      margin: 8px 0 12px;
+    }
+
+    .norm-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .norm-ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .norm-note {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    .group-header td {
+      background: linear-gradient(90deg, #e0f2fe 0%, #f0fdf4 100%) !important;
+      color: #0f172a !important;
+      font-weight: 700 !important;
+      font-size: 12px;
+      padding: 6px 12px !important;
+      border-top: 2px solid #bae6fd !important;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 08</div>
+        <h1 class="doc-title">データベース設計書</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日：2026-05-14　更新日：2026-05-24</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者：清水宏美</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 2.0（正規化チェック済み・全テーブル追記）</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            詳細ドキュメント（スプレッドシート）
+          </div>
+          <div class="external-link-box-desc">
+            このページは概要を記載しています。詳細なDB設計書は以下のリンクからご確認ください。
+          </div>
+          <div class="external-link-input">
+            <input type="text" value="db-design_document.xlsx" id="external-link-08" style="color:#0f172a; opacity:1;">
+            <a href="#" class="link-btn"
+              onclick="window.open(document.getElementById('external-link-08').value, '_blank'); return false;">
+              <span class="material-symbols-outlined">open_in_new</span>
+              開く
+            </a>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">ER図</a></li>
+            <li><a href="#sec2">正規化評価</a></li>
+            <li><a href="#sec3">テーブル定義（全24テーブル）</a></li>
+            <li><a href="#sec4">インデックス設計</a></li>
+            <li><a href="#sec5">初期データ</a></li>
+          </ol>
+        </div>
+
+        <!-- ══ Section 1: ER図 ══════════════════════════════════════════════════ -->
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> ER図</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">テーブル関連図（テキストER図）</div>
+            <div class="fill-hint">1 ─ * = 1対多（必須）　/ 　0..1 ─ 1 = 任意1対1　/ 　* ─ * = 多対多（中間テーブル経由）</div>
+            <div class="fill-content">
+              <pre>
+【1. Auth / ユーザー】
+[roles] 1 ─ * [users]
+
+【2. ペット・健康管理】
+[users] 1 ─ 0..* [pets]                         (owner_user_id)
+[pets]  1 ─ 0..* [health_records]
+[users] 1 ─ 0..* [health_records]               (recorded_by_user_id)
+[pets]  1 ─ 0..* [pet_care_records]
+[users] 1 ─ 0..* [pet_care_records]             (recorded_by_user_id)
+[pets]  1 ─ 0..* [symptom_checks]
+[users] 1 ─ 0..* [symptom_checks]               (requested_by_user_id)
+
+【3. プラン・課金】
+[plans] 1 ─ *    [plan_features]                (PK: plan_id + feature_code)
+[plans] 1 ─ 0..* [subscriptions]
+[users] 1 ─ 0..* [subscriptions]
+[pets]  1 ─ 0..* [subscriptions]
+[subscriptions] 1 ─ 0..* [invoices]
+[invoices]      1 ─ 0..* [payments]
+
+【4. 予約・診療記録】
+[users]             1 ─ 0..* [appointment_slots] (created_by_user_id)
+[appointment_slots] 1 ─ 0..* [appointments]      (slot_id, NULL可)
+[pets]              1 ─ 0..* [appointments]
+[users]             1 ─ 0..* [appointments]       (owner_user_id)
+[users]          0..1 ─ 0..* [appointments]       (staff_user_id, NULL可)
+[appointments] 0..1  ─ 1    [medical_histories]   (UNIQUE FK)
+[pets]              1 ─ 0..* [medical_histories]
+[users]             1 ─ 0..* [medical_histories]  (handled_by_user_id)
+[medical_histories] 1 ─ 0..* [medical_attachments]
+
+【5. メッセージング・通知】
+[users]          1 ─ 0..* [consult_chat_messages]
+[users]          1 ─ 0..* [notifications]          (created_by_user_id)
+[notifications] * ─ *    [users]
+  └── 中間テーブル: [notification_recipients] (PK: notification_id + user_id)
+[email_templates] 1 ─ 0..* [email_messages]
+[users]           1 ─ 0..* [email_messages]        (recipient_user_id)
+[pets]         0..1 ─ 0..* [email_messages]
+[appointments] 0..1 ─ 0..* [email_messages]
+[invoices]     0..1 ─ 0..* [email_messages]
+
+【6. UX補助】
+[pets]  1 ─ 0..* [pet_calendar_marks]
+[users] 1 ─ 0..* [pet_calendar_marks]   (created_by_user_id)
+[users] 1 ─ 0..* [dismissed_reminders]
+[users] 1 ─ 0..* [announcements]        (created_by_user_id)
+[users] 1 ─ 0..* [password_reset_tokens]
+              </pre>
+            </div>
+          </div>
+          <div class="fill-block" style="margin-top:20px;">
+            <div class="fill-label">ビジュアルER図（ドメイン別カラーマップ）</div>
+            <div class="fill-hint">ドメインごとに色分け。凡例: <code>||&#8212;o{</code> 1対多（必須FK）&nbsp; <code>|o&#8212;o{</code> 1対多（任意FK）&nbsp; <code>|o&#8212;o|</code> 任意1対1（UNIQUE nullable FK）</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px;">
+              <span style="background:#dbeafe;border:2px solid #1d4ed8;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#1e3a8a;">&#128272; Auth</span>
+              <span style="background:#dcfce7;border:2px solid #16a34a;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#14532d;">&#128062; Pets &amp; Health</span>
+              <span style="background:#fef3c7;border:2px solid #d97706;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#78350f;">&#128179; Plans &amp; Billing</span>
+              <span style="background:#ede9fe;border:2px solid #7c3aed;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#4c1d95;">&#128197; Appointments &amp; Medical</span>
+              <span style="background:#ccfbf1;border:2px solid #0d9488;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#134e4a;">&#128172; Messaging</span>
+              <span style="background:#ffe4e6;border:2px solid #e11d48;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:700;color:#881337;">&#9881; UX Helpers</span>
+            </div>
+
+            <!-- 1. Auth -->
+            <div style="border:2px solid #1d4ed8;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#1d4ed8,#3b82f6);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#128272; Auth / 認証（2テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#f8fbff;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#dbeafe","primaryBorderColor":"#1d4ed8","lineColor":"#1e40af","background":"#f8fbff","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#eff6ff","attributeBackgroundColorOdd":"#dbeafe"}}}%%
+erDiagram
+    roles {
+        bigint id PK "ロールID"
+        varchar role_code UK "ADMIN/SUPER/USER/VET/STAFF"
+        varchar role_name "ロール名"
+    }
+    users {
+        bigint id PK "ユーザーID"
+        bigint role_id FK "ロールID"
+        varchar email UK "メールアドレス"
+        varchar password_hash "BCryptハッシュ"
+        varchar slack_user_id "Slack連携ID"
+        varchar line_user_id "LINE連携ID"
+        varchar status "ACTIVE/INACTIVE/SUSPENDED"
+    }
+    roles ||--o{ users : "role_id"
+                </pre>
+              </div>
+            </div>
+
+            <!-- 2. Pets & Health -->
+            <div style="border:2px solid #16a34a;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#16a34a,#22c55e);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#128062; Pets &amp; Health / ペット・健康管理（4テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#f0fdf4;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#dcfce7","primaryBorderColor":"#16a34a","lineColor":"#15803d","background":"#f0fdf4","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#f0fdf4","attributeBackgroundColorOdd":"#dcfce7"}}}%%
+erDiagram
+    users { bigint id PK "Auth 参照" }
+    pets {
+        bigint id PK "ペットID"
+        bigint owner_user_id FK "飼い主ユーザー"
+        varchar name "ペット名"
+        varchar species "DOG/CAT 等"
+        varchar sex "MALE/FEMALE"
+        date birth_date "生年月日"
+    }
+    health_records {
+        bigint id PK "健康記録ID"
+        bigint pet_id FK "ペット"
+        bigint recorded_by_user_id FK "記録者"
+        date record_date "記録日"
+        decimal weight_kg "体重(kg)"
+        integer meal_score "食事 1-5"
+        integer exercise_score "運動 1-5"
+        integer overall_score "総合 1-5"
+    }
+    pet_care_records {
+        bigint id PK "ケア記録ID"
+        bigint pet_id FK "ペット"
+        bigint recorded_by_user_id FK "記録者"
+        varchar care_type "RABIES/HEARTWORM/COMBO_VACCINE..."
+        date administered_on "実施日"
+        date next_due_on "次回予定日"
+    }
+    symptom_checks {
+        bigint id PK "症状チェックID"
+        bigint pet_id FK "ペット"
+        bigint requested_by_user_id FK "依頼者"
+        varchar severity "LOW/MEDIUM/HIGH"
+        varchar recommendation "OBSERVE/CONSULT/VISIT"
+        text guidance "AIガイダンス"
+    }
+    users ||--o{ pets : "owner_user_id"
+    pets ||--o{ health_records : "pet_id"
+    users ||--o{ health_records : "recorded_by_user_id"
+    pets ||--o{ pet_care_records : "pet_id"
+    users ||--o{ pet_care_records : "recorded_by_user_id"
+    pets ||--o{ symptom_checks : "pet_id"
+    users ||--o{ symptom_checks : "requested_by_user_id"
+                </pre>
+              </div>
+            </div>
+
+            <!-- 3. Plans & Billing -->
+            <div style="border:2px solid #d97706;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#d97706,#f59e0b);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#128179; Plans &amp; Billing / プラン・課金（5テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#fffbeb;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#fef3c7","primaryBorderColor":"#d97706","lineColor":"#b45309","background":"#fffbeb","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#fffbeb","attributeBackgroundColorOdd":"#fef3c7"}}}%%
+erDiagram
+    users { bigint id PK "Auth 参照" }
+    pets { bigint id PK "Pets 参照" }
+    plans {
+        bigint id PK "プランID"
+        varchar name "LIGHT/STANDARD/PREMIUM"
+        decimal monthly_fee "月額(円)"
+        jsonb features_json "機能フラグ(表示用)"
+        boolean is_active "有効フラグ"
+    }
+    plan_features {
+        bigint plan_id FK "プランID"
+        varchar feature_code "AI_SYMPTOM/SLACK_BOT/LINE_BOT/ZOOM_CONSULT"
+    }
+    subscriptions {
+        bigint id PK "サブスクID"
+        bigint user_id FK "契約ユーザー"
+        bigint pet_id FK "対象ペット"
+        bigint plan_id FK "プランID"
+        date start_date "開始日"
+        varchar status "ACTIVE/PAUSED/CANCELED"
+        boolean auto_renew "自動更新"
+    }
+    invoices {
+        bigint id PK "請求書ID"
+        bigint subscription_id FK "サブスク"
+        varchar invoice_number UK "請求書番号"
+        decimal amount "請求金額"
+        varchar payment_status "UNPAID/PARTIAL/PAID"
+    }
+    payments {
+        bigint id PK "支払ID"
+        bigint invoice_id FK "請求書"
+        decimal paid_amount "支払金額"
+        varchar payment_method "BANK/PAYPAY/OTHER"
+        varchar status "PENDING/SUCCEEDED/FAILED"
+    }
+    plans ||--o{ plan_features : "plan_id"
+    plans ||--o{ subscriptions : "plan_id"
+    users ||--o{ subscriptions : "user_id"
+    pets ||--o{ subscriptions : "pet_id"
+    subscriptions ||--o{ invoices : "subscription_id"
+    invoices ||--o{ payments : "invoice_id"
+                </pre>
+              </div>
+            </div>
+
+            <!-- 4. Appointments & Medical -->
+            <div style="border:2px solid #7c3aed;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#128197; Appointments &amp; Medical / 予約・診療記録（4テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#faf5ff;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#ede9fe","primaryBorderColor":"#7c3aed","lineColor":"#6d28d9","background":"#faf5ff","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#faf5ff","attributeBackgroundColorOdd":"#ede9fe"}}}%%
+erDiagram
+    users { bigint id PK "Auth 参照" }
+    pets { bigint id PK "Pets 参照" }
+    appointment_slots {
+        bigint id PK "予約枠ID"
+        bigint created_by_user_id FK "作成者(ADMIN)"
+        timestamp slot_datetime "枠日時"
+        varchar note "備考"
+    }
+    appointments {
+        bigint id PK "予約ID"
+        bigint pet_id FK "対象ペット"
+        bigint owner_user_id FK "飼い主"
+        bigint staff_user_id FK "担当スタッフ(NULL可)"
+        bigint slot_id FK "予約枠(NULL可)"
+        varchar appointment_type "CONSULTATION/MEDICAL"
+        varchar channel "ONLINE/VISIT/HOSPITAL"
+        varchar status "REQUESTED/CONFIRMED/CANCELED/COMPLETED"
+        varchar zoom_join_url "Zoom URL"
+    }
+    medical_histories {
+        bigint id PK "診療記録ID"
+        bigint pet_id FK "ペット"
+        bigint appointment_id FK "関連予約(NULL可,UNIQUE)"
+        bigint handled_by_user_id FK "対応者(VET/STAFF)"
+        date performed_on "実施日"
+        varchar treatment_detail "対応内容"
+        varchar diagnosis "診断内容"
+    }
+    medical_attachments {
+        bigint id PK "添付ファイルID"
+        bigint medical_history_id FK "診療記録"
+        varchar file_name "ファイル名"
+        varchar file_mime_type "MIMEタイプ"
+        bigint file_size_bytes "サイズ"
+    }
+    users ||--o{ appointment_slots : "created_by_user_id"
+    appointment_slots |o--o{ appointments : "slot_id"
+    pets ||--o{ appointments : "pet_id"
+    users ||--o{ appointments : "owner_user_id"
+    users |o--o{ appointments : "staff_user_id"
+    appointments |o--o| medical_histories : "appointment_id(UNIQUE)"
+    pets ||--o{ medical_histories : "pet_id"
+    users ||--o{ medical_histories : "handled_by_user_id"
+    medical_histories ||--o{ medical_attachments : "medical_history_id"
+                </pre>
+              </div>
+            </div>
+
+            <!-- 5. Messaging -->
+            <div style="border:2px solid #0d9488;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#0d9488,#14b8a6);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#128172; Messaging / メッセージング・通知（5テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#f0fdfa;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#ccfbf1","primaryBorderColor":"#0d9488","lineColor":"#0f766e","background":"#f0fdfa","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#f0fdfa","attributeBackgroundColorOdd":"#ccfbf1"}}}%%
+erDiagram
+    users { bigint id PK "Auth 参照" }
+    pets { bigint id PK "Pets 参照" }
+    appointments { bigint id PK "Appointments 参照" }
+    invoices { bigint id PK "Billing 参照" }
+    consult_chat_messages {
+        bigint id PK "チャットメッセージID"
+        bigint user_id FK "ユーザー"
+        varchar sender_type "USER/BOT"
+        varchar message "メッセージ本文"
+    }
+    notifications {
+        bigint id PK "通知ID"
+        bigint created_by_user_id FK "作成者"
+        varchar notification_type "REMINDER/INFO/ALERT"
+        varchar title "タイトル"
+        varchar delivery_status "DRAFT/SCHEDULED/SENT/FAILED"
+    }
+    notification_recipients {
+        bigint notification_id FK "通知ID (PK)"
+        bigint user_id FK "受信ユーザー (PK)"
+        timestamp read_at "既読日時(NULL=未読)"
+        varchar delivery_status "PENDING/SENT/FAILED"
+    }
+    email_templates {
+        bigint id PK "テンプレートID"
+        varchar template_code UK "コード"
+        varchar subject_template "件名テンプレート"
+    }
+    email_messages {
+        bigint id PK "メール送信ID"
+        bigint template_id FK "テンプレート"
+        bigint recipient_user_id FK "宛先ユーザー"
+        bigint pet_id FK "関連ペット(NULL可)"
+        bigint appointment_id FK "関連予約(NULL可)"
+        bigint invoice_id FK "関連請求書(NULL可)"
+        varchar status "QUEUED/SENT/FAILED"
+    }
+    users ||--o{ consult_chat_messages : "user_id"
+    users ||--o{ notifications : "created_by_user_id"
+    notifications ||--o{ notification_recipients : "notification_id"
+    users ||--o{ notification_recipients : "user_id"
+    email_templates ||--o{ email_messages : "template_id"
+    users ||--o{ email_messages : "recipient_user_id"
+    pets |o--o{ email_messages : "pet_id"
+    appointments |o--o{ email_messages : "appointment_id"
+    invoices |o--o{ email_messages : "invoice_id"
+                </pre>
+              </div>
+            </div>
+
+            <!-- 6. UX Helpers -->
+            <div style="border:2px solid #e11d48;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#e11d48,#f43f5e);color:#fff;padding:8px 14px;font-weight:700;font-size:13px;">&#9881; UX Helpers / UX補助（4テーブル）</div>
+              <div style="padding:12px;overflow-x:auto;background:#fff1f2;">
+                <pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#ffe4e6","primaryBorderColor":"#e11d48","lineColor":"#be123c","background":"#fff1f2","fontFamily":"system-ui,sans-serif","attributeBackgroundColorEven":"#fff1f2","attributeBackgroundColorOdd":"#ffe4e6"}}}%%
+erDiagram
+    users { bigint id PK "Auth 参照" }
+    pets { bigint id PK "Pets 参照" }
+    pet_calendar_marks {
+        bigint id PK "マークID"
+        bigint pet_id FK "ペット"
+        bigint created_by_user_id FK "作成者"
+        date mark_date "マーク日付"
+        varchar mark_type "KARTE/VACCINE/HOSPITAL/TRIMMING/DOG_RUN/MEDICINE"
+        varchar memo "メモ"
+    }
+    dismissed_reminders {
+        bigint id PK "ID"
+        bigint user_id FK "ユーザー"
+        varchar reminder_key "リマインダーキー"
+        timestamp dismissed_at "非表示設定日時"
+    }
+    announcements {
+        bigint id PK "お知らせID"
+        bigint created_by_user_id FK "作成者(ADMIN)"
+        varchar title "タイトル"
+        text body "本文"
+        boolean is_active "表示フラグ"
+    }
+    password_reset_tokens {
+        bigint id PK "トークンID"
+        bigint user_id FK "ユーザー"
+        varchar token UK "リセットトークン"
+        timestamp expires_at "有効期限"
+        timestamp used_at "使用日時(NULL=未使用)"
+    }
+    pets ||--o{ pet_calendar_marks : "pet_id"
+    users ||--o{ pet_calendar_marks : "created_by_user_id"
+    users ||--o{ dismissed_reminders : "user_id"
+    users ||--o{ announcements : "created_by_user_id"
+    users ||--o{ password_reset_tokens : "user_id"
+                </pre>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ══ Section 2: 正規化評価 ═══════════════════════════════════════════ -->
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> 正規化評価</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">正規形チェック結果</div>
+            <div class="table-note">実施日: 2026-05-24 / 対象: schema.sql の全24テーブル</div>
+            <div class="table-wrap">
+              <table class="doc-table db-table" style="min-width:700px;">
+                <thead>
+                  <tr>
+                    <th>正規形</th>
+                    <th>評価</th>
+                    <th>所見</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>第1正規形（1NF）</td>
+                    <td><span class="norm-badge norm-ok">✅ 合格</span></td>
+                    <td>全テーブルで原子値を保持。<code>plans.features_json</code> は JSONB だが制御された非正規化（後述）。</td>
+                  </tr>
+                  <tr>
+                    <td>第2正規形（2NF）</td>
+                    <td><span class="norm-badge norm-ok">✅ 合格</span></td>
+                    <td>複合PKを持つ中間テーブル（<code>plan_features</code>, <code>notification_recipients</code>）でも、全非キー属性がPK全体に完全関数従属。</td>
+                  </tr>
+                  <tr>
+                    <td>第3正規形（3NF）</td>
+                    <td><span class="norm-badge norm-ok">✅ 合格</span></td>
+                    <td>推移的関数従属なし。<code>subscriptions.user_id</code> は <code>pet_id → pets.owner_user_id</code> 経由で導出可能だが、クエリ性能上の意図的冗長化として許容（後述）。</td>
+                  </tr>
+                  <tr>
+                    <td>ボイス・コッド正規形（BCNF）</td>
+                    <td><span class="norm-badge norm-ok">✅ 合格</span></td>
+                    <td>全テーブルで決定子がスーパーキーである。候補キーが複数存在するテーブルは <code>users</code>（id, email）のみで矛盾なし。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">意図的な非正規化（設計上のトレードオフ）</div>
+            <div class="table-note">スキーマ変更なし — 以下はすべて合理的かつ意図的な設計判断</div>
+            <div class="table-wrap">
+              <table class="doc-table db-table" style="min-width:700px;">
+                <thead>
+                  <tr>
+                    <th>箇所</th>
+                    <th>種別</th>
+                    <th>理由・判断</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>plans.features_json</code></td>
+                    <td><span class="norm-badge norm-note">表示用冗長化</span></td>
+                    <td>マーケティング表示用に全機能フラグをJSONで保持。プログラマティックなアクセス制御は <code>plan_features</code> テーブルで行う（役割分担が明確）。</td>
+                  </tr>
+                  <tr>
+                    <td><code>subscriptions.user_id</code></td>
+                    <td><span class="norm-badge norm-note">性能最適化</span></td>
+                    <td><code>pet_id → pets.owner_user_id</code> 経由で導出可能だが、ユーザーIDによる直接検索（プラン判定・サブスク一覧）の性能を優先。</td>
+                  </tr>
+                  <tr>
+                    <td><code>health_records</code> のスコア5列</td>
+                    <td><span class="norm-badge norm-note">固定属性展開</span></td>
+                    <td>meal/exercise/sleep/mood/overall の5カテゴリは仕様固定。ピボットテーブル化するより列展開の方がクエリが単純で保守しやすい。</td>
+                  </tr>
+                  <tr>
+                    <td><code>appointments.zoom_join_url</code></td>
+                    <td><span class="norm-badge norm-note">APIキャッシュ</span></td>
+                    <td>Zoom API から動的生成も可能だが、生成済みURLをDBキャッシュすることで2回目以降のアクセスでAPI呼び出しを省略。</td>
+                  </tr>
+                  <tr>
+                    <td><code>email_messages.body</code></td>
+                    <td><span class="norm-badge norm-note">監査用スナップショット</span></td>
+                    <td>テンプレートから再生成可能だが、実際に送信した内容の監査証跡として送信時点のレンダリング済み本文を保存。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══ Section 3: テーブル定義 ═══════════════════════════════════════════ -->
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> テーブル定義（全24テーブル）</h2>
+          <div class="fill-block">
+            <div class="fill-label">全テーブル一覧</div>
+            <div class="table-note">見方: 左右スクロール可 / ヘッダー固定 / データ型は PostgreSQL 記法</div>
+            <div class="mini-nav">
+              <a href="#tbl-roles">roles</a>
+              <a href="#tbl-users">users</a>
+              <a href="#tbl-pets">pets</a>
+              <a href="#tbl-health-records">health_records</a>
+              <a href="#tbl-pet-care-records">pet_care_records</a>
+              <a href="#tbl-symptom-checks">symptom_checks</a>
+              <a href="#tbl-plans">plans</a>
+              <a href="#tbl-plan-features">plan_features</a>
+              <a href="#tbl-subscriptions">subscriptions</a>
+              <a href="#tbl-invoices">invoices</a>
+              <a href="#tbl-payments">payments</a>
+              <a href="#tbl-appointment-slots">appointment_slots</a>
+              <a href="#tbl-appointments">appointments</a>
+              <a href="#tbl-medical-histories">medical_histories</a>
+              <a href="#tbl-medical-attachments">medical_attachments</a>
+              <a href="#tbl-consult-chat">consult_chat_messages</a>
+              <a href="#tbl-notifications">notifications</a>
+              <a href="#tbl-notification-recipients">notification_recipients</a>
+              <a href="#tbl-email-templates">email_templates</a>
+              <a href="#tbl-email-messages">email_messages</a>
+              <a href="#tbl-calendar-marks">pet_calendar_marks</a>
+              <a href="#tbl-dismissed-reminders">dismissed_reminders</a>
+              <a href="#tbl-announcements">announcements</a>
+              <a href="#tbl-password-reset">password_reset_tokens</a>
+            </div>
+
+            <!-- roles -->
+            <h3 id="tbl-roles">roles</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>ロールID</td></tr>
+                  <tr><td>role_code</td><td>VARCHAR(50)</td><td>NO</td><td></td><td>UNIQUE</td><td>ロールコード（ADMIN/SUPER/USER/VET/STAFF）</td></tr>
+                  <tr><td>role_name</td><td>VARCHAR(100)</td><td>NO</td><td></td><td></td><td>ロール名</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- users -->
+            <h3 id="tbl-users">users</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>ユーザーID</td></tr>
+                  <tr><td>role_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → roles.id</td><td>ロールID</td></tr>
+                  <tr><td>name</td><td>VARCHAR(50)</td><td>NO</td><td></td><td></td><td>氏名</td></tr>
+                  <tr><td>email</td><td>VARCHAR(255)</td><td>NO</td><td></td><td>UNIQUE</td><td>メールアドレス（ログインID）</td></tr>
+                  <tr><td>password_hash</td><td>VARCHAR(255)</td><td>NO</td><td></td><td></td><td>BCryptハッシュパスワード</td></tr>
+                  <tr><td>phone</td><td>VARCHAR(20)</td><td>YES</td><td>NULL</td><td></td><td>電話番号</td></tr>
+                  <tr><td>slack_user_id</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>Slack ユーザーID（連携用）</td></tr>
+                  <tr><td>line_user_id</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>LINE ユーザーID（連携用）</td></tr>
+                  <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td>'ACTIVE'</td><td>CHECK IN (ACTIVE/INACTIVE/SUSPENDED)</td><td>アカウント状態</td></tr>
+                  <tr><td>last_login_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>最終ログイン日時</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- pets -->
+            <h3 id="tbl-pets">pets</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>ペットID</td></tr>
+                  <tr><td>owner_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>飼い主ユーザーID</td></tr>
+                  <tr><td>name</td><td>VARCHAR(40)</td><td>NO</td><td></td><td></td><td>ペット名</td></tr>
+                  <tr><td>species</td><td>VARCHAR(30)</td><td>NO</td><td></td><td></td><td>種別（将来は DOG/CAT 等を想定。現行実装は DOG のみ入力可）</td></tr>
+                  <tr><td>breed</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>品種</td></tr>
+                  <tr><td>sex</td><td>VARCHAR(10)</td><td>YES</td><td>NULL</td><td></td><td>性別（MALE/FEMALE 等）</td></tr>
+                  <tr><td>birth_date</td><td>DATE</td><td>YES</td><td>NULL</td><td></td><td>生年月日</td></tr>
+                  <tr><td>weight_baseline_kg</td><td>DECIMAL(5,2)</td><td>YES</td><td>NULL</td><td></td><td>基準体重（kg）</td></tr>
+                  <tr><td>image_path</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>プロフィール画像ファイルパス</td></tr>
+                  <tr><td>deceased_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>逝去日時</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- health_records -->
+            <h3 id="tbl-health-records">health_records</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>記録ID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>ペットID</td></tr>
+                  <tr><td>recorded_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>記録者ユーザーID</td></tr>
+                  <tr><td>record_date</td><td>DATE</td><td>NO</td><td></td><td></td><td>記録日</td></tr>
+                  <tr><td>weight_kg</td><td>DECIMAL(5,2)</td><td>YES</td><td>NULL</td><td></td><td>体重（kg）</td></tr>
+                  <tr><td>meal_memo</td><td>VARCHAR(300)</td><td>YES</td><td>NULL</td><td></td><td>食事メモ</td></tr>
+                  <tr><td>exercise_minutes</td><td>INTEGER</td><td>YES</td><td>NULL</td><td></td><td>運動時間（分）</td></tr>
+                  <tr><td>meal_score</td><td>INTEGER</td><td>YES</td><td>NULL</td><td>CHECK 1–5</td><td>食事スコア</td></tr>
+                  <tr><td>exercise_score</td><td>INTEGER</td><td>YES</td><td>NULL</td><td>CHECK 1–5</td><td>運動スコア</td></tr>
+                  <tr><td>sleep_score</td><td>INTEGER</td><td>YES</td><td>NULL</td><td>CHECK 1–5</td><td>睡眠スコア</td></tr>
+                  <tr><td>mood_score</td><td>INTEGER</td><td>YES</td><td>NULL</td><td>CHECK 1–5</td><td>気分スコア</td></tr>
+                  <tr><td>overall_score</td><td>INTEGER</td><td>YES</td><td>NULL</td><td>CHECK 1–5</td><td>総合スコア</td></tr>
+                  <tr><td>image_path</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>添付画像パス</td></tr>
+                  <tr><td>note</td><td>TEXT</td><td>YES</td><td>NULL</td><td></td><td>備考</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- pet_care_records -->
+            <h3 id="tbl-pet-care-records">pet_care_records</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>ケア記録ID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>ペットID</td></tr>
+                  <tr><td>recorded_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>記録者ユーザーID</td></tr>
+                  <tr><td>care_type</td><td>VARCHAR(30)</td><td>NO</td><td></td><td>CHECK IN (RABIES/HEARTWORM/COMBO_VACCINE/MEDICAL_VISIT/OTHER)</td><td>ケア種別</td></tr>
+                  <tr><td>administered_on</td><td>DATE</td><td>NO</td><td></td><td></td><td>実施日</td></tr>
+                  <tr><td>next_due_on</td><td>DATE</td><td>NO</td><td></td><td></td><td>次回予定日（リマインダー基準）</td></tr>
+                  <tr><td>memo</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>備考</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- symptom_checks -->
+            <h3 id="tbl-symptom-checks">symptom_checks</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>症状チェックID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>ペットID</td></tr>
+                  <tr><td>requested_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>依頼者ユーザーID</td></tr>
+                  <tr><td>symptom_type</td><td>VARCHAR(100)</td><td>NO</td><td></td><td></td><td>症状種別</td></tr>
+                  <tr><td>onset_text</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>発症状況テキスト</td></tr>
+                  <tr><td>memo</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>補足メモ</td></tr>
+                  <tr><td>severity</td><td>VARCHAR(10)</td><td>NO</td><td></td><td>CHECK IN (LOW/MEDIUM/HIGH)</td><td>重症度</td></tr>
+                  <tr><td>recommendation</td><td>VARCHAR(10)</td><td>NO</td><td></td><td>CHECK IN (OBSERVE/CONSULT/VISIT)</td><td>推奨対応</td></tr>
+                  <tr><td>guidance</td><td>TEXT</td><td>YES</td><td>NULL</td><td></td><td>AIガイダンス本文</td></tr>
+                  <tr><td>ai_model</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>使用AIモデル名</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時（更新なし）</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- plans -->
+            <h3 id="tbl-plans">plans</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>プランID</td></tr>
+                  <tr><td>name</td><td>VARCHAR(100)</td><td>NO</td><td></td><td></td><td>プラン名（LIGHT/STANDARD/PREMIUM）</td></tr>
+                  <tr><td>monthly_fee</td><td>DECIMAL(10,2)</td><td>NO</td><td></td><td></td><td>月額料金（円）</td></tr>
+                  <tr><td>features_json</td><td>JSONB</td><td>YES</td><td>NULL</td><td></td><td>機能フラグ一覧（表示用・非正規化②）</td></tr>
+                  <tr><td>is_active</td><td>BOOLEAN</td><td>NO</td><td>TRUE</td><td></td><td>有効フラグ</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- plan_features -->
+            <h3 id="tbl-plan-features">plan_features</h3>
+            <p class="table-note">アクセス制御用機能コードテーブル。feature_code: AI_SYMPTOM / SLACK_BOT / LINE_BOT / ZOOM_CONSULT</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>plan_id</td><td>BIGINT</td><td>NO</td><td></td><td>PK, FK → plans.id</td><td>プランID</td></tr>
+                  <tr><td>feature_code</td><td>VARCHAR(50)</td><td>NO</td><td></td><td>PK</td><td>機能コード</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- subscriptions -->
+            <h3 id="tbl-subscriptions">subscriptions</h3>
+            <p class="table-note">ペット単位の契約。user_id は pet_id → pets.owner_user_id 経由で導出可能だが性能上の意図的冗長化（非正規化②）。</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>サブスクリプションID</td></tr>
+                  <tr><td>user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>契約ユーザーID（性能最適化）</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>対象ペットID</td></tr>
+                  <tr><td>plan_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → plans.id</td><td>プランID</td></tr>
+                  <tr><td>start_date</td><td>DATE</td><td>NO</td><td></td><td></td><td>契約開始日</td></tr>
+                  <tr><td>end_date</td><td>DATE</td><td>YES</td><td>NULL</td><td></td><td>契約終了日（NULLは無期限）</td></tr>
+                  <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (ACTIVE/PAUSED/CANCELED)</td><td>契約状態</td></tr>
+                  <tr><td>auto_renew</td><td>BOOLEAN</td><td>NO</td><td>TRUE</td><td></td><td>自動更新フラグ</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- invoices -->
+            <h3 id="tbl-invoices">invoices</h3>
+            <p class="table-note">実装済み（BillingController / BillingService — GET/POST /app/admin/billing/**）</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>請求書ID</td></tr>
+                  <tr><td>subscription_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → subscriptions.id</td><td>サブスクリプションID</td></tr>
+                  <tr><td>invoice_number</td><td>VARCHAR(50)</td><td>NO</td><td></td><td>UNIQUE</td><td>請求書番号</td></tr>
+                  <tr><td>invoice_date</td><td>DATE</td><td>NO</td><td></td><td></td><td>請求日</td></tr>
+                  <tr><td>due_date</td><td>DATE</td><td>NO</td><td></td><td></td><td>支払期日</td></tr>
+                  <tr><td>amount</td><td>DECIMAL(10,2)</td><td>NO</td><td></td><td></td><td>請求金額</td></tr>
+                  <tr><td>payment_status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (UNPAID/PARTIAL/PAID)</td><td>支払状態</td></tr>
+                  <tr><td>issued_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>発行日時</td></tr>
+                  <tr><td>paid_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>支払完了日時</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- payments -->
+            <h3 id="tbl-payments">payments</h3>
+            <p class="table-note">実装済み（BillingService.registerPayment() — POST /app/admin/billing/{id}/payments）</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>支払ID</td></tr>
+                  <tr><td>invoice_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → invoices.id</td><td>請求書ID</td></tr>
+                  <tr><td>paid_amount</td><td>DECIMAL(10,2)</td><td>NO</td><td></td><td></td><td>支払金額</td></tr>
+                  <tr><td>paid_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>支払日時</td></tr>
+                  <tr><td>payment_method</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (BANK/PAYPAY/OTHER)</td><td>支払方法</td></tr>
+                  <tr><td>transaction_ref</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td></td><td>決済システムトランザクション参照ID</td></tr>
+                  <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (PENDING/SUCCEEDED/FAILED)</td><td>決済状態</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- appointment_slots -->
+            <h3 id="tbl-appointment-slots">appointment_slots</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>予約枠ID</td></tr>
+                  <tr><td>slot_datetime</td><td>TIMESTAMP</td><td>NO</td><td></td><td></td><td>予約枠日時</td></tr>
+                  <tr><td>note</td><td>VARCHAR(200)</td><td>YES</td><td>NULL</td><td></td><td>備考</td></tr>
+                  <tr><td>is_blocked</td><td>BOOLEAN</td><td>NO</td><td>FALSE</td><td></td><td>true=ブロック枠（自動生成スロットを無効化） / false=追加枠（業務時間外スロットを追加）</td></tr>
+                  <tr><td>created_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>作成者ユーザーID</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時（更新なし）</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- appointments -->
+            <h3 id="tbl-appointments">appointments</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>予約ID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>対象ペットID</td></tr>
+                  <tr><td>owner_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>飼い主ユーザーID</td></tr>
+                  <tr><td>staff_user_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>FK → users.id</td><td>担当スタッフID（承認後に設定）</td></tr>
+                  <tr><td>appointment_type</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (CONSULTATION/MEDICAL)</td><td>予約種別</td></tr>
+                  <tr><td>channel</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (ONLINE/VISIT/HOSPITAL)</td><td>実施チャネル</td></tr>
+                  <tr><td>scheduled_at</td><td>TIMESTAMP</td><td>NO</td><td></td><td></td><td>予約日時</td></tr>
+                  <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (REQUESTED/CONFIRMED/CANCELED/COMPLETED)</td><td>予約状態</td></tr>
+                  <tr><td>zoom_join_url</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>Zoom参加URL（非正規化④）</td></tr>
+                  <tr><td>note</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>備考</td></tr>
+                  <tr><td>slot_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>FK → appointment_slots.id</td><td>関連予約枠ID</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- medical_histories -->
+            <h3 id="tbl-medical-histories">medical_histories</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>診療記録ID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>対象ペットID</td></tr>
+                  <tr><td>appointment_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>UNIQUE, FK → appointments.id</td><td>関連予約ID（1予約1記録）</td></tr>
+                  <tr><td>handled_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>対応者（VET/STAFF）ID</td></tr>
+                  <tr><td>performed_on</td><td>DATE</td><td>NO</td><td></td><td></td><td>実施日</td></tr>
+                  <tr><td>treatment_detail</td><td>VARCHAR(1000)</td><td>NO</td><td></td><td></td><td>対応内容</td></tr>
+                  <tr><td>diagnosis</td><td>VARCHAR(1000)</td><td>YES</td><td>NULL</td><td></td><td>診断内容</td></tr>
+                  <tr><td>prescription</td><td>VARCHAR(1000)</td><td>YES</td><td>NULL</td><td></td><td>処方内容</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- medical_attachments -->
+            <h3 id="tbl-medical-attachments">medical_attachments</h3>
+            <p class="table-note">スキーマ＋Mapper 実装済み（MedicalAttachmentMapper: SELECT/INSERT/UPDATE あり）。Controller・Service は未実装。</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>添付ファイルID</td></tr>
+                  <tr><td>medical_history_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → medical_histories.id</td><td>診療記録ID</td></tr>
+                  <tr><td>file_name</td><td>VARCHAR(255)</td><td>NO</td><td></td><td></td><td>ファイル名</td></tr>
+                  <tr><td>file_path</td><td>VARCHAR(500)</td><td>NO</td><td></td><td></td><td>保存先パス</td></tr>
+                  <tr><td>file_mime_type</td><td>VARCHAR(100)</td><td>NO</td><td></td><td></td><td>MIMEタイプ</td></tr>
+                  <tr><td>file_size_bytes</td><td>BIGINT</td><td>NO</td><td></td><td></td><td>ファイルサイズ（bytes）</td></tr>
+                  <tr><td>description</td><td>VARCHAR(200)</td><td>YES</td><td>NULL</td><td></td><td>説明</td></tr>
+                  <tr><td>uploaded_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>アップロード日時</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- consult_chat_messages -->
+            <h3 id="tbl-consult-chat">consult_chat_messages</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>メッセージID</td></tr>
+                  <tr><td>user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>ユーザーID</td></tr>
+                  <tr><td>sender_type</td><td>VARCHAR(10)</td><td>NO</td><td></td><td>CHECK IN (USER/BOT)</td><td>送信者種別</td></tr>
+                  <tr><td>message</td><td>VARCHAR(1000)</td><td>NO</td><td></td><td></td><td>メッセージ本文</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時（更新なし）</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- notifications -->
+            <h3 id="tbl-notifications">notifications</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>通知ID</td></tr>
+                  <tr><td>notification_type</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (REMINDER/INFO/ALERT)</td><td>通知種別</td></tr>
+                  <tr><td>title</td><td>VARCHAR(100)</td><td>NO</td><td></td><td></td><td>通知タイトル</td></tr>
+                  <tr><td>body</td><td>VARCHAR(2000)</td><td>NO</td><td></td><td></td><td>通知本文</td></tr>
+                  <tr><td>scheduled_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>配信予定日時</td></tr>
+                  <tr><td>sent_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>配信完了日時</td></tr>
+                  <tr><td>delivery_status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (DRAFT/SCHEDULED/SENT/FAILED)</td><td>配信状態</td></tr>
+                  <tr><td>created_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>作成者ユーザーID</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- notification_recipients -->
+            <h3 id="tbl-notification-recipients">notification_recipients</h3>
+            <p class="table-note">notifications × users の中間テーブル（多対多）</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>notification_id</td><td>BIGINT</td><td>NO</td><td></td><td>PK, FK → notifications.id</td><td>通知ID</td></tr>
+                  <tr><td>user_id</td><td>BIGINT</td><td>NO</td><td></td><td>PK, FK → users.id</td><td>受信ユーザーID</td></tr>
+                  <tr><td>read_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>既読日時</td></tr>
+                  <tr><td>delivery_status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (PENDING/SENT/FAILED)</td><td>配信状態</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- email_templates -->
+            <h3 id="tbl-email-templates">email_templates</h3>
+            <p class="table-note">スキーマ＋Mapper 実装済み（EmailTemplateMapper: SELECT/UPDATE あり）。Controller・Service は未実装。</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>テンプレートID</td></tr>
+                  <tr><td>template_code</td><td>VARCHAR(100)</td><td>NO</td><td></td><td>UNIQUE</td><td>テンプレートコード</td></tr>
+                  <tr><td>subject_template</td><td>VARCHAR(200)</td><td>NO</td><td></td><td></td><td>件名テンプレート</td></tr>
+                  <tr><td>body_template</td><td>TEXT</td><td>NO</td><td></td><td></td><td>本文テンプレート</td></tr>
+                  <tr><td>is_active</td><td>BOOLEAN</td><td>NO</td><td>TRUE</td><td></td><td>有効フラグ</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- email_messages -->
+            <h3 id="tbl-email-messages">email_messages</h3>
+            <p class="table-note">スキーマ＋Mapper 実装済み（EmailMessageMapper: SELECT/UPDATE あり）。Controller・Service は未実装。subject/body は送信時点のスナップショット（非正規化⑤）。</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>メール送信ID</td></tr>
+                  <tr><td>template_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → email_templates.id</td><td>使用テンプレートID</td></tr>
+                  <tr><td>recipient_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>宛先ユーザーID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>FK → pets.id</td><td>関連ペットID（任意）</td></tr>
+                  <tr><td>appointment_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>FK → appointments.id</td><td>関連予約ID（任意）</td></tr>
+                  <tr><td>invoice_id</td><td>BIGINT</td><td>YES</td><td>NULL</td><td>FK → invoices.id</td><td>関連請求書ID（任意）</td></tr>
+                  <tr><td>subject</td><td>VARCHAR(200)</td><td>NO</td><td></td><td></td><td>件名（レンダリング済み）</td></tr>
+                  <tr><td>body</td><td>TEXT</td><td>NO</td><td></td><td></td><td>本文（レンダリング済み）</td></tr>
+                  <tr><td>send_timing_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>送信予定日時</td></tr>
+                  <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (QUEUED/SENT/FAILED)</td><td>送信状態</td></tr>
+                  <tr><td>error_message</td><td>TEXT</td><td>YES</td><td>NULL</td><td></td><td>エラー内容</td></tr>
+                  <tr><td>sent_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>送信完了日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時（更新なし）</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- pet_calendar_marks -->
+            <h3 id="tbl-calendar-marks">pet_calendar_marks</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>マークID</td></tr>
+                  <tr><td>pet_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → pets.id</td><td>ペットID</td></tr>
+                  <tr><td>created_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>作成者ユーザーID</td></tr>
+                  <tr><td>mark_date</td><td>DATE</td><td>NO</td><td></td><td></td><td>マーク日付</td></tr>
+                  <tr><td>mark_type</td><td>VARCHAR(20)</td><td>NO</td><td></td><td>CHECK IN (KARTE/VACCINE/HOSPITAL/TRIMMING/DOG_RUN/MEDICINE)</td><td>マーク種別</td></tr>
+                  <tr><td>memo</td><td>VARCHAR(500)</td><td>YES</td><td>NULL</td><td></td><td>メモ</td></tr>
+                  <tr><td>deleted_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>論理削除日時</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- dismissed_reminders -->
+            <h3 id="tbl-dismissed-reminders">dismissed_reminders</h3>
+            <p class="table-note">ユーザーが確認済みにしたスケジュールリマインダーを永続化。(user_id, reminder_key) のユニーク制約で重複防止。</p>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>ID</td></tr>
+                  <tr><td>user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>ユーザーID</td></tr>
+                  <tr><td>reminder_key</td><td>VARCHAR(200)</td><td>NO</td><td></td><td></td><td>リマインダーキー（例: care_1_2026-08-01）</td></tr>
+                  <tr><td>dismissed_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>非表示設定日時</td></tr>
+                  <tr><td colspan="6" style="background:#f8fbff;font-size:12px;color:#64748b;">UNIQUE (user_id, reminder_key)</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- announcements -->
+            <h3 id="tbl-announcements">announcements</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>お知らせID</td></tr>
+                  <tr><td>title</td><td>VARCHAR(200)</td><td>NO</td><td></td><td></td><td>タイトル</td></tr>
+                  <tr><td>body</td><td>TEXT</td><td>NO</td><td></td><td></td><td>本文</td></tr>
+                  <tr><td>is_active</td><td>BOOLEAN</td><td>NO</td><td>TRUE</td><td></td><td>表示フラグ</td></tr>
+                  <tr><td>created_by_user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>作成者ユーザーID</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時</td></tr>
+                  <tr><td>updated_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>更新日時</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- password_reset_tokens -->
+            <h3 id="tbl-password-reset">password_reset_tokens</h3>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead><tr><th>カラム名</th><th>データ型</th><th>NULL許可</th><th>デフォルト値</th><th>制約</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td>id</td><td>BIGINT</td><td>NO</td><td>IDENTITY</td><td>PK</td><td>トークンID</td></tr>
+                  <tr><td>user_id</td><td>BIGINT</td><td>NO</td><td></td><td>FK → users.id</td><td>ユーザーID</td></tr>
+                  <tr><td>token</td><td>VARCHAR(100)</td><td>NO</td><td></td><td>UNIQUE</td><td>パスワードリセットトークン</td></tr>
+                  <tr><td>expires_at</td><td>TIMESTAMP</td><td>NO</td><td></td><td></td><td>有効期限</td></tr>
+                  <tr><td>used_at</td><td>TIMESTAMP</td><td>YES</td><td>NULL</td><td></td><td>使用日時（NULL=未使用）</td></tr>
+                  <tr><td>created_at</td><td>TIMESTAMP</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td></td><td>作成日時（更新なし）</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ══ Section 4: インデックス設計 ═══════════════════════════════════════ -->
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> インデックス設計</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">インデックス一覧</div>
+            <div class="table-note">検索頻度・FK結合・一意制約・ソート用途の観点で選定</div>
+            <div class="table-wrap">
+              <table class="doc-table db-table">
+                <thead>
+                  <tr>
+                    <th>テーブル名</th>
+                    <th>インデックス名</th>
+                    <th>対象カラム</th>
+                    <th>種類</th>
+                    <th>設定理由</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="group-header"><td colspan="5">Auth</td></tr>
+                  <tr><td>roles</td><td>uk_roles_role_code</td><td>role_code</td><td>UNIQUE</td><td>ロールコード一意制約</td></tr>
+                  <tr><td>users</td><td>uk_users_email</td><td>email</td><td>UNIQUE</td><td>ログインID一意制約</td></tr>
+                  <tr><td>users</td><td>idx_users_role_id</td><td>role_id</td><td>INDEX</td><td>ロール別検索・FK結合</td></tr>
+                  <tr><td>users</td><td>idx_users_status_deleted_at</td><td>status, deleted_at</td><td>INDEX</td><td>有効ユーザー絞り込み</td></tr>
+
+                  <tr class="group-header"><td colspan="5">ペット・健康管理</td></tr>
+                  <tr><td>pets</td><td>idx_pets_owner_user_id</td><td>owner_user_id</td><td>INDEX</td><td>飼い主配下のペット検索</td></tr>
+                  <tr><td>pets</td><td>idx_pets_species</td><td>species</td><td>INDEX</td><td>種別検索</td></tr>
+                  <tr><td>health_records</td><td>idx_health_records_pet_record_date</td><td>pet_id, record_date</td><td>INDEX</td><td>ペット別時系列取得</td></tr>
+                  <tr><td>health_records</td><td>idx_health_records_recorded_by_user_id</td><td>recorded_by_user_id</td><td>INDEX</td><td>記録者検索・FK結合</td></tr>
+                  <tr><td>pet_care_records</td><td>idx_pet_care_records_pet_next_due</td><td>pet_id, next_due_on</td><td>INDEX</td><td>次回予定日によるリマインダー抽出</td></tr>
+                  <tr><td>symptom_checks</td><td>idx_symptom_checks_pet_created_at</td><td>pet_id, created_at</td><td>INDEX</td><td>ペット別チェック履歴</td></tr>
+                  <tr><td>symptom_checks</td><td>idx_symptom_checks_requested_by_user_id</td><td>requested_by_user_id</td><td>INDEX</td><td>依頼者検索・FK結合</td></tr>
+
+                  <tr class="group-header"><td colspan="5">プラン・課金</td></tr>
+                  <tr><td>plans</td><td>idx_plans_is_active</td><td>is_active</td><td>INDEX</td><td>有効プラン検索</td></tr>
+                  <tr><td>subscriptions</td><td>idx_subscriptions_user_status</td><td>user_id, status</td><td>INDEX</td><td>ユーザー契約一覧・プラン判定</td></tr>
+                  <tr><td>subscriptions</td><td>idx_subscriptions_pet_status</td><td>pet_id, status</td><td>INDEX</td><td>ペット契約一覧</td></tr>
+                  <tr><td>subscriptions</td><td>idx_subscriptions_plan_id</td><td>plan_id</td><td>INDEX</td><td>プラン別集計・FK結合</td></tr>
+                  <tr><td>subscriptions</td><td>uq_subscriptions_active_user</td><td>user_id <br><small>WHERE deleted_at IS NULL AND status='ACTIVE'</small></td><td>UNIQUE (部分)</td><td>アクティブサブスクのユーザー重複防止（SchemaCompatibilityInitializer でも起動時に作成）</td></tr>
+                  <tr><td>invoices</td><td>uk_invoices_invoice_number</td><td>invoice_number</td><td>UNIQUE</td><td>請求書番号一意制約</td></tr>
+                  <tr><td>invoices</td><td>idx_invoices_subscription_id</td><td>subscription_id</td><td>INDEX</td><td>FK結合</td></tr>
+                  <tr><td>invoices</td><td>idx_invoices_payment_status_due_date</td><td>payment_status, due_date</td><td>INDEX</td><td>未払い・期限順管理</td></tr>
+                  <tr><td>payments</td><td>idx_payments_invoice_id</td><td>invoice_id</td><td>INDEX</td><td>FK結合</td></tr>
+                  <tr><td>payments</td><td>idx_payments_status</td><td>status</td><td>INDEX</td><td>決済状態別抽出</td></tr>
+
+                  <tr class="group-header"><td colspan="5">予約・診療記録</td></tr>
+                  <tr><td>appointment_slots</td><td>idx_appointment_slots_datetime</td><td>slot_datetime</td><td>INDEX</td><td>日時順検索・空き枠確認</td></tr>
+                  <tr><td>appointments</td><td>idx_appointments_slot_id</td><td>slot_id</td><td>INDEX</td><td>予約枠に紐づく予約の高速取得・FK結合</td></tr>
+                  <tr><td>appointments</td><td>idx_appointments_pet_scheduled_at</td><td>pet_id, scheduled_at</td><td>INDEX</td><td>ペット別予約一覧・ソート</td></tr>
+                  <tr><td>appointments</td><td>idx_appointments_owner_scheduled_at</td><td>owner_user_id, scheduled_at</td><td>INDEX</td><td>飼い主別予約検索</td></tr>
+                  <tr><td>appointments</td><td>idx_appointments_staff_scheduled_at</td><td>staff_user_id, scheduled_at</td><td>INDEX</td><td>担当者別予定検索</td></tr>
+                  <tr><td>appointments</td><td>idx_appointments_status_scheduled_at</td><td>status, scheduled_at</td><td>INDEX</td><td>状態別の時系列検索</td></tr>
+                  <tr><td>medical_histories</td><td>uk_medical_histories_appointment_id</td><td>appointment_id</td><td>UNIQUE</td><td>予約と診療記録の1対1担保</td></tr>
+                  <tr><td>medical_histories</td><td>idx_medical_histories_pet_performed_on</td><td>pet_id, performed_on</td><td>INDEX</td><td>ペット別履歴検索・日付順</td></tr>
+                  <tr><td>medical_attachments</td><td>idx_medical_attachments_history_id</td><td>medical_history_id</td><td>INDEX</td><td>履歴配下の添付取得</td></tr>
+
+                  <tr class="group-header"><td colspan="5">メッセージング・通知</td></tr>
+                  <tr><td>consult_chat_messages</td><td>idx_consult_chat_messages_user_id_created</td><td>user_id, created_at</td><td>INDEX</td><td>ユーザー別チャット履歴</td></tr>
+                  <tr><td>notifications</td><td>idx_notifications_created_by</td><td>created_by_user_id</td><td>INDEX</td><td>作成者別検索・FK結合</td></tr>
+                  <tr><td>notifications</td><td>idx_notifications_status_scheduled</td><td>delivery_status, scheduled_at</td><td>INDEX</td><td>配信対象抽出</td></tr>
+                  <tr><td>notification_recipients</td><td>pk_notification_recipients</td><td>notification_id, user_id</td><td>PRIMARY KEY</td><td>中間テーブル複合主キー</td></tr>
+                  <tr><td>notification_recipients</td><td>idx_notification_recipients_user_status</td><td>user_id, delivery_status</td><td>INDEX</td><td>ユーザー受信一覧</td></tr>
+                  <tr><td>email_templates</td><td>uk_email_templates_template_code</td><td>template_code</td><td>UNIQUE</td><td>テンプレートコード一意制約</td></tr>
+                  <tr><td>email_messages</td><td>idx_email_messages_recipient_created</td><td>recipient_user_id, created_at</td><td>INDEX</td><td>宛先別送信履歴</td></tr>
+                  <tr><td>email_messages</td><td>idx_email_messages_status_send_timing</td><td>status, send_timing_at</td><td>INDEX</td><td>送信キュー処理</td></tr>
+                  <tr><td>email_messages</td><td>idx_email_messages_template_id</td><td>template_id</td><td>INDEX</td><td>テンプレート別集計</td></tr>
+
+                  <tr class="group-header"><td colspan="5">UX補助</td></tr>
+                  <tr><td>pet_calendar_marks</td><td>idx_pet_calendar_marks_pet_date</td><td>pet_id, mark_date</td><td>INDEX</td><td>ペット別カレンダー取得</td></tr>
+                  <tr><td>dismissed_reminders</td><td>uk_dismissed_reminders_user_key</td><td>user_id, reminder_key</td><td>UNIQUE</td><td>ユーザー単位でのリマインダー重複防止</td></tr>
+                  <tr><td>dismissed_reminders</td><td>idx_dismissed_reminders_user_id</td><td>user_id</td><td>INDEX</td><td>ユーザー別リマインダー一覧</td></tr>
+                  <tr><td>password_reset_tokens</td><td>uk_password_reset_tokens_token</td><td>token</td><td>UNIQUE</td><td>トークン一意制約</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══ Section 5: 初期データ ══════════════════════════════════════════════ -->
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> 初期データ</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">シードデータ（data.sql）</div>
+            <div class="fill-hint">通常は data.sql でマスタ・テストデータを投入し、DataInitializer（BCrypt）は data.sql 無効時のユーザー作成フォールバックとして動作</div>
+            <div class="fill-content">
+              <pre>
+【roles】5件
+  ADMIN(1) / SUPER(2) / USER(3) / VET(4) / STAFF(5)
+
+【plans】3件
+  LIGHT(980円) / STANDARD(1980円) / PREMIUM(2980円)
+
+【plan_features】7件
+  STANDARD: AI_SYMPTOM, SLACK_BOT, LINE_BOT
+  PREMIUM:  AI_SYMPTOM, SLACK_BOT, LINE_BOT, ZOOM_CONSULT
+
+【users】通常は data.sql で投入（DataInitializer は data.sql 無効時のみフォールバック作成）
+  super@petlife.local (SUPER)
+  admin@petlife.local (ADMIN)
+  vet1@petlife.local (VET)
+  staff1@petlife.local (STAFF)
+  owner1@petlife.local / owner2@petlife.local / owner3@petlife.local (USER)
+
+【pets】6件
+  ポチ(DOG), タロウ(DOG) — owner1
+  レオン(DOG) — owner2
+  ピーコ(DOG) / カレン(DOG) / ボス(DOG) — プラン別テストアカウント用
+
+【health_records】3件（各ペットの直近記録）
+
+【pet_care_records】3件（ポチのワクチン・フィラリア・混合ワクチン）
+
+【subscriptions】3件（ユーザー単位ACTIVE1件制約。NOT EXISTSガード付き）
+  owner1→ピーコ(LIGHT) / owner2→カレン(STANDARD) / owner3→ボス(PREMIUM)
+
+実行コマンド:
+  psql -U postgres -d petlifeplus -f backend/src/main/resources/data.sql
+              </pre>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });</script>
+</body>
+
+</html>

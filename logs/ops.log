@@ -1,0 +1,8 @@
+2026-05-22 03:31:42.980|method=GET uri=/app/premium/online-care status=302 tookMs=108 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:31:43.698|method=GET uri=/app/login status=200 tookMs=705 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:31:58.423|method=POST uri=/app/login status=302 tookMs=340 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:31:58.648|method=GET uri=/app/dashboard status=200 tookMs=203 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:32:02.418|method=GET uri=/app/premium/online-care status=200 tookMs=273 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:32:08.454|method=GET uri=/app/premium/online-care status=200 tookMs=129 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:32:13.943|method=POST uri=/app/premium/online-care status=302 tookMs=221 remote=0:0:0:0:0:0:0:1
+2026-05-22 03:32:14.094|method=GET uri=/app/premium/online-care status=200 tookMs=135 remote=0:0:0:0:0:0:0:1

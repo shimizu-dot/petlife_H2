@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログイン | Pet Life Plus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/index.html">ペットライフプラス</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="global-nav" aria-label="メニューを開く">☰</button>
+    <nav id="global-nav" class="global-nav" aria-label="グローバルナビゲーション">
+      <a href="/index.html">トップ</a>
+      <a href="/f_service.html">総合案内</a>
+      <a href="/f_flow.html">導入事例と実績</a>
+      <a href="/webapp.html">ログイン</a>
+      <a href="/f_contact.html" class="btn btn-primary">お問い合わせ</a>
+    </nav>
+  </div>
+</header>
+<main id="main" class="section">
+  <div class="container container-narrow view-small">
+    <h1 style="display:flex;align-items:center;gap:10px;">
+      ログイン
+      <img th:src="@{/assets/img/dog_anime.gif}" alt=""
+           style="height:48px;width:auto;margin-left:auto;mix-blend-mode:multiply;pointer-events:none;">
+    </h1>
+
+    <div th:if="${param.error}" style="padding:10px 12px;border-radius:10px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b;margin-bottom:12px;">
+      メールアドレスまたはパスワードが正しくありません。
+    </div>
+    <div th:if="${param.suspended}" style="padding:10px 12px;border-radius:10px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b;margin-bottom:12px;">
+      アカウントが停止されました。お支払い状況をご確認のうえ、管理者にお問い合わせください。
+    </div>
+    <div th:if="${param.logout}" style="padding:10px 12px;border-radius:10px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;margin-bottom:12px;">
+      ログアウトしました。
+    </div>
+    <div th:if="${param.reset}" style="padding:10px 12px;border-radius:10px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;margin-bottom:12px;">
+      パスワードを再設定しました。新しいパスワードでログインしてください。
+    </div>
+
+    <form th:action="@{/app/login}" method="post" class="contact-form" style="margin-top:12px;" autocomplete="off">
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" type="email" name="email" placeholder="example@petlifeplus.local" autocomplete="off" required>
+      </div>
+      <div class="field">
+        <label for="password">パスワード</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="password" type="password" name="password" placeholder="••••••••" autocomplete="off" required style="flex:1;min-width:0;">
+          <button type="button" id="passwordToggle" aria-label="パスワードを表示する"
+                  onclick="togglePasswordVisibility('password', this)"
+                  style="border:1px solid #CBD5E1;background:#fff;border-radius:8px;padding:0 12px;height:42px;cursor:pointer;font-size:18px;line-height:1;">
+            👁
+          </button>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">ログイン</button>
+        <a class="btn btn-secondary" href="/index.html">トップへ戻る</a>
+      </div>
+      <div style="margin-top:16px;text-align:center;">
+        <a href="/app/forgot-password" style="color:#1D4ED8;font-size:14px;">パスワードをお忘れの方はこちら</a>
+      </div>
+    </form>
+  </div>
+</main>
+<footer class="site-footer"><div class="container footer-grid footer-grid-single"><a href="/index.html">トップ</a><a href="/f_service.html">総合案内</a><a href="/f_flow.html">導入事例と実績</a><a href="/f_info.html">運営情報・規約</a></div></footer>
+<script src="/assets/js/main.js"></script>
+<script>
+  function togglePasswordVisibility(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const visible = input.type === 'text';
+    input.type = visible ? 'password' : 'text';
+    if (button) {
+      button.textContent = visible ? '👁' : '🙈';
+      button.setAttribute('aria-label', visible ? 'パスワードを表示する' : 'パスワードを隠す');
+    }
+  }
+
+  function resetLoginFormState() {
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const passwordToggle = document.getElementById('passwordToggle');
+
+    if (emailInput) {
+      emailInput.value = '';
+    }
+    if (passwordInput) {
+      passwordInput.value = '';
+      passwordInput.type = 'password';
+    }
+    if (passwordToggle) {
+      passwordToggle.textContent = '👁';
+      passwordToggle.setAttribute('aria-label', 'パスワードを表示する');
+    }
+  }
+
+  window.addEventListener('pageshow', resetLoginFormState);
+  resetLoginFormState();
+</script>
+</body>
+</html>

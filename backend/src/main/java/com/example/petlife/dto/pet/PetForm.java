@@ -1,0 +1,55 @@
+package com.example.petlife.dto.pet;
+
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Data
+public class PetForm {
+    @NotBlank @Size(max = 100) private String name;
+    @NotBlank @Size(max = 30)  private String species;
+    @Size(max = 100)           private String breed;
+    @Size(max = 10)            private String sex;
+    @PastOrPresent
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                               private LocalDate birthDate;
+    @DecimalMin("0.0") @DecimalMax("100.0")
+                               private BigDecimal weightBaselineKg;
+
+    public PetCreateRequest toCreateRequest(Long ownerUserId) {
+        return new PetCreateRequest(ownerUserId, name, species, breed, sex, birthDate, weightBaselineKg, null);
+    }
+
+    public PetUpdateRequest toUpdateRequest(String imagePath) {
+        return new PetUpdateRequest(name, species, breed, sex, birthDate, weightBaselineKg, imagePath);
+    }
+
+    public void setName(String name) {
+        this.name = normalize(name);
+    }
+
+    public void setSpecies(String species) {
+        this.species = normalize(species);
+    }
+
+    public void setBreed(String breed) {
+        this.breed = normalize(breed);
+    }
+
+    public void setSex(String sex) {
+        this.sex = normalize(sex);
+    }
+
+    private String normalize(String value) {
+        if (value == null) return null;
+        String normalized = value.replace('\u3000', ' ').strip();
+        return normalized.isEmpty() ? null : normalized;
+    }
+}

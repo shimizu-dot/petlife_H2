@@ -1,0 +1,81 @@
+2026-06-12 12:29:30.632 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 25.0.2 with PID 63023 (/Users/academia/src/petlifeplus_site/backend/target/classes started by academia in /Users/academia/src/petlifeplus_site/backend)
+2026-06-12 12:29:30.634 INFO  [restartedMain] c.example.petlife.PetlifeApplication - The following 1 profile is active: "local"
+2026-06-12 12:29:30.663 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-12 12:29:30.663 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-12 12:29:30.708 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-06-12 12:29:31.181 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-12 12:29:31.188 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:29:31.188 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-12 12:29:31.188 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-06-12 12:29:31.201 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 538 ms
+2026-06-12 12:29:31.250 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-12 12:29:31.351 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6da5932
+2026-06-12 12:29:31.351 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-12 12:29:31.732 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-06-12 12:29:31.836 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-06-12 12:29:31.981 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:29:31.988 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-12 12:29:31.995 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.584 seconds (process running for 1.768)
+2026-06-12 12:29:50.432 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-12 12:29:50.433 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-12 12:29:50.436 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2026-06-12 12:29:50.709 WARN  [http-nio-8080-exec-4] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico for request '/favicon.ico'.]
+2026-06-12 12:30:17.112 INFO  [http-nio-8080-exec-8] c.e.petlife.service.ContactService - Contact mail sent from=202601_aw_shimizu@x-ide.sakura.ne.jp to=support@h4mizoo.shop
+2026-06-12 12:33:48.288 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-12 12:33:48.298 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-06-12 12:33:48.305 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-06-12 12:33:48.307 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-06-12 12:38:24.787 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 25.0.2 with PID 67606 (/Users/academia/src/petlifeplus_site/backend/target/classes started by academia in /Users/academia/src/petlifeplus_site/backend)
+2026-06-12 12:38:24.788 INFO  [restartedMain] c.example.petlife.PetlifeApplication - The following 1 profile is active: "local"
+2026-06-12 12:38:24.814 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-12 12:38:24.814 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-12 12:38:24.869 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-06-12 12:38:25.320 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-12 12:38:25.326 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:38:25.327 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-12 12:38:25.327 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-06-12 12:38:25.339 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 525 ms
+2026-06-12 12:38:25.384 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-12 12:38:25.482 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@18a5e90c
+2026-06-12 12:38:25.482 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-12 12:38:25.772 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-06-12 12:38:25.849 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-06-12 12:38:25.991 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:38:25.998 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-12 12:38:26.003 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.455 seconds (process running for 1.645)
+2026-06-12 12:38:36.656 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-12 12:38:36.656 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-12 12:38:36.658 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-06-12 12:40:31.611 INFO  [http-nio-8080-exec-6] c.e.petlife.service.ContactService - Contact mail sent from=202601_aw_shimizu@x-ide.sakura.ne.jp to=support@h4mizoo.shop
+2026-06-12 12:48:12.995 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-12 12:48:13.013 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-06-12 12:48:13.023 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-06-12 12:48:13.025 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-06-12 12:49:28.964 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 25.0.2 with PID 73521 (/Users/academia/src/petlifeplus_site/backend/target/classes started by academia in /Users/academia/src/petlifeplus_site/backend)
+2026-06-12 12:49:28.965 INFO  [restartedMain] c.example.petlife.PetlifeApplication - The following 1 profile is active: "local"
+2026-06-12 12:49:28.989 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-12 12:49:28.989 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-12 12:49:29.043 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-06-12 12:49:29.502 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-12 12:49:29.508 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:49:29.508 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-12 12:49:29.508 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-06-12 12:49:29.521 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 532 ms
+2026-06-12 12:49:29.568 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-12 12:49:29.675 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3a851bcc
+2026-06-12 12:49:29.675 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-12 12:49:29.977 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-06-12 12:49:30.055 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-06-12 12:49:30.214 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-06-12 12:49:30.221 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-12 12:49:30.227 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.491 seconds (process running for 1.682)
+2026-06-12 12:49:39.500 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-12 12:49:39.501 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-12 12:49:39.503 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-12 12:50:17.705 INFO  [http-nio-8080-exec-2] c.e.petlife.service.ContactService - Contact mail sent from=202601_aw_shimizu@x-ide.sakura.ne.jp to=support@h4mizoo.shop
+2026-06-12 13:18:07.342 WARN  [http-nio-8080-exec-6] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource img/dog_anime.gif for request '/assets/img/dog_anime.gif'.]
+2026-06-12 13:37:10.510 WARN  [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m10s414ms).
+2026-06-12 13:39:54.016 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-12 13:39:54.053 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-06-12 13:39:54.062 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-06-12 13:39:54.063 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

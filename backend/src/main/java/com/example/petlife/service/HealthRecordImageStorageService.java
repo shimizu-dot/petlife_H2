@@ -1,0 +1,62 @@
+package com.example.petlife.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Set;
+import java.util.UUID;
+
+@Service
+public class HealthRecordImageStorageService {
+
+    private static final Set<String> ALLOWED_TYPES = Set.of("image/jpeg", "image/png", "image/webp", "image/gif");
+
+    @Value("${app.upload.dir:uploads}")
+    private String uploadDir;
+
+    public String store(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+        if (!ALLOWED_TYPES.contains(file.getContentType())) {
+            throw new IllegalArgumentException("画像ファイル（jpeg/png/webp/gif）のみアップロードできます");
+        }
+
+        String filename = UUID.randomUUID() + ".png";
+        Path dir = Paths.get(uploadDir, "health-records");
+        Path dst = dir.resolve(filename);
+        try {
+            Files.createDirectories(dir);
+            int orientation = ImageOrientationUtil.readOrientation(file.getInputStream());
+            BufferedImage src = ImageIO.read(file.getInputStream());
+            if (src == null) {
+                throw new IllegalArgumentException("画像の読み込みに失敗しました。jpeg/png/gif 形式を利用してください");
+            }
+            src = ImageOrientationUtil.applyOrientation(src, orientation);
+            int maxPx = 600;
+            int sw = src.getWidth(), sh = src.getHeight();
+            double scale = Math.min(1.0, Math.min((double) maxPx / sw, (double) maxPx / sh));
+            int w = Math.max(1, (int)(sw * scale));
+            int h = Math.max(1, (int)(sh * scale));
+            BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = resized.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.drawImage(src, 0, 0, w, h, null);
+            g.dispose();
+            ImageIO.write(resized, "png", dst.toFile());
+        } catch (IOException e) {
+            throw new RuntimeException("画像保存に失敗しました", e);
+        }
+        return "/uploads/health-records/" + filename;
+    }
+}

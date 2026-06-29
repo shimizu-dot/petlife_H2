@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>通知 | Pet Life Plus</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body th:class="${bodyClass}">
+<div class="layout">
+  <div th:replace="~{fragments/nav :: sidebar}"></div>
+
+  <div class="main">
+    <div class="topbar"><span class="topbar-title">通知</span></div>
+    <div class="content">
+
+      <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+      <div class="page-header">
+        <h1 class="page-title">通知一覧
+          <span th:if="${unreadCount > 0}" class="badge badge-blue" th:text="${unreadCount} + ' 件未読'"></span>
+        </h1>
+        <form th:if="${unreadCount > 0}" th:action="@{/app/notifications/read-all}" method="post">
+          <button type="submit" class="btn btn-secondary">すべて既読にする</button>
+        </form>
+      </div>
+
+      <!-- 予定・お知らせリマインダー -->
+      <div class="card" style="margin-bottom:20px;">
+        <div style="padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#f8fafc;display:flex;align-items:center;gap:10px;">
+          <strong>予定・お知らせ（30日以内）</strong>
+          <span th:if="${!scheduleReminders.isEmpty()}"
+                class="badge badge-blue"
+                th:text="${#lists.size(scheduleReminders)} + ' 件'"></span>
+        </div>
+
+        <div th:if="${scheduleReminders.isEmpty()}"
+             style="color:#64748b;padding:20px;text-align:center;">
+          30日以内の予定通知はありません
+        </div>
+
+        <div th:each="r : ${scheduleReminders}"
+             th:with="isInfo=${r.notificationType() == 'INFO'}"
+             th:style="${isInfo} ? 'padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#fefce8;' : 'padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#f0f9ff;'">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div style="flex:1;">
+              <!-- バッジ：種別ごとに色分け -->
+              <span th:if="${r.notificationType() == 'REMINDER'}" class="badge badge-blue">リマインダー</span>
+              <span th:if="${r.notificationType() == 'INFO'}" class="badge badge-yellow">更新お知らせ</span>
+              <span th:if="${r.confirmed()}" class="badge badge-gray" style="margin-left:8px;">確認済み</span>
+              <strong style="margin-left:8px;" th:text="${r.title()}">予定通知</strong>
+              <div style="margin-top:6px;color:#475569;" th:text="${r.body()}">本文</div>
+              <div th:if="${r.actionUrl() != null and !#strings.isEmpty(r.actionUrl())}" style="margin-top:8px;">
+                <a class="btn btn-secondary zoom-join-btn"
+                   target="_blank" rel="noopener"
+                   th:attr="data-href=${r.actionUrl()},data-scheduled-at=${#temporals.format(r.scheduledAt(), 'yyyy-MM-dd''T''HH:mm:ss')}"
+                   style="font-size:.82em;padding:4px 10px;opacity:0.4;cursor:not-allowed;pointer-events:none;">Zoomに参加</a>
+              </div>
+              <div style="font-size:.8em;color:#94a3b8;margin-top:4px;"
+                   th:text="${#temporals.format(r.scheduledAt(), 'yyyy-MM-dd')}">2026-05-01</div>
+            </div>
+            <!-- 確認ボタン -->
+            <form th:if="${!r.confirmed()}" th:action="@{/app/notifications/reminders/dismiss}" method="post"
+                  style="flex-shrink:0;">
+              <input type="hidden" name="reminderKey" th:value="${r.key()}">
+              <button type="submit" class="btn btn-primary"
+                      style="font-size:.85em;padding:5px 12px;">確認</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 配信済み通知 -->
+      <div class="card">
+        <div style="padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+          <strong>配信済み通知</strong>
+        </div>
+        <div th:if="${notifications.isEmpty()}" style="color:#64748b;text-align:center;padding:24px;">
+          通知はありません
+        </div>
+        <div th:each="n : ${notifications}"
+             th:style="${n.isUnread()} ? 'padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#f0f9ff;' : 'padding:14px 16px;border-bottom:1px solid #e2e8f0;'">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div>
+              <span th:class="${n.notificationType() == 'ALERT' ? 'badge badge-yellow' : n.notificationType() == 'REMINDER' ? 'badge badge-blue' : 'badge badge-gray'}"
+                    th:text="${n.notificationType() == 'ALERT' ? '警告' : n.notificationType() == 'REMINDER' ? 'リマインダー' : 'お知らせ'}">お知らせ</span>
+              <strong style="margin-left:8px;" th:text="${n.title()}">タイトル</strong>
+              <span th:if="${n.isUnread()}" style="color:#0ea5e9;font-size:.8em;margin-left:6px;">●未読</span>
+              <div class="notification-body" style="margin-top:6px;color:#475569;white-space:pre-line;" th:text="${n.body()}">本文</div>
+              <div style="font-size:.8em;color:#94a3b8;margin-top:4px;"
+                   th:text="${#temporals.format(n.createdAt(), 'yyyy-MM-dd HH:mm')}">2026-05-01 10:00</div>
+            </div>
+            <form th:if="${n.isUnread()}" th:action="@{/app/notifications/{id}/read(id=${n.id()})}" method="post"
+                  style="flex-shrink:0;">
+              <button type="submit" class="btn btn-secondary" style="font-size:.85em;padding:4px 10px;">既読</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-summary" th:if="${total > 0}"
+           th:text="'全' + ${total} + '件中 ' + ${((page - 1) * size + 1)} + '-' + ${((page - 1) * size + #lists.size(notifications))} + '件'">
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var DURATION_MIN = 30;
+  var BUFFER_MIN   = 10;
+
+  document.querySelectorAll('.zoom-join-btn').forEach(function (btn) {
+    /* data-scheduled-at は "yyyy-MM-ddTHH:mm:ss" 形式（ローカル時刻） */
+    var isoStr      = btn.dataset.scheduledAt.replace('T', ' '); /* スペース区切りはすべてのブラウザでローカル時刻 */
+    var start       = new Date(isoStr);
+    var windowStart = new Date(start.getTime() - BUFFER_MIN * 60000);
+    var windowEnd   = new Date(start.getTime() + (DURATION_MIN + BUFFER_MIN) * 60000);
+    var href        = btn.dataset.href;
+
+    /* クリックガード：pointer-events をすり抜けた場合も防ぐ */
+    btn.addEventListener('click', function (e) {
+      var now = new Date();
+      if (now < windowStart || now > windowEnd) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+
+    function update() {
+      var now    = new Date();
+      var active = now >= windowStart && now <= windowEnd;
+      if (active) {
+        btn.setAttribute('href', href);
+        btn.style.opacity       = '';
+        btn.style.cursor        = '';
+        btn.style.pointerEvents = '';
+        btn.removeAttribute('title');
+      } else {
+        btn.removeAttribute('href');
+        btn.style.opacity       = '0.4';
+        btn.style.cursor        = 'not-allowed';
+        btn.style.pointerEvents = 'none';
+        var diffMs = windowStart - now;
+        btn.title = diffMs > 0
+          ? '開始 ' + Math.ceil(diffMs / 60000) + ' 分前から参加できます'
+          : '参加時間が終了しました';
+      }
+    }
+
+    update();
+    setInterval(update, 30000);
+  });
+}());
+
+(function () {
+  function escapeAttr(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function normalizeUrl(url) {
+    try {
+      var u = new URL(url, window.location.origin);
+      if ((u.hostname === 'localhost' || u.hostname === '127.0.0.1') && u.pathname.startsWith('/app/')) {
+        return window.location.origin + u.pathname + u.search + u.hash;
+      }
+      return u.toString();
+    } catch (e) {
+      return url;
+    }
+  }
+
+  var urlPattern = /(https?:\/\/[^\s]+|\/app\/invoices\/\d+)/g;
+  document.querySelectorAll('.notification-body').forEach(function (el) {
+    var text = el.textContent || '';
+    if (!urlPattern.test(text)) return;
+    urlPattern.lastIndex = 0;
+    var html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(urlPattern, function (rawUrl, _m, offset, source) {
+        var href = normalizeUrl(rawUrl);
+        var start = source.lastIndexOf('\n', offset) + 1;
+        var end = source.indexOf('\n', offset);
+        if (end < 0) end = source.length;
+        var line = source.slice(start, end);
+        var label = line.indexOf('領収書') >= 0 ? '領収書を開く' : '請求書を開く';
+        return '<a href="' + escapeAttr(href) + '" target="_blank" rel="noopener">' + label + '</a>';
+      })
+      .replace(/\n/g, '<br>');
+    el.innerHTML = html;
+  });
+}());
+</script>
+</body>
+</html>
