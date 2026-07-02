@@ -18,3 +18,8 @@
 2026-07-02 13:43:45.083|action=user_create userId=10 email=owner@example.com roleId=3
 2026-07-02 13:43:45.086|action=user_plan_create userId=10 plan=LIGHT
 2026-07-02 13:43:45.086|action=user_update userId=10 roleId=3 status=ACTIVE
+2026-07-02 14:40:22.802|action=slack_signature_invalid timestamp=123 sigPresent=true
+2026-07-02 14:40:22.852|action=user_delete userId=10
+2026-07-02 14:40:22.858|action=user_create userId=10 email=owner@example.com roleId=3
+2026-07-02 14:40:22.861|action=user_plan_create userId=10 plan=LIGHT
+2026-07-02 14:40:22.861|action=user_update userId=10 roleId=3 status=ACTIVE

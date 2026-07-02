@@ -4945,3 +4945,21 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 2026-07-02 14:07:38.316 WARN  [http-nio-8080-exec-8] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource img/dog_anime.gif for request '/assets/img/dog_anime.gif'.]
 2026-07-02 14:08:30.964 WARN  [http-nio-8080-exec-10] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource js/main.js for request '/js/main.js'.]
 2026-07-02 14:08:34.222 WARN  [http-nio-8080-exec-7] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource js/main.js for request '/js/main.js'.]
+2026-07-02 14:40:21.088 INFO  [main] c.e.p.mapper.SubscriptionMapperTest - Starting SubscriptionMapperTest using Java 21.0.10 with PID 29097 (started by academia in /Users/academia/src/petlife_H2/backend)
+2026-07-02 14:40:21.090 INFO  [main] c.e.p.mapper.SubscriptionMapperTest - No active profile set, falling back to 1 default profile: "default"
+2026-07-02 14:40:21.202 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-02 14:40:21.545 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-02 14:40:21.636 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:petlifeplus user=SA
+2026-07-02 14:40:21.636 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-02 14:40:22.057 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-07-02 14:40:22.157 INFO  [main] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-07-02 14:40:22.386 INFO  [main] c.e.p.mapper.SubscriptionMapperTest - Started SubscriptionMapperTest in 1.48 seconds (process running for 2.425)
+2026-07-02 14:40:22.468 INFO  [main] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.example.petlife.mapper.H2ReturningCompatibilityTest]: H2ReturningCompatibilityTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-02 14:40:22.469 INFO  [main] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.example.petlife.PetlifeApplication for test class com.example.petlife.mapper.H2ReturningCompatibilityTest
+2026-07-02 14:40:22.469 INFO  [main] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.example.petlife.mapper.H2ReturningCompatibilityTest]: H2ReturningCompatibilityTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-02 14:40:22.469 INFO  [main] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.example.petlife.PetlifeApplication for test class com.example.petlife.mapper.H2ReturningCompatibilityTest
+2026-07-02 14:40:23.063 INFO  [main] c.e.petlife.service.ContactService - Contact mail sent from=yamada@example.com to=support@h4mizoo.shop
+2026-07-02 14:40:23.074 INFO  [main] c.e.p.service.PasswordResetService - Password reset email sent to user id=10 to=owner@example.com
+2026-07-02 14:40:23.075 INFO  [main] c.e.p.service.PasswordResetService - Password reset requested for unknown email: missing@example.com
+2026-07-02 14:40:23.098 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-02 14:40:23.099 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
