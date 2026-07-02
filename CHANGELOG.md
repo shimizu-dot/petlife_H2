@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## [2026-07-02]
+
+### ドキュメント更新（Low — application.properties の unknown property 警告を解消）
+
+#### D-L18 — 追加の Spring 設定メタデータに不足分を登録
+- **変更ファイル:**
+  - `backend/src/main/resources/META-INF/additional-spring-configuration-metadata.json`
+  - `backend/pom.xml`
+  - `CHANGELOG.md`
+- **変更内容:**
+  1. `spring.h2.console.enabled` / `spring.h2.console.path` をメタデータに追加し、H2 Console 関連の警告を解消できるようにした
+  2. `sendgrid.*`、`contact.to-email`、`password-reset.rate-limit-minutes` を追加し、自前設定キーの unknown property 警告を解消できるようにした
+  3. `spring-boot-configuration-processor` をコンパイラの annotation processor に明示して、生成メタデータが IDE に拾われやすいようにした
+  4. 既存の `mail.*` と同じ方式で IDE 補完対象に載せ、設定ファイルの可読性を保った
+
 ## [2026-06-29]
 
 ### 構成変更（Medium — PostgreSQL から H2 へ切り替え）

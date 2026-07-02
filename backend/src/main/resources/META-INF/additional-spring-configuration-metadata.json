@@ -1,6 +1,18 @@
 {
   "properties": [
     {
+      "name": "spring.h2.console.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to expose the H2 console at the configured path.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.h2.console.path",
+      "type": "java.lang.String",
+      "description": "Path used to access the H2 console.",
+      "defaultValue": "/h2-console"
+    },
+    {
       "name": "app.login-maintenance-mode",
       "type": "java.lang.Boolean",
       "description": "When true, the login page redirects to the maintenance page instead of showing the login form.",
@@ -106,10 +118,33 @@
       "defaultValue": "ペットライフプラス"
     },
     {
+      "name": "sendgrid.from-email",
+      "type": "java.lang.String",
+      "description": "Sender email address used by billing and contact mail flows.",
+      "defaultValue": "noreply@petlife.local"
+    },
+    {
+      "name": "sendgrid.from-name",
+      "type": "java.lang.String",
+      "description": "Sender display name used by billing and contact mail flows.",
+      "defaultValue": "ペットライフプラス"
+    },
+    {
+      "name": "contact.to-email",
+      "type": "java.lang.String",
+      "description": "Destination email address for contact form submissions."
+    },
+    {
       "name": "app.base-url",
       "type": "java.lang.String",
       "description": "Public base URL of the application, used when generating password reset links in emails.",
       "defaultValue": "http://localhost:8080"
+    },
+    {
+      "name": "password-reset.rate-limit-minutes",
+      "type": "java.lang.Integer",
+      "description": "Minimum number of minutes between password reset requests for the same user.",
+      "defaultValue": 15
     },
     {
       "name": "admin.slack-user-ids",

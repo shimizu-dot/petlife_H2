@@ -168,7 +168,7 @@ FROM users u WHERE u.email = 'owner1@petlife.local'
 
 -- owner1 → LIGHT
 INSERT INTO subscriptions (user_id, plan_id, start_date, status, auto_renew)
-SELECT u.id, 1, CURRENT_DATE - INTERVAL '30 days', 'ACTIVE', true
+SELECT u.id, 1, DATEADD('DAY', -30, CURRENT_DATE), 'ACTIVE', true
 FROM users u
 WHERE u.email = 'owner1@petlife.local'
   AND NOT EXISTS (
@@ -177,7 +177,7 @@ WHERE u.email = 'owner1@petlife.local'
 
 -- owner2 → STANDARD
 INSERT INTO subscriptions (user_id, plan_id, start_date, status, auto_renew)
-SELECT u.id, 2, CURRENT_DATE - INTERVAL '30 days', 'ACTIVE', true
+SELECT u.id, 2, DATEADD('DAY', -30, CURRENT_DATE), 'ACTIVE', true
 FROM users u
 WHERE u.email = 'owner2@petlife.local'
   AND NOT EXISTS (
@@ -186,7 +186,7 @@ WHERE u.email = 'owner2@petlife.local'
 
 -- owner3 → PREMIUM
 INSERT INTO subscriptions (user_id, plan_id, start_date, status, auto_renew)
-SELECT u.id, 3, CURRENT_DATE - INTERVAL '30 days', 'ACTIVE', true
+SELECT u.id, 3, DATEADD('DAY', -30, CURRENT_DATE), 'ACTIVE', true
 FROM users u
 WHERE u.email = 'owner3@petlife.local'
   AND NOT EXISTS (
