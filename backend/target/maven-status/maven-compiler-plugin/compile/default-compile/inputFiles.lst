@@ -158,3 +158,4 @@
 /Users/academia/src/petlife_H2/backend/src/main/java/com/example/petlife/service/line/LineUserLinkService.java
 /Users/academia/src/petlife_H2/backend/src/main/java/com/example/petlife/service/slack/SlackBotService.java
 /Users/academia/src/petlife_H2/backend/src/main/java/com/example/petlife/service/slack/SlackRequestVerifier.java
+/Users/academia/src/petlife_H2/backend/src/main/java/com/example/petlife/util/RecordParams.java

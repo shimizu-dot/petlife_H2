@@ -2,18 +2,23 @@ package com.example.petlife.mapper;
 
 import com.example.petlife.entity.HealthRecordPetDateEntity;
 import com.example.petlife.entity.PetCareRecordEntity;
+import com.example.petlife.util.RecordParams;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PetCareRecordMapper {
 
-    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO pet_care_records(
             pet_id, recorded_by_user_id, care_type, administered_on, next_due_on, memo,
             created_at, updated_at
@@ -22,9 +27,15 @@ public interface PetCareRecordMapper {
             #{petId}, #{recordedByUserId}, #{careType}, #{administeredOn}, #{nextDueOn}, #{memo},
             CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         )
-        RETURNING id
         """)
-    Long insertReturningId(PetCareRecordEntity row);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insertReturningId(PetCareRecordEntity row) {
+        Map<String, Object> params = RecordParams.toMap(row);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Select("""
         SELECT id, pet_id, recorded_by_user_id, care_type, administered_on, next_due_on, memo,

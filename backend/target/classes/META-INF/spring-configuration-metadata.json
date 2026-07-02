@@ -1,0 +1,205 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "admin.line-user-ids",
+      "type": "java.lang.String",
+      "description": "Comma-separated LINE user IDs that receive admin-level bot notifications."
+    },
+    {
+      "name": "admin.slack-user-ids",
+      "type": "java.lang.String",
+      "description": "Comma-separated Slack user IDs that receive admin-level bot notifications."
+    },
+    {
+      "name": "app.base-url",
+      "type": "java.lang.String",
+      "description": "Public base URL of the application, used when generating password reset links in emails.",
+      "defaultValue": "http:\/\/localhost:8080"
+    },
+    {
+      "name": "app.login-maintenance-mode",
+      "type": "java.lang.Boolean",
+      "description": "When true, the login page redirects to the maintenance page instead of showing the login form.",
+      "defaultValue": false
+    },
+    {
+      "name": "app.upload.dir",
+      "type": "java.lang.String",
+      "description": "Base directory for uploaded images (pet\/health-record). Use an absolute path in production (e.g. \/data\/uploads). Override with UPLOAD_DIR env var.",
+      "defaultValue": "uploads"
+    },
+    {
+      "name": "billing.bank-account-holder",
+      "type": "java.lang.String",
+      "description": "振込先口座名義（例: PetLife 事務局）。",
+      "defaultValue": "PetLife 事務局"
+    },
+    {
+      "name": "billing.bank-account-number",
+      "type": "java.lang.String",
+      "description": "振込先口座番号（例: 12345678）。",
+      "defaultValue": "12345678"
+    },
+    {
+      "name": "billing.bank-branch",
+      "type": "java.lang.String",
+      "description": "振込先支店名（例: △△支店）。",
+      "defaultValue": "△△支店"
+    },
+    {
+      "name": "billing.bank-name",
+      "type": "java.lang.String",
+      "description": "振込先銀行名（例: 〇〇銀行）。請求通知メッセージに埋め込まれる。",
+      "defaultValue": "〇〇銀行"
+    },
+    {
+      "name": "billing.paypay-id",
+      "type": "java.lang.String",
+      "description": "PayPay 送金先 ID。QR URL 未設定時にテキスト案内として通知に含まれる。"
+    },
+    {
+      "name": "billing.paypay-qr-url",
+      "type": "java.lang.String",
+      "description": "PayPay QR コード画像の URL。設定するとメール HTML に <img> として埋め込まれる。未設定時はテキスト案内のみ。"
+    },
+    {
+      "name": "chatbot.api-key",
+      "type": "java.lang.String",
+      "description": "API key for chatbot consultation (F-022 \/ ConsultChatService). Defaults to Groq free tier. When empty, falls back to keyword-based fallbackReply()."
+    },
+    {
+      "name": "chatbot.base-url",
+      "type": "java.lang.String",
+      "description": "Chatbot API base URL (OpenAI-compatible). Defaults to Groq. Override for OpenAI or other providers.",
+      "defaultValue": "https:\/\/api.groq.com\/openai\/v1"
+    },
+    {
+      "name": "chatbot.model",
+      "type": "java.lang.String",
+      "description": "Model ID for chatbot. Defaults to Groq llama-3.1-8b-instant (free tier).",
+      "defaultValue": "llama-3.1-8b-instant"
+    },
+    {
+      "name": "contact.to-email",
+      "type": "java.lang.String",
+      "description": "Destination email address for contact form submissions."
+    },
+    {
+      "name": "line.channel-secret",
+      "type": "java.lang.String",
+      "description": "LINE Messaging API channel secret for validating webhook signatures."
+    },
+    {
+      "name": "line.channel-token",
+      "type": "java.lang.String",
+      "description": "LINE Messaging API channel access token. Leave empty to disable LINE push\/reply features."
+    },
+    {
+      "name": "mail.from-email",
+      "type": "java.lang.String",
+      "description": "Sender email address for password reset emails.",
+      "defaultValue": "noreply@petlifeplus.local"
+    },
+    {
+      "name": "mail.from-name",
+      "type": "java.lang.String",
+      "description": "Sender display name for password reset emails.",
+      "defaultValue": "ペットライフプラス"
+    },
+    {
+      "name": "openai.api-key",
+      "type": "java.lang.String",
+      "description": "OpenAI API key for AI symptom check (F-009 \/ SymptomCheckService). When empty, falls back to keyword-based heuristics."
+    },
+    {
+      "name": "openai.base-url",
+      "type": "java.lang.String",
+      "description": "OpenAI API base URL. Override for Azure OpenAI or compatible proxies.",
+      "defaultValue": "https:\/\/api.openai.com\/v1"
+    },
+    {
+      "name": "openai.model",
+      "type": "java.lang.String",
+      "description": "OpenAI model ID for AI symptom checks.",
+      "defaultValue": "gpt-4.1-mini"
+    },
+    {
+      "name": "password-reset.rate-limit-minutes",
+      "type": "java.lang.Integer",
+      "description": "Minimum number of minutes between password reset requests for the same user.",
+      "defaultValue": 15
+    },
+    {
+      "name": "sendgrid.from-email",
+      "type": "java.lang.String",
+      "description": "Sender email address used by billing and contact mail flows.",
+      "defaultValue": "noreply@petlife.local"
+    },
+    {
+      "name": "sendgrid.from-name",
+      "type": "java.lang.String",
+      "description": "Sender display name used by billing and contact mail flows.",
+      "defaultValue": "ペットライフプラス"
+    },
+    {
+      "name": "slack.bot-token",
+      "type": "java.lang.String",
+      "description": "Slack Bot Token (xoxb-...) for Slack integration. Leave empty to disable Slack features."
+    },
+    {
+      "name": "slack.signing-secret",
+      "type": "java.lang.String",
+      "description": "Slack Signing Secret for verifying incoming Slack event requests."
+    },
+    {
+      "name": "spring.h2.console.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to expose the H2 console at the configured path.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.h2.console.path",
+      "type": "java.lang.String",
+      "description": "Path used to access the H2 console.",
+      "defaultValue": "\/h2-console"
+    },
+    {
+      "name": "zoom.account-id",
+      "type": "java.lang.String",
+      "description": "Zoom account ID for Server-to-Server OAuth."
+    },
+    {
+      "name": "zoom.api-base-url",
+      "type": "java.lang.String",
+      "description": "Zoom REST API base URL.",
+      "defaultValue": "https:\/\/api.zoom.us\/v2"
+    },
+    {
+      "name": "zoom.client-id",
+      "type": "java.lang.String",
+      "description": "Zoom OAuth client ID."
+    },
+    {
+      "name": "zoom.client-secret",
+      "type": "java.lang.String",
+      "description": "Zoom OAuth client secret."
+    },
+    {
+      "name": "zoom.meeting-base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for Zoom meeting links (e.g. https:\/\/zoom.us\/j).",
+      "defaultValue": "https:\/\/zoom.us\/j"
+    },
+    {
+      "name": "zoom.oauth-base-url",
+      "type": "java.lang.String",
+      "description": "Zoom OAuth token endpoint base URL.",
+      "defaultValue": "https:\/\/zoom.us\/oauth\/token"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}

@@ -2,7 +2,10 @@ package com.example.petlife.mapper;
 
 import com.example.petlife.entity.HealthRecordEntity;
 import com.example.petlife.entity.HealthRecordPetDateEntity;
+import com.example.petlife.util.RecordParams;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -10,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface HealthRecordMapper {
@@ -87,17 +91,24 @@ public interface HealthRecordMapper {
     HealthRecordEntity findById(@Param("id") Long id);
 
     // ---- 更新系 ----
-    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO health_records(pet_id, recorded_by_user_id, record_date, weight_kg,
                                    meal_memo, exercise_minutes, meal_score, exercise_score, sleep_score, mood_score, overall_score,
                                    image_path, note, created_at, updated_at)
         VALUES(#{petId}, #{recordedByUserId}, #{recordDate}, #{weightKg}, #{mealMemo},
                #{exerciseMinutes}, #{mealScore}, #{exerciseScore}, #{sleepScore}, #{moodScore}, #{overallScore},
                #{imagePath}, #{note}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insertReturningId(HealthRecordEntity row);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insertReturningId(HealthRecordEntity row) {
+        Map<String, Object> params = RecordParams.toMap(row);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Update("""
         UPDATE health_records

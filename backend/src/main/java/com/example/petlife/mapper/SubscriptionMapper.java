@@ -34,14 +34,17 @@ public interface SubscriptionMapper {
         FROM subscriptions s
         JOIN plans p ON p.id = s.plan_id
         JOIN users u ON u.id = s.user_id
-        LEFT JOIN LATERAL (
-            SELECT pet.name
+        LEFT JOIN (
+            SELECT pet.owner_user_id, pet.name
             FROM pets pet
-            WHERE pet.owner_user_id = s.user_id
-              AND pet.deleted_at IS NULL
-            ORDER BY pet.id
-            LIMIT 1
-        ) rep_pet ON TRUE
+            WHERE pet.deleted_at IS NULL
+              AND pet.id = (
+                  SELECT MIN(p2.id)
+                  FROM pets p2
+                  WHERE p2.owner_user_id = pet.owner_user_id
+                    AND p2.deleted_at IS NULL
+              )
+        ) rep_pet ON rep_pet.owner_user_id = s.user_id
         WHERE s.deleted_at IS NULL AND s.id = #{id} AND s.user_id = #{userId}
         LIMIT 1
         """)
@@ -55,14 +58,17 @@ public interface SubscriptionMapper {
         FROM subscriptions s
         JOIN plans p ON p.id = s.plan_id
         JOIN users u ON u.id = s.user_id
-        LEFT JOIN LATERAL (
-            SELECT pet.name
+        LEFT JOIN (
+            SELECT pet.owner_user_id, pet.name
             FROM pets pet
-            WHERE pet.owner_user_id = s.user_id
-              AND pet.deleted_at IS NULL
-            ORDER BY pet.id
-            LIMIT 1
-        ) rep_pet ON TRUE
+            WHERE pet.deleted_at IS NULL
+              AND pet.id = (
+                  SELECT MIN(p2.id)
+                  FROM pets p2
+                  WHERE p2.owner_user_id = pet.owner_user_id
+                    AND p2.deleted_at IS NULL
+              )
+        ) rep_pet ON rep_pet.owner_user_id = s.user_id
         WHERE s.deleted_at IS NULL AND s.user_id = #{userId}
         ORDER BY s.start_date DESC, s.id DESC
         LIMIT #{limit} OFFSET #{offset}
@@ -82,14 +88,17 @@ public interface SubscriptionMapper {
         FROM subscriptions s
         JOIN plans p ON p.id = s.plan_id
         JOIN users u ON u.id = s.user_id
-        LEFT JOIN LATERAL (
-            SELECT pet.name
+        LEFT JOIN (
+            SELECT pet.owner_user_id, pet.name
             FROM pets pet
-            WHERE pet.owner_user_id = s.user_id
-              AND pet.deleted_at IS NULL
-            ORDER BY pet.id
-            LIMIT 1
-        ) rep_pet ON TRUE
+            WHERE pet.deleted_at IS NULL
+              AND pet.id = (
+                  SELECT MIN(p2.id)
+                  FROM pets p2
+                  WHERE p2.owner_user_id = pet.owner_user_id
+                    AND p2.deleted_at IS NULL
+              )
+        ) rep_pet ON rep_pet.owner_user_id = s.user_id
         WHERE s.deleted_at IS NULL
         ORDER BY s.start_date DESC, s.id DESC
         LIMIT #{limit} OFFSET #{offset}
@@ -107,19 +116,22 @@ public interface SubscriptionMapper {
         FROM subscriptions s
         JOIN plans p ON p.id = s.plan_id
         JOIN users u ON u.id = s.user_id
-        LEFT JOIN LATERAL (
-            SELECT pet.name
+        LEFT JOIN (
+            SELECT pet.owner_user_id, pet.name
             FROM pets pet
-            WHERE pet.owner_user_id = s.user_id
-              AND pet.deleted_at IS NULL
-            ORDER BY pet.id
-            LIMIT 1
-        ) rep_pet ON TRUE
+            WHERE pet.deleted_at IS NULL
+              AND pet.id = (
+                  SELECT MIN(p2.id)
+                  FROM pets p2
+                  WHERE p2.owner_user_id = pet.owner_user_id
+                    AND p2.deleted_at IS NULL
+              )
+        ) rep_pet ON rep_pet.owner_user_id = s.user_id
         WHERE s.deleted_at IS NULL
           AND s.user_id = #{userId}
           AND s.status = 'ACTIVE'
           AND s.end_date IS NOT NULL
-          AND s.end_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '30 days'
+          AND s.end_date BETWEEN CURRENT_DATE AND DATEADD('DAY', 30, CURRENT_DATE)
         ORDER BY s.end_date
         """)
     List<SubscriptionRow> findUpcomingRenewalsByUserId(@Param("userId") Long userId);

@@ -4,10 +4,12 @@ import com.example.petlife.dto.notification.NotificationRow;
 import com.example.petlife.dto.notification.NotificationManageRow;
 import com.example.petlife.dto.subscription.RenewalHistoryRow;
 import com.example.petlife.entity.NotificationEntity;
+import com.example.petlife.util.RecordParams;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface NotificationMapper {
@@ -74,15 +76,22 @@ public interface NotificationMapper {
         """)
     NotificationEntity findById(@Param("id") Long id);
 
-    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO notifications(notification_type, title, body, scheduled_at,
             delivery_status, created_by_user_id, created_at, updated_at)
         VALUES(#{notificationType}, #{title}, #{body}, #{scheduledAt},
             #{deliveryStatus}, #{createdByUserId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insertReturningId(NotificationEntity notification);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insertReturningId(NotificationEntity notification) {
+        Map<String, Object> params = RecordParams.toMap(notification);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Update("""
         UPDATE notifications
@@ -164,19 +173,22 @@ public interface NotificationMapper {
 
     // --- サブスクリプション更新申請 ---
 
+    // H2 は LEFT JOIN LATERAL 未対応のため、各サブスクリプションで最初(issued_at, id 昇順)の
+    // 請求書1件だけをスカラーサブクエリ(ORDER BY + LIMIT 1)で選び出す形の LEFT JOIN に置き換えている
     @Select("""
         SELECT CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
         FROM notifications n
-        LEFT JOIN LATERAL (
-            SELECT i.payment_status
-            FROM invoices i
-            WHERE i.subscription_id = CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
-              AND i.deleted_at IS NULL
-              AND i.issued_at IS NOT NULL
-              AND i.issued_at >= n.created_at
-            ORDER BY i.issued_at ASC, i.id ASC
-            LIMIT 1
-        ) inv ON TRUE
+        LEFT JOIN invoices inv
+               ON inv.id = (
+                  SELECT i2.id
+                  FROM invoices i2
+                  WHERE i2.subscription_id = CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
+                    AND i2.deleted_at IS NULL
+                    AND i2.issued_at IS NOT NULL
+                    AND i2.issued_at >= n.created_at
+                  ORDER BY i2.issued_at ASC, i2.id ASC
+                  LIMIT 1
+              )
         WHERE n.created_by_user_id = #{userId}
           AND n.title LIKE 'サブスクリプション更新申請 #%'
           AND n.deleted_at IS NULL
@@ -192,16 +204,17 @@ public interface NotificationMapper {
         FROM notifications n
         JOIN subscriptions s ON s.id = CAST(REGEXP_REPLACE(n.title, '^サブスクリプション更新申請 #', '') AS BIGINT)
         JOIN plans p ON p.id = s.plan_id
-        LEFT JOIN LATERAL (
-            SELECT i.payment_status
-            FROM invoices i
-            WHERE i.subscription_id = s.id
-              AND i.deleted_at IS NULL
-              AND i.issued_at IS NOT NULL
-              AND i.issued_at >= n.created_at
-            ORDER BY i.issued_at ASC, i.id ASC
-            LIMIT 1
-        ) inv ON TRUE
+        LEFT JOIN invoices inv
+               ON inv.id = (
+                  SELECT i2.id
+                  FROM invoices i2
+                  WHERE i2.subscription_id = s.id
+                    AND i2.deleted_at IS NULL
+                    AND i2.issued_at IS NOT NULL
+                    AND i2.issued_at >= n.created_at
+                  ORDER BY i2.issued_at ASC, i2.id ASC
+                  LIMIT 1
+              )
         WHERE n.created_by_user_id = #{userId}
           AND n.title LIKE 'サブスクリプション更新申請 #%'
           AND n.deleted_at IS NULL

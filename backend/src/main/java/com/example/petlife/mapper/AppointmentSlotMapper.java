@@ -1,7 +1,10 @@
 package com.example.petlife.mapper;
 
 import com.example.petlife.entity.AppointmentSlotEntity;
+import com.example.petlife.util.RecordParams;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -9,16 +12,25 @@ import org.apache.ibatis.annotations.Update;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AppointmentSlotMapper {
 
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO appointment_slots(slot_datetime, note, is_blocked, created_by_user_id, created_at)
         VALUES(#{slotDatetime}, #{note}, #{isBlocked}, #{createdByUserId}, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insert(AppointmentSlotEntity row);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insert(AppointmentSlotEntity row) {
+        Map<String, Object> params = RecordParams.toMap(row);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Select("""
         SELECT id, slot_datetime AS "slotDatetime", note, is_blocked AS "isBlocked",

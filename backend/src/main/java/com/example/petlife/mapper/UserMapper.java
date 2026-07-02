@@ -87,12 +87,12 @@ public interface UserMapper {
         """)
     int updateActiveSubscriptionPlanByUserId(@Param("userId") Long userId, @Param("planId") Long planId);
 
+    // H2 は INSERT...RETURNING 未対応。生成IDは呼び出し元で使われていないため戻り値なしの INSERT に変更
     @Insert("""
         INSERT INTO subscriptions(user_id, plan_id, start_date, status, auto_renew, created_at, updated_at)
         VALUES(#{userId}, #{planId}, CURRENT_DATE, 'ACTIVE', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insertActiveSubscription(
+    int insertActiveSubscription(
             @Param("userId") Long userId,
             @Param("planId") Long planId
     );

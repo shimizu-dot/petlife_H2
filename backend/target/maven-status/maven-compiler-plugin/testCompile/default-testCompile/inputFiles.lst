@@ -5,6 +5,8 @@
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/controller/ForgotPasswordControllerTest.java
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/controller/UserControllerTest.java
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/controller/slack/SlackEventControllerTest.java
+/Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/mapper/H2ReturningCompatibilityTest.java
+/Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/mapper/SubscriptionMapperTest.java
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/service/AppointmentServiceTest.java
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/service/CalendarServiceTest.java
 /Users/academia/src/petlife_H2/backend/src/test/java/com/example/petlife/service/ContactServiceTest.java

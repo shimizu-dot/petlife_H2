@@ -3,11 +3,13 @@ package com.example.petlife.mapper;
 import com.example.petlife.dto.consultation.MedicalHistoryRow;
 import com.example.petlife.entity.HealthRecordPetDateEntity;
 import com.example.petlife.entity.MedicalHistoryEntity;
+import com.example.petlife.util.RecordParams;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MedicalHistoryMapper {
@@ -58,15 +60,22 @@ public interface MedicalHistoryMapper {
         """)
     MedicalHistoryEntity findById(@Param("id") Long id);
 
-    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO medical_histories(pet_id, appointment_id, handled_by_user_id, performed_on,
             treatment_detail, diagnosis, prescription, created_at, updated_at)
         VALUES(#{petId}, #{appointmentId}, #{handledByUserId}, #{performedOn},
             #{treatmentDetail}, #{diagnosis}, #{prescription}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insertReturningId(MedicalHistoryEntity row);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insertReturningId(MedicalHistoryEntity row) {
+        Map<String, Object> params = RecordParams.toMap(row);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Update("""
         UPDATE medical_histories

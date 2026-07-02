@@ -2,6 +2,19 @@
 
 ## [2026-07-02]
 
+### 修正（Low — 通知一覧のリマインダー集計を H2 互換に修正）
+
+#### B-L19 — サブスクリプション更新リマインダーの SQL を H2 向けに調整
+- **変更ファイル:**
+  - `backend/src/main/java/com/example/petlife/mapper/SubscriptionMapper.java`
+  - `backend/src/test/java/com/example/petlife/mapper/SubscriptionMapperTest.java`
+  - `CHANGELOG.md`
+- **変更内容:**
+  1. `LEFT JOIN LATERAL` を避け、代表ペット名の取得を H2 互換の相関サブクエリ経由に変更した
+  2. `INTERVAL '30 days'` を `DATEADD('DAY', 30, CURRENT_DATE)` に置き換え、30 日以内判定を H2 で実行できるようにした
+  3. `/app/notifications` の表示時に落ちる可能性があった SQL だけを最小差分で修正した
+  4. H2 で `findUpcomingRenewalsByUserId()` が実行できる回帰テストを追加した
+
 ### ドキュメント更新（Low — application.properties の unknown property 警告を解消）
 
 #### D-L18 — 追加の Spring 設定メタデータに不足分を登録

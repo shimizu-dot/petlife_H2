@@ -2,7 +2,8 @@
 
 ## 1. セキュリティ
 - `OPENAI_API_KEY` `SLACK_BOT_TOKEN` `SLACK_SIGNING_SECRET` `ZOOM_*` を環境変数管理し、`application.properties` に平文固定しない
-- 本番DBパスワードを `hs0512` から変更済み
+- 外部 DB（`DB_URL`）に接続する構成の場合、`DB_PASSWORD` を本番用の値に変更済み（デフォルトは H2 in-memory・`sa`/空パスワードのため対象外）
+- **重要:** デフォルト構成（`jdbc:h2:mem:...;DB_CLOSE_DELAY=-1`）は in-memory DB のため、アプリ再起動・再デプロイでデータが全て消える。本番運用では `DB_URL` を永続ストレージ（ファイルベース H2 やマウントボリューム、あるいは外部 DB）に向ける、または `/app/admin/database` のバックアップ運用でカバーすることを事前に決めておくこと
 - HTTPS終端（TLS1.2+）とHSTS有効化
 - Slack署名検証が有効で、無効署名で `401` になることを確認
 - CSRF/CORS設定が要件通り（管理画面は同一オリジン前提）
@@ -35,7 +36,7 @@
 - ログの時刻同期（NTP）とタイムゾーン統一（運用基準）
 
 ## 5. DB・データ保護
-- 日次バックアップジョブ（`scripts/db_backup.ps1`）を Windows タスクスケジューラ等で運用
+- 日次バックアップを `/app/admin/database`（`DatabaseBackupController`）から取得し運用（H2 の `SCRIPT` コマンドで plain SQL を出力）。定期実行ジョブ化する場合は上記エンドポイントを HTTP 経由で呼ぶスクリプトを別途用意すること（旧 PostgreSQL 用の `pg_dump` スクリプトは H2 移行に伴い削除済み）
 - バックアップ保存先を本体サーバ外へ複製（オブジェクトストレージ等）
 - バックアップファイル暗号化・アクセス制御
 - スキーマ変更時のマイグレーション手順を標準化
@@ -44,11 +45,8 @@
 ## 6. バックアップ復元訓練（必須）
 - 月次で復元訓練を実施し記録
 - 手順:
-  - バックアップ取得: `powershell -ExecutionPolicy Bypass -File .\scripts\db_backup.ps1`
-  - 検証環境へ復元:
-    - `scripts/db_backup.ps1` の `RESTORE` コメントにある手順で DB を再作成
-    - `psql.exe -U postgres -d petlifeplus -f backups\<yyyyMMdd_HHmmss>_backup.sql` で復元
-  - 全 DB（ロール・グローバル設定含む）を退避する場合は `powershell -ExecutionPolicy Bypass -File .\scripts\backup_all_databases.ps1` を使用
+  - バックアップ取得: `/app/admin/database` の「バックアップ」から `.sql` をダウンロード（内部的に H2 `SCRIPT TO` を実行）
+  - 検証環境へ復元: `/app/admin/database` の「リストア」から取得済み `.sql` をアップロード（内部的に `DROP ALL OBJECTS` → `RUNSCRIPT FROM` を実行）
   - アプリ起動・ログイン・主要機能（AI症状/Slack/Zoom/健康記録）を確認
 - RTO/RPOを測定し、目標内か評価
 - 復元訓練結果を運用台帳に残す（日時/担当/所要時間/課題）

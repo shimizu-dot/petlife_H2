@@ -2,10 +2,12 @@ package com.example.petlife.mapper;
 
 import com.example.petlife.dto.billing.InvoiceRow;
 import com.example.petlife.entity.InvoiceEntity;
+import com.example.petlife.util.RecordParams;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface InvoiceMapper {
@@ -47,15 +49,22 @@ public interface InvoiceMapper {
         """)
     InvoiceEntity findById(@Param("id") Long id);
 
-    // INSERT...RETURNING は結果セットを返すため @Select を使用（@Insert では Long 戻り値に写像されない）
-    @Select("""
+    // H2 は INSERT...RETURNING 未対応のため、Map 経由の useGeneratedKeys で生成IDを取得する
+    // （エンティティは Java Record で不変のため、Record 自体には ID を書き戻せない）
+    @Insert("""
         INSERT INTO invoices(subscription_id, invoice_number, invoice_date, due_date,
             amount, payment_status, issued_at, created_at, updated_at)
         VALUES(#{subscriptionId}, #{invoiceNumber}, #{invoiceDate}, #{dueDate},
             #{amount}, #{paymentStatus}, #{issuedAt}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        RETURNING id
         """)
-    Long insertReturningId(InvoiceEntity invoice);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertRaw(Map<String, Object> row);
+
+    default Long insertReturningId(InvoiceEntity invoice) {
+        Map<String, Object> params = RecordParams.toMap(invoice);
+        insertRaw(params);
+        return ((Number) params.get("id")).longValue();
+    }
 
     @Update("""
         UPDATE invoices

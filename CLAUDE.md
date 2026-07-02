@@ -27,7 +27,8 @@ docker compose logs -f app
 # 停止
 docker compose down
 
-# DB データを含めて完全削除（再構築したいとき）
+# アップロードファイルを含めて完全削除（再構築したいとき）
+# DB は H2 の in-memory 構成のため、コンテナ再起動だけで初期状態に戻る
 docker compose down -v && docker compose up --build
 ```
 
@@ -49,7 +50,7 @@ SQL_INIT_MODE=never docker compose up -d
 
 ### Maven（ローカル直接起動）
 
-PostgreSQL を別途起動している場合のみ使用。
+デフォルトのデータソースは H2 の in-memory DB（PostgreSQL 互換モード）のため、事前に外部 DB を用意する必要はない。
 
 ```bash
 # Run development server (from backend/)
@@ -62,22 +63,11 @@ mvn clean package
 java -jar target/petlife-0.0.1-SNAPSHOT.jar
 ```
 
-**Prerequisites:** PostgreSQL running locally with:
-- Host: `localhost:5432`
-- Database: `petlifeplus`
-- Username: `postgres`
-- Password: `hs0512`
+起動時に `schema.sql` → `data.sql` が自動実行される（`spring.sql.init.mode=${SQL_INIT_MODE:always}`）。DB は in-memory（`DB_CLOSE_DELAY=-1`）のためプロセスを再起動すればまっさらな状態から再構築される。
 
-```bash
-# Maven での初回 DB セットアップ
-createdb -U postgres petlifeplus
-mvn spring-boot:run   # 起動時に schema.sql → data.sql が自動実行される
+外部 DB に接続したい場合は `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` / `DB_DRIVER_CLASS_NAME` を環境変数で上書きする（`backend/src/main/resources/application.properties` 参照）。
 
-# DB 完全再構築
-dropdb -U postgres petlifeplus && createdb -U postgres petlifeplus && mvn spring-boot:run
-```
-
-`spring.sql.init.mode=${SQL_INIT_MODE:always}` により起動のたびに schema.sql → data.sql が実行されるが、両ファイルは冪等（`CREATE TABLE IF NOT EXISTS` / `ON CONFLICT DO NOTHING`）なので安全。
+`spring.sql.init.mode=${SQL_INIT_MODE:always}` により起動のたびに schema.sql → data.sql が実行されるが、両ファイルは冪等（`CREATE TABLE IF NOT EXISTS` / `WHERE NOT EXISTS` によるリラン安全な INSERT）なので安全。H2 は `ON CONFLICT` 句をサポートしないため、`INSERT INTO ... SELECT ... WHERE NOT EXISTS (...)` 形式を使っている。
 
 ## Default Credentials (seeded by data.sql)
 
@@ -100,7 +90,7 @@ dropdb -U postgres petlifeplus && createdb -U postgres petlifeplus && mvn spring
 
 **Layered MVC (Thymeleaf renders all app views):**
 ```
-Controller → Service → Mapper (MyBatis) → PostgreSQL
+Controller → Service → Mapper (MyBatis) → H2 (PostgreSQL互換モード)
 ```
 
 > **Note:** `/api/appointments` は例外として `@RestController` による JSON REST API（`AppointmentController`）も存在する。その他の `/app/**` はすべて Thymeleaf MVC。

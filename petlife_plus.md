@@ -637,39 +637,25 @@ No.	画面名	画面の目的	主要機能
 
 
 ### backup/restore
-バックアップファイル: backups/yyyymmdd_backup.sql
+DB を PostgreSQL から H2（in-memory、PostgreSQL互換モード）に切り替えたため、バックアップ/リストアはアプリ内機能に統合されている。
 
-追加した機能:
-
-scripts/db_backup.sh
-実行で backups/yyyyMMdd_backup.sql を作成
-scripts/db_restore.sh <backup_sql_file>
-
-指定SQLからリストア
-実行例:
-./scripts/db_backup.sh
-./scripts/db_restore.sh backups/20260518_backup.sql
+`/app/admin/database`（`DatabaseBackupController` / `DatabaseBackupService`）:
+- バックアップ: H2 の `SCRIPT TO` で plain SQL を生成しダウンロード
+- リストア: アップロードした `.sql` を `DROP ALL OBJECTS` → `RUNSCRIPT FROM` で適用
 
 ---
 
 ## 環境構築・起動手順
 
 ### 前提条件
-- PostgreSQL 17（`C:\Program Files\PostgreSQL\17`）が起動していること
 - Java 21 以上がインストールされていること（プロジェクト指定: Java 21）
+- DB は H2 の in-memory DB（PostgreSQL 互換モード）がデフォルトのため、事前に外部 DB を用意する必要はない
 
 ### 1. データベース準備
 
-#### 初回または復元時
-```powershell
-# DB を削除して再作成（既存接続を強制切断）
-$env:PGPASSWORD = "hs0512"
-& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -h localhost -c "DROP DATABASE IF EXISTS petlifeplus WITH (FORCE);"
-& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -h localhost -c "CREATE DATABASE petlifeplus OWNER postgres ENCODING 'UTF8';"
+起動時に `schema.sql` → `data.sql` が自動実行される（`spring.sql.init.mode=always`）。DB は in-memory のため、再構築したい場合はアプリを再起動するだけでよい。
 
-# backup.sql から復元
-Get-Content "c:\Projects\petlifeplus_site\backup.sql" | & "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -h localhost -d petlifeplus
-```
+過去のバックアップから復元したい場合は `/app/admin/database` のリストア機能を使う（H2 の `RUNSCRIPT FROM` を利用）。
 
 ### 2. 環境変数（APIキー）の設定
 
@@ -723,7 +709,7 @@ cd c:\Projects\petlifeplus_site\backend
 
 - `local` プロファイルを付けると `application-local.properties` が読み込まれ外部APIキーが有効になる
 - 付けない場合は Zoom/Slack/OpenAI がフォールバック動作
-- `spring.sql.init.mode=never` のため、起動時に schema.sql / data.sql は自動適用されない
+- `spring.sql.init.mode=always`（デフォルト）のため、起動のたびに schema.sql → data.sql が自動適用される。無効化する場合は `SQL_INIT_MODE=never` を設定する
 
 ### 4. アクセス
 
@@ -807,12 +793,3 @@ cd c:\Projects\petlifeplus_site\backend
 | 予約 | `appointments`、`appointment_slots` |
 | メッセージ | `notifications`、`notification_recipients`、`email_templates`、`email_messages`、`consult_chat_messages` |
 | UX | `pet_calendar_marks`、`dismissed_reminders`、`announcements` |
-
-
-##psql -U postgres -d petlifeplus -f schema.sql
-psql -U postgres -d petlifeplus -f data.sql  
-# roles/plans のみ挿入
-mvn spring-boot:run                             
-# DataInitializer でユーザー作成
-psql -U postgres -d petlifeplus -f data.sql   
-# pets/subscriptions 挿入（冪等）
