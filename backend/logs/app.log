@@ -4805,3 +4805,87 @@ VALUES (?, ?, CURRENT_DATE, DATEADD('DAY', 7, CURRENT_DATE), 'ACTIVE', TRUE)
 2026-07-02 13:43:45.221 INFO  [main] c.e.p.service.PasswordResetService - Password reset requested for unknown email: missing@example.com
 2026-07-02 13:43:45.245 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-07-02 13:43:45.246 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-02 13:45:38.449 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 21.0.10 with PID 96950 (/Users/academia/src/petlife_H2/backend/target/classes started by academia in /Users/academia/src/petlife_H2/backend)
+2026-07-02 13:45:38.451 INFO  [restartedMain] c.example.petlife.PetlifeApplication - The following 1 profile is active: "local"
+2026-07-02 13:45:38.481 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-02 13:45:38.482 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-02 13:45:38.543 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-02 13:45:38.987 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-02 13:45:38.997 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:45:38.998 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-02 13:45:38.998 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-02 13:45:39.013 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 531 ms
+2026-07-02 13:45:39.067 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-02 13:45:39.151 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:petlifeplus user=SA
+2026-07-02 13:45:39.152 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-02 13:45:39.456 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-07-02 13:45:39.537 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-07-02 13:45:39.689 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:45:39.702 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-07-02 13:45:39.706 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.512 seconds (process running for 1.738)
+2026-07-02 13:45:45.665 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-02 13:45:45.666 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-02 13:45:45.669 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2026-07-02 13:45:45.946 WARN  [http-nio-8080-exec-3] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource img/dog_anime.gif for request '/assets/img/dog_anime.gif'.]
+2026-07-02 13:46:26.005 WARN  [http-nio-8080-exec-5] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource img/dog_anime.gif for request '/assets/img/dog_anime.gif'.]
+2026-07-02 13:48:18.830 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-02 13:48:18.843 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-02 13:48:18.852 WARN  [SpringApplicationShutdownHook] o.s.b.f.s.DisposableBeanAdapter - Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: データベースはすでに閉じられています (VM終了時の自動データベースクローズを無効にするためには、db URLに ";DB_CLOSE_ON_EXIT=FALSE" を追加してください)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-240]
+2026-07-02 13:48:18.855 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-02 13:48:18.856 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-02 13:49:02.976 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 21.0.10 with PID 99079 (/Users/academia/src/petlife_H2/backend/target/classes started by academia in /Users/academia/src/petlife_H2/backend)
+2026-07-02 13:49:02.977 INFO  [restartedMain] c.example.petlife.PetlifeApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-02 13:49:03.003 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-02 13:49:03.003 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-02 13:49:03.063 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-02 13:49:03.518 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-02 13:49:03.524 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:49:03.525 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-02 13:49:03.525 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-02 13:49:03.537 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 533 ms
+2026-07-02 13:49:03.581 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-02 13:49:03.666 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:petlifeplus user=SA
+2026-07-02 13:49:03.667 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-02 13:49:03.961 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-07-02 13:49:04.043 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-07-02 13:49:04.193 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:49:04.208 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-07-02 13:49:04.214 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.486 seconds (process running for 1.683)
+2026-07-02 13:49:30.075 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-02 13:49:30.076 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-02 13:49:30.080 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2026-07-02 13:50:28.527 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-02 13:50:28.530 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-02 13:50:28.533 WARN  [SpringApplicationShutdownHook] o.s.b.f.s.DisposableBeanAdapter - Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: データベースはすでに閉じられています (VM終了時の自動データベースクローズを無効にするためには、db URLに ";DB_CLOSE_ON_EXIT=FALSE" を追加してください)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-240]
+2026-07-02 13:50:28.536 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-02 13:50:28.537 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-02 13:51:37.314 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Starting PetlifeApplication using Java 21.0.10 with PID 996 (/Users/academia/src/petlife_H2/backend/target/classes started by academia in /Users/academia/src/petlife_H2/backend)
+2026-07-02 13:51:37.315 INFO  [restartedMain] c.example.petlife.PetlifeApplication - The following 1 profile is active: "local"
+2026-07-02 13:51:37.341 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-02 13:51:37.341 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-02 13:51:37.392 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-02 13:51:37.824 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-02 13:51:37.829 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:51:37.830 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-02 13:51:37.830 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-02 13:51:37.844 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 503 ms
+2026-07-02 13:51:37.889 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-02 13:51:37.984 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:petlifeplus user=SA
+2026-07-02 13:51:37.985 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-02 13:51:38.258 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-07-02 13:51:38.336 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page: URL [file:../frontend/public/index.html]
+2026-07-02 13:51:38.475 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-02 13:51:38.486 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-07-02 13:51:38.490 INFO  [restartedMain] c.example.petlife.PetlifeApplication - Started PetlifeApplication in 1.421 seconds (process running for 1.597)
+2026-07-02 13:51:45.022 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-02 13:51:45.023 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-02 13:51:45.027 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2026-07-02 13:52:42.822 WARN  [http-nio-8080-exec-7] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource img/dog_anime.gif for request '/assets/img/dog_anime.gif'.]
+2026-07-02 13:52:56.644 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-02 13:52:56.652 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-02 13:52:56.660 WARN  [SpringApplicationShutdownHook] o.s.b.f.s.DisposableBeanAdapter - Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: データベースはすでに閉じられています (VM終了時の自動データベースクローズを無効にするためには、db URLに ";DB_CLOSE_ON_EXIT=FALSE" を追加してください)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-240]
+2026-07-02 13:52:56.662 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-02 13:52:56.664 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
